@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import morganaPic from '../assets/morgana-normal.png'
 import './Dialogue.css'
 const Dialogue = ({ activities, onActivity , activitiesVisible, setActivitiesVisible}) => {
 
@@ -10,7 +11,7 @@ const Dialogue = ({ activities, onActivity , activitiesVisible, setActivitiesVis
     return (
         <div className='dialogue-container'>
             <div className='morgana-container'>
-                <img src="src/assets/morgana-normal.png"></img>
+                <img src={morganaPic}></img>
             </div>
             <div className='speech-options-container'>
                 <div className='options-container'>
