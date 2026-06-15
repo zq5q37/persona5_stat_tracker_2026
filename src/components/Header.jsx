@@ -2,7 +2,6 @@ import './Header.css'
 import logoUrl from '../assets/Persona-5-Logo.png'
 
 function Header() {
-    // const myName = "Joey Tribbiani";
     return (
         <>
             <div className="header-bar">

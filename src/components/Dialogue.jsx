@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import morganaPic from '../assets/morgana-normal.png'
+import morganaPic from '../assets/morgana-normal.webp'
 import './Dialogue.css'
 const Dialogue = ({ activities, onActivity , activitiesVisible, setActivitiesVisible}) => {
 
