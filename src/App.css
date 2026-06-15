@@ -1,0 +1,17 @@
+.everything-container{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+}
+
+p{
+    font-size: 20px;
+}
+
+button{
+    font-size: 20px;
+}
+body{
+    margin: 0;
+}
