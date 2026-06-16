@@ -1,18 +1,14 @@
 .dialogue-container {
-    height: 50%;
-    width: 100%;
+    height: 40%;
+    width: 90%;
+    margin: 0 auto;
     display: flex;
     flex-direction: row;
     /* border: purple solid 2px; */
 }
 
-.morgana-container {
-    /* width: 30%; */
-    /* height: auto; */
-    
+.morgana-container { 
     img {
-        /* height: auto; */
-        /* width: 100%; */
         width: 100%;
         height: 100%;
         object-fit: contain;
@@ -27,7 +23,7 @@
     width: 70%;
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-content:flex-end;
     gap: 5px;
 }
 
@@ -55,9 +51,31 @@
 
 .speech-container{
     border: rgb(255, 255, 255) solid 5px;
-    height: 30%;
     margin-bottom: 30px;
+    min-height: 150px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     p{
-        padding: 30px;
+        padding:  10px 25px;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+  .morgana-container { 
+    img {
+        width: 0%;
+        height: 0%;
+    }
+}
+.speech-options-container {
+    width: 100%;
+}
+}
+
+@media only screen and (max-height: 750px) {
+    .speech-container{
+        display: none;
     }
 }

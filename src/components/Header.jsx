@@ -1,5 +1,6 @@
 import './Header.css'
-import logoUrl from '../assets/Persona-5-Logo.png'
+import p5Logo from '../assets/Persona-5-Logo.png'
+import statsLogo from '../assets/stats-logo.png'
 
 function Header() {
     return (
@@ -7,12 +8,14 @@ function Header() {
             <div className="header-bar">
                 <div className='left'>
                     <div className="logo">
-                        <img src={logoUrl}></img>
+                        <img src={p5Logo}></img>
                     </div>
                     <h1>STATS</h1>
+                    
                 </div>
                 <div className='right'>
-                    <button>Sound</button>
+                    {/* <button>Sound</button> */}
+                    {/* <img className='stats-logo' src={statsLogo}></img> */}
                 </div>
 
             </div>
