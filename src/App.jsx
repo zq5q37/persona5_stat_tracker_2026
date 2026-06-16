@@ -24,13 +24,16 @@ function App() {
     { name: "Socialize", trait: "Charm" },
   ];
 
-  const handleActivity = (activity) => {
-    setStats(prev => ({
+const handleActivity = (activity) => {
+  setStats(prev => {
+    if (prev[activity.trait] >= 5) return prev; // no change
+    return {
       ...prev,
       [activity.trait]: prev[activity.trait] + 1,
-    }));
-    setActivitiesVisible(false)
-  };
+    };
+  });
+  setActivitiesVisible(false);
+};
 
   return (
     <>

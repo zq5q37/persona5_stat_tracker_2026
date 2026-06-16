@@ -15,13 +15,23 @@ const Star = ({stats}) => {
     { name: 'Charm', x: stats.Charm },
   ];
 
+  const starData = [];
+
+    for (let i = 0; i < data.length; i++) {
+        starData.push(data[i]);
+        const inBetweenValue = (data[i].x + data[(i+1)%data.length].x);
+        const fractionalValue = inBetweenValue * 0.18;
+        const iName = ' '.repeat(i);
+        starData.push({name: iName, x: fractionalValue})
+    };
+
     return (
         <div className='star-container'>
             <RadarChart height={500} width={500}
-                outerRadius="80%" data={data}>
-                <PolarGrid />
+                outerRadius="80%" data={starData}>
+                {/* <PolarGrid /> */}
                 <PolarAngleAxis dataKey="name" />
-                <PolarRadiusAxis />
+                <PolarRadiusAxis domain={[0, 5]} tick={false} axisLine={false} />
                 <Radar dataKey="x" stroke="orange"
                     fill="yellow" fillOpacity={0.9} />
             </RadarChart>
