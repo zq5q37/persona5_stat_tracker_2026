@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import morganaPic from '../assets/morgana-normal.webp'
 import './Dialogue.css'
+
+import playClick from '../utils/playClick.js';
+
 const Dialogue = ({ activities, onActivity , activitiesVisible, setActivitiesVisible}) => {
 
     const quotes = ["Don't think too hard about it. You'll get the hang of it.",
@@ -15,9 +18,9 @@ const Dialogue = ({ activities, onActivity , activitiesVisible, setActivitiesVis
             </div>
             <div className='speech-options-container'>
                 <div className='options-container'>
-                    {!activitiesVisible && <button onClick={() => setActivitiesVisible(true)}>Log an activity.</button>}
+                    {!activitiesVisible && <button onClick={() => {setActivitiesVisible(true); playClick();}}>Log an activity.</button>}
                     {activitiesVisible && activities.map((activity) => (
-                        <button key={activity.name} onClick={() => onActivity(activity)}>
+                        <button key={activity.name} onClick={() => {onActivity(activity); playClick();}}>
                             {activity.name}
                         </button>
                     ))}

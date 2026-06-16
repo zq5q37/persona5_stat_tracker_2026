@@ -31,7 +31,7 @@ const Star = ({ stats }) => {
                 outerRadius="80%" data={starData}>
                 {/* <PolarGrid /> */}
                 <PolarAngleAxis dataKey="name" tick={({ x, y, payload }) => (
-                    <text x={x} y={y} textAnchor="middle" dominantBaseline="top" fontSize={20} fill="#ffee00">
+                    <text x={x} y={y} textAnchor="middle" dominantBaseline="top" fontSize={20} fill="#FFFF01">
                         {payload.value} {data.find(d => d.name === payload.value)?.x >= 5 ? '[MAX]' : ''}
                     </text>
                 )} />

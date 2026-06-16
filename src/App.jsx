@@ -4,6 +4,8 @@ import Header from './components/Header'
 import Star from './components/Star'
 import Dialogue from './components/Dialogue'
 
+import redBgPic from './assets/red_bg.jpg'
+
 function App() {
 
   const [activitiesVisible, setActivitiesVisible] = useState(false);
@@ -42,13 +44,16 @@ const handleActivity = (activity) => {
 
   return (
     <>
+       <img className='bg-image' src={redBgPic}></img>
       <div className='everything-container'>
         <Header onReset={resetStats}/>
         {/* <img src="src/assets/star-ref.jpeg"></img> */}
         <Star stats={stats} />
         <Dialogue activities={activities} onActivity={handleActivity} activitiesVisible={activitiesVisible}
           setActivitiesVisible={setActivitiesVisible} />
+        
       </div>
+   
 
 
     </>

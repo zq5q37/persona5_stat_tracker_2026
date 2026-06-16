@@ -1,8 +1,32 @@
 import './Header.css'
 import p5Logo from '../assets/Persona-5-Logo.png'
 import statsLogo from '../assets/stats-logo.png'
+import backgroundMusic from '../assets/sounds/beneathTheMask.mp3';
+import { useState, useEffect, useRef } from 'react';
 
-function Header({onReset}) {
+import playClick from '../utils/playClick.js';
+
+function Header({ onReset }) {
+    const audioRef = useRef(null);
+    const [muted, setMuted] = useState(false);
+
+    useEffect(() => {
+        audioRef.current = new Audio(backgroundMusic);
+        audioRef.current.loop = true;
+        audioRef.current.volume = 0.5;
+        audioRef.current.play();
+
+        return () => audioRef.current.pause();
+    }, []);
+
+    const toggleMute = () => {
+        if (audioRef.current.paused) {
+            audioRef.current.play();
+        }
+        audioRef.current.muted = !audioRef.current.muted;
+        setMuted(prev => !prev);
+    };
+
     return (
         <>
             <div className="header-bar">
@@ -10,12 +34,13 @@ function Header({onReset}) {
                     <div className="logo">
                         <img src={p5Logo}></img>
                     </div>
-                    <h1>STATS</h1>
-                    
+                    {/* <h1>STATS</h1> */}
+
                 </div>
                 <div className='right'>
-                    {/* <button>Sound</button> */}
-                    <button onClick={() => onReset()}>Reset</button>
+
+                    <button onClick={() => {onReset(); playClick();}}>Reset</button>
+                    <button className='sound-button' onClick={() => {toggleMute();}}>{muted ? '🔇' : '🔊'}</button>
                     {/* <img className='stats-logo' src={statsLogo}></img> */}
                 </div>
 

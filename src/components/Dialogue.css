@@ -38,7 +38,7 @@
 
     button {
         border: rgb(255, 255, 255) solid 3px;
-        background-color: black;
+        background-color: rgba(0, 0, 0, 0.822);
         color: white;
         padding: 5px 10px;
     }
@@ -51,6 +51,7 @@
 
 .speech-container{
     border: rgb(255, 255, 255) solid 5px;
+    background: #000000b6;
     margin-bottom: 30px;
     min-height: 150px;
 

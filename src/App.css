@@ -3,6 +3,8 @@
     flex-direction: column;
     height: 100vh;
     justify-content: space-between;
+        position: relative;
+    z-index: 1;
 }
 
 p{
@@ -15,4 +17,14 @@ button{
 }
 body{
     margin: 0;
+}
+
+.bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    z-index: -1;
 }

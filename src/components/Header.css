@@ -11,11 +11,26 @@
         display: inherit;
         gap: 20px;
     }
+
+        .right {
+        display: inherit;
+        gap: 20px;
+        /* height: 50%; */
+        margin: auto 0;
+        padding: 10px 15px;
+
+        .sound-button{
+            height:50px;
+            width: 52px;
+            border-radius: 50%;
+        }
+    }
+
 }
 
 .logo {
     padding: 10px 15px;
-    height: 80%;
+    height: 70%;
     width: auto;
     margin: auto 0;
 
@@ -30,3 +45,4 @@
     height: 200px;
     padding-right: 20px;
 }
+
