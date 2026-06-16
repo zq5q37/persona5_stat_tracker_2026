@@ -4,7 +4,7 @@ import './Dialogue.css'
 
 import playClick from '../utils/playClick.js';
 
-const Dialogue = ({ activities, onActivity , activitiesVisible, setActivitiesVisible}) => {
+const Dialogue = ({ activities, onActivity, activitiesVisible, setActivitiesVisible }) => {
 
     const quotes = ["Don't think too hard about it. You'll get the hang of it.",
         "Everyone starts off a little clumsy. Don't be sad if it doesn't go well at first, OK?",
@@ -18,9 +18,9 @@ const Dialogue = ({ activities, onActivity , activitiesVisible, setActivitiesVis
             </div>
             <div className='speech-options-container'>
                 <div className='options-container'>
-                    {!activitiesVisible && <button onClick={() => {setActivitiesVisible(true); playClick();}}>Log an activity.</button>}
+                    {!activitiesVisible && <button className='dialogue-button' onClick={() => { setActivitiesVisible(true); playClick(); }}>Log an activity.</button>}
                     {activitiesVisible && activities.map((activity) => (
-                        <button key={activity.name} onClick={() => {onActivity(activity); playClick();}}>
+                        <button className='dialogue-button' key={activity.name} onClick={() => { onActivity(activity); playClick(); }}>
                             {activity.name}
                         </button>
                     ))}
