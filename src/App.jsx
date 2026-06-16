@@ -8,13 +8,17 @@ function App() {
 
   const [activitiesVisible, setActivitiesVisible] = useState(false);
 
-  const [stats, setStats] = useState({
-    Knowledge: 1,
-    Guts: 1,
-    Proficiency: 1,
-    Kindness: 1,
-    Charm: 1,
-  });
+const initialStats = {
+  Knowledge: 1,
+  Guts: 1,
+  Proficiency: 1,
+  Kindness: 1,
+  Charm: 1,
+};
+
+const [stats, setStats] = useState(initialStats);
+
+const resetStats = () => setStats(initialStats);
 
   const activities = [
     { name: "Code", trait: "Knowledge" },
@@ -35,10 +39,11 @@ const handleActivity = (activity) => {
   setActivitiesVisible(false);
 };
 
+
   return (
     <>
       <div className='everything-container'>
-        <Header />
+        <Header onReset={resetStats}/>
         {/* <img src="src/assets/star-ref.jpeg"></img> */}
         <Star stats={stats} />
         <Dialogue activities={activities} onActivity={handleActivity} activitiesVisible={activitiesVisible}
