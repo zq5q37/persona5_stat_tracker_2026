@@ -5,7 +5,7 @@ import Star from './components/Star'
 import Dialogue from './components/Dialogue'
 import NotesVideo from './components/NotesVideo'
 
-import redBgPic from './assets/red_bg.jpg'
+import redBgPic from './assets/red_bg.webp'
 
 
 function App() {

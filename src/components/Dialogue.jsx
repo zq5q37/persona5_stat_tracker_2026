@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import morganaNormal from '../assets/morgana-normal.webp'
-import morganaSmile from '../assets/morgana-smile.png'
-import morganaStar from '../assets/morgana-star.png'
+import morganaSmile from '../assets/morgana-smile.webp'
+import morganaStar from '../assets/morgana-star.webp'
 import './Dialogue.css'
 
 import playClick from '../utils/playClick.js';
