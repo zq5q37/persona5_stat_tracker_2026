@@ -35,10 +35,11 @@ function Header({ onReset }) {
                     <div className="logo">
                         <img src={p5Logo}></img>
                     </div>
-                </div>
-                <div className='right'>
                     <button onClick={() => { onReset(); playClick(); }}>Reset</button>
                     <button className='sound-button' onClick={() => { toggleMute(); }}>{muted ? '🔇' : '🔊'}</button>
+                </div>
+                <div className='right'>
+
                     {/* <img className='stats-logo' src={statsLogo}></img> */}
                 </div>
 

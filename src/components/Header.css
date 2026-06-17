@@ -11,15 +11,15 @@
         display: flex;
         gap: 20px;
     }
-        .right {
+
+    .right {
         display: flex;
         gap: 20px;
-        /* height: 50%; */
         margin: auto 0;
         padding-right: 10px;
 
-        .sound-button{
-            height:40px;
+        .sound-button {
+            height: 40px;
             width: 42px;
             border-radius: 50%;
         }
@@ -40,8 +40,7 @@
 
 }
 
-.stats-logo{
+.stats-logo {
     height: 200px;
     padding-right: 20px;
 }
-
