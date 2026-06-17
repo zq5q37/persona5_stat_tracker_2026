@@ -73,7 +73,7 @@ const Star = React.memo(({ stats }) => {
                     );
                 }} />
                 <PolarRadiusAxis domain={[0, 5]} tick={false} axisLine={false} />
-                <Radar dataKey="grid" stroke="#000000" strokeWidth={13} fill="#2F2F2F" fillOpacity={1} />
+                <Radar isAnimationActive={false} dataKey="grid" stroke="#000000" strokeWidth={13} fill="#2F2F2F" fillOpacity={1} />
                 <Radar dataKey="x" stroke="#E68C00" strokeWidth={4} fill="#FEC901" fillOpacity={1} />
             </RadarChart>
         </div>

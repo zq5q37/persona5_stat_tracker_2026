@@ -15,7 +15,7 @@ function Header({ onReset }) {
         audioRef.current.loop = true;
         audioRef.current.volume = 0.3;
         audioRef.current.muted = true; // start muted
-        audioRef.current.play();
+        // audioRef.current.play();
 
         return () => audioRef.current.pause();
     }, []);

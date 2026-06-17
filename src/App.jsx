@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import Header from './components/Header'
 import Star from './components/Star'
@@ -20,7 +20,15 @@ function App() {
     Charm: 1,
   };
 
-  const [stats, setStats] = useState(initialStats);
+  // const [stats, setStats] = useState(initialStats);
+  const [stats, setStats] = useState(() => {
+    const saved = localStorage.getItem('stats');
+    return saved ? JSON.parse(saved) : initialStats;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('stats', JSON.stringify(stats));
+  }, [stats]);
 
   const resetStats = () => setStats(initialStats);
 
@@ -44,9 +52,9 @@ function App() {
     handleExpUp();
   };
 
-  const handleExpUp = () =>{
+  const handleExpUp = () => {
     setExpUp(true);
-    setTimeout(()=>{
+    setTimeout(() => {
       setExpUp(false);
     }, 2500)
   }
