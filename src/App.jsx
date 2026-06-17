@@ -5,6 +5,7 @@ import Star from './components/Star'
 import Dialogue from './components/Dialogue'
 
 import redBgPic from './assets/red_bg.jpg'
+import expUpVideo from './assets/NotesSocialStats.webm'
 
 function App() {
 
@@ -68,6 +69,20 @@ function App() {
         <Star stats={stats} />
         <Dialogue activities={activities} onActivity={handleActivity} activitiesVisible={activitiesVisible}
           setActivitiesVisible={setActivitiesVisible} expUp={expUp} setExpUp={setExpUp} />
+        {expUp && (
+          <video
+            src={expUpVideo}
+            autoPlay
+            style={{
+              position: 'fixed',
+              top: 0, left: 0,
+              width: '100%', height: '100%',
+              objectFit: 'cover',
+              zIndex: 999,
+              pointerEvents: 'none',
+            }}
+          />
+        )}
       </div>
     </>
   )
