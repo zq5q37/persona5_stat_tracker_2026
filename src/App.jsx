@@ -22,8 +22,8 @@ function App() {
     Charm: 1,
   };
 
+  // localStorage.removeItem('stats');
 
-  // const [stats, setStats] = useState(initialStats);
   const [stats, setStats] = useState(() => {
     const saved = localStorage.getItem('stats');
     return saved ? JSON.parse(saved) : initialStats;
