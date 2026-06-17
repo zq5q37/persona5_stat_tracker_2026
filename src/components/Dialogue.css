@@ -87,6 +87,12 @@ button:hover {
     .speech-options-container {
         width: 100%;
     }
+
+    .speech-container {
+    p {
+        font-size: 20px;
+    }
+}
 }
 
 @media (max-height: 600px) {
