@@ -71,7 +71,7 @@ function App() {
         <Star stats={stats} />
         <Dialogue activities={activities} onActivity={handleActivity} activitiesVisible={activitiesVisible}
           setActivitiesVisible={setActivitiesVisible} expUp={expUp} setExpUp={setExpUp} />
-          <NotesVideo expUp={expUp}/>
+        {!('ontouchstart' in window) && <NotesVideo expUp={expUp} />}
       </div>
     </>
   )

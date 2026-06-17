@@ -30,8 +30,8 @@ const NotesVideo = ({expUp}) => {
             }}
         >
             <source src={expUpVideoWebm} type="video/webm" />
-            <source src={expUpVideoMp4} type="video/mp4" />
-            <source src={expUpVideoMov} type="video/mov" />
+            {/* <source src={expUpVideoMp4} type="video/mp4" /> */}
+            {/* <source src={expUpVideoMov} type="video/mov" /> */}
         </video>
     );
 };
