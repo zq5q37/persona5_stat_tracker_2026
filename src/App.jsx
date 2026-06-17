@@ -1,4 +1,4 @@
-import { useState, useEffect , useRef} from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './App.css'
 import Header from './components/Header'
 import Star from './components/Star'
@@ -74,9 +74,9 @@ function App() {
         {expUp && (
           <video
             src={expUpVideo}
-                ref={videoRef}
-    onCanPlay={() => { videoRef.current.volume = 1; }}
-             playsInline
+            ref={videoRef}
+            onCanPlay={() => { videoRef.current.volume = 1; }}
+            playsInline
             autoPlay
             style={{
               position: 'fixed',
