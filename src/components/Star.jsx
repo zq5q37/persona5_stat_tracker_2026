@@ -5,17 +5,15 @@ import {
     PolarAngleAxis, PolarRadiusAxis
 } from 'recharts';
 
-const Star = React.memo(({ stats }) => {
+const Star = React.memo(({ stats, statLevels }) => {
 
     const data = [
-        { name: 'Knowledge', x: stats.Knowledge },
-        { name: 'Guts', x: stats.Guts },
-        { name: 'Proficiency', x: stats.Proficiency },
-        { name: 'Kindness', x: stats.Kindness },
-        { name: 'Charm', x: stats.Charm },
+        { name: 'Knowledge', x: statLevels.Knowledge },
+        { name: 'Guts', x: statLevels.Guts },
+        { name: 'Proficiency', x: statLevels.Proficiency },
+        { name: 'Kindness', x: statLevels.Kindness },
+        { name: 'Charm', x: statLevels.Charm },
     ];
-
-
 
     const starData = [];
 
@@ -26,7 +24,6 @@ const Star = React.memo(({ stats }) => {
         const iName = ' '.repeat(i);
         starData.push({ name: iName, x: fractionalValue })
     };
-
     const gridData = [];
 
     for (let i = 0; i < data.length; i++) {
@@ -39,10 +36,16 @@ const Star = React.memo(({ stats }) => {
         <div className='star-container'>
             <RadarChart height={500} width={500}
                 outerRadius="85%" data={gridData}>
-                {/* <PolarGrid /> */}
                 <PolarAngleAxis dataKey="name" tick={({ x, y, payload }) => {
+                    const isSpaces = payload.value.trim() === '';
+                    if (isSpaces) return null; // skip rendering entirely
+
                     const isMax = data.find(d => d.name === payload.value)?.x >= 5;
-                    const label = `${payload.value}${isMax ? ' [MAX]' : ''}`;
+                    const statData = stats[payload.value];
+                    console.log(statData)
+                    const expNeeded = statData.level * 20;
+                    const label = payload.value;
+                    const subLabel = isMax ? '[MAX]' : `${statData.exp}/${expNeeded}`;
 
                     const measureText = (text, font = '600 26px sans-serif') => {
                         const canvas = document.createElement('canvas');
@@ -53,9 +56,6 @@ const Star = React.memo(({ stats }) => {
 
                     const width = measureText(label) + 3;
                     const height = 40;
-
-                    const isSpaces = payload.value.trim() === '';
-                    if (isSpaces) return null; // skip rendering entirely
 
                     return (
                         <g transform={`translate(${x},${y})`}>
@@ -76,6 +76,14 @@ const Star = React.memo(({ stats }) => {
                                 letterSpacing={-3}
                             >
                                 {label}
+                            </text>
+                            <text
+                                textAnchor="middle"
+                                fontSize={18}
+                                fill="black"
+                                y={30}
+                            >
+                                {subLabel}
                             </text>
                         </g>
                     );

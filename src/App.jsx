@@ -7,6 +7,15 @@ import NotesVideo from './components/NotesVideo'
 
 import redBgPic from './assets/red_bg.webp'
 
+const initialStats = {
+  Knowledge: { level: 1, exp: 0 },
+  Guts: { level: 1, exp: 0 },
+  Proficiency: { level: 1, exp: 0 },
+  Kindness: { level: 1, exp: 0 },
+  Charm: { level: 1, exp: 0 },
+};
+
+const expToNextLevel = (level) => level * 20;
 
 function App() {
 
@@ -14,16 +23,6 @@ function App() {
 
   const [expUp, setExpUp] = useState(false)
 
-  const initialStats = {
-    Knowledge: 1,
-    Guts: 1,
-    Proficiency: 1,
-    Kindness: 1,
-    Charm: 1,
-  };
-
-
-  // const [stats, setStats] = useState(initialStats);
   const [stats, setStats] = useState(() => {
     const saved = localStorage.getItem('stats');
     return saved ? JSON.parse(saved) : initialStats;
@@ -43,18 +42,6 @@ function App() {
     { name: "Socialize", trait: "Charm" },
   ];
 
-  const handleActivity = (activity) => {
-    setStats(prev => {
-      if (prev[activity.trait] >= 5) return prev; // no change
-      return {
-        ...prev,
-        [activity.trait]: prev[activity.trait] + 1,
-      };
-    });
-    setActivitiesVisible(false);
-    handleExpUp();
-  };
-
   const handleExpUp = () => {
     setExpUp(true);
     setTimeout(() => {
@@ -63,12 +50,40 @@ function App() {
   }
 
 
+
+  const handleActivity = (activity) => {
+    setStats(prev => {
+      const stat = prev[activity.trait];
+      if (stat.level >= 5) return prev;
+
+      const newExp = stat.exp + 10;
+      const required = expToNextLevel(stat.level);
+
+      if (newExp >= required) {
+        return {
+          ...prev,
+          [activity.trait]: { level: stat.level + 1, exp: newExp - required },
+        };
+      }
+      return {
+        ...prev,
+        [activity.trait]: { ...stat, exp: newExp },
+      };
+    });
+    setActivitiesVisible(false);
+    handleExpUp();
+  };
+
+  const statLevels = Object.fromEntries(
+    Object.entries(stats).map(([k, v]) => [k, v.level])
+  );
+
   return (
     <>
       <div className='everything-container'>
         <img className='bg-image' src={redBgPic}></img>
         <Header onReset={resetStats} />
-        <Star stats={stats} />
+        <Star stats={stats} statLevels={statLevels} />
         <Dialogue activities={activities} onActivity={handleActivity} activitiesVisible={activitiesVisible}
           setActivitiesVisible={setActivitiesVisible} expUp={expUp} setExpUp={setExpUp} />
         {!('ontouchstart' in window) && <NotesVideo expUp={expUp} />}
