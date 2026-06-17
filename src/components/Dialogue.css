@@ -7,7 +7,7 @@
     /* border: purple solid 2px; */
 }
 
-.morgana-container { 
+.morgana-container {
     img {
         width: auto;
         height: 100%;
@@ -23,37 +23,37 @@
     width: 70%;
     display: flex;
     flex-direction: column;
-    justify-content:flex-end;
+    justify-content: flex-end;
     gap: 5px;
 }
 
-.options-container{
+.options-container {
     /* border: blue solid 2px; */
     margin-left: auto;
     display: flex;
     flex-direction: column;
-    gap: 5px;   
+    gap: 5px;
 
 }
 
-    button {
-        border: rgb(255, 255, 255) solid 3px;
-        background-color: rgba(0, 0, 0, 0.747);
-        color: white;
-        /* padding: 5px 10px; */
-    }
+button {
+    border: rgb(255, 255, 255) solid 3px;
+    background-color: rgba(0, 0, 0, 0.747);
+    color: white;
+    /* padding: 5px 10px; */
+}
 
-    .dialogue-button{
-        padding: 5px 10px;
-    }
+.dialogue-button {
+    padding: 5px 10px;
+}
 
-    button:hover{
-        border: rgb(0, 0, 0) solid 3px;
-        background-color: white;
-        color: rgb(0, 0, 0);
-    }
+button:hover {
+    border: rgb(0, 0, 0) solid 3px;
+    background-color: white;
+    color: rgb(0, 0, 0);
+}
 
-.speech-container{
+.speech-container {
     border: rgb(255, 255, 255) solid 5px;
     background: #000000b6;
     margin-bottom: 30px;
@@ -62,25 +62,30 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    p{
-        padding:  10px 25px;
+
+    p {
+        padding: 10px 25px;
     }
 }
 
-@media only screen and (max-width: 650px) {
-  .morgana-container { 
-    img {
+@media (max-width: 650px) {
+    .morgana-container {
         width: 0%;
         height: 0%;
+        display: none;
+        img {
+            width: 0%;
+            height: 0%;
+        }
+    }
+
+    .speech-options-container {
+        width: 100%;
     }
 }
-.speech-options-container {
-    width: 100%;
-}
-}
 
-@media only screen and (max-height: 750px) {
-    .speech-container{
+@media (max-height: 750px) {
+    .speech-container {
         display: none;
     }
 }

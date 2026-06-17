@@ -1,21 +1,24 @@
-.everything-container{
+.everything-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    width: 100vw;
     justify-content: space-between;
-        position: relative;
+    position: relative;
     z-index: 1;
+    /* pointer-events: none; */
 }
 
-p{
+p {
     font-size: 24px;
     font-weight: 600;
 }
 
-button{
+button {
     font-size: 20px;
 }
-body{
+
+body {
     margin: 0;
 }
 
@@ -27,4 +30,5 @@ body{
     width: 100%;
     object-fit: cover;
     z-index: -1;
+    pointer-events: none;
 }
