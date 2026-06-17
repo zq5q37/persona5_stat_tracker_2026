@@ -59,7 +59,7 @@ function App() {
     setExpUp(true);
     setTimeout(() => {
       setExpUp(false);
-    }, 2500)
+    }, 3000)
   }
 
 
