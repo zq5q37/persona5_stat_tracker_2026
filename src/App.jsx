@@ -52,7 +52,9 @@ function App() {
       };
     });
     setActivitiesVisible(false);
-    handleExpUp();
+    if (stats[activity.trait] < 5) {
+      handleExpUp();
+    }
   };
 
   const handleExpUp = () => {
