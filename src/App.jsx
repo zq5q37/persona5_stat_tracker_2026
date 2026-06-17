@@ -5,7 +5,9 @@ import Star from './components/Star'
 import Dialogue from './components/Dialogue'
 
 import redBgPic from './assets/red_bg.jpg'
-import expUpVideo from './assets/NotesSocialStats.webm'
+import expUpVideoWebm from './assets/NotesSocialStats.webm'
+import expUpVideoMp4 from './assets/NotesSocialStats.mp4'
+
 
 function App() {
 
@@ -73,7 +75,6 @@ function App() {
           setActivitiesVisible={setActivitiesVisible} expUp={expUp} setExpUp={setExpUp} />
         {expUp && (
           <video
-            src={expUpVideo}
             ref={videoRef}
             onCanPlay={() => { videoRef.current.volume = 1; }}
             playsInline
@@ -86,7 +87,10 @@ function App() {
               zIndex: 999,
               pointerEvents: 'none',
             }}
-          />
+          >
+            <source src={expUpVideoWebm} type="video/webm" />  {/* Chrome/desktop - has alpha */}
+            <source src={expUpVideoMp4} type="video/mp4" />    {/* iOS Safari - use .mov with alpha */}
+          </video>
         )}
       </div>
     </>
