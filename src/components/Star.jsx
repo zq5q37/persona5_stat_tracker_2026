@@ -43,7 +43,15 @@ const Star = React.memo(({ stats }) => {
                 <PolarAngleAxis dataKey="name" tick={({ x, y, payload }) => {
                     const isMax = data.find(d => d.name === payload.value)?.x >= 5;
                     const label = `${payload.value}${isMax ? ' [MAX]' : ''}`;
-                    const width = label.length * 16;
+
+                    const measureText = (text, font = '600 26px sans-serif') => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        ctx.font = font;
+                        return ctx.measureText(text).width;
+                    };
+
+                    const width = measureText(label) + 3;
                     const height = 40;
 
                     const isSpaces = payload.value.trim() === '';
