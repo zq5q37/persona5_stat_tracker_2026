@@ -71,9 +71,7 @@ function App() {
         <Star stats={stats} />
         <Dialogue activities={activities} onActivity={handleActivity} activitiesVisible={activitiesVisible}
           setActivitiesVisible={setActivitiesVisible} expUp={expUp} setExpUp={setExpUp} />
-        {expUp &&
-          <NotesVideo />
-        }
+          <NotesVideo expUp={expUp}/>
       </div>
     </>
   )
