@@ -73,6 +73,7 @@ button:hover {
         width: 0%;
         height: 0%;
         display: none;
+
         img {
             width: 0%;
             height: 0%;
@@ -87,5 +88,7 @@ button:hover {
 @media (max-height: 750px) {
     .speech-container {
         display: none;
+        width: 0%;
+        height: 0%;
     }
 }
