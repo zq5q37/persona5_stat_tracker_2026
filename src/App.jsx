@@ -10,17 +10,17 @@ function App() {
 
   const [activitiesVisible, setActivitiesVisible] = useState(false);
 
-const initialStats = {
-  Knowledge: 1,
-  Guts: 1,
-  Proficiency: 1,
-  Kindness: 1,
-  Charm: 1,
-};
+  const initialStats = {
+    Knowledge: 1,
+    Guts: 1,
+    Proficiency: 1,
+    Kindness: 1,
+    Charm: 1,
+  };
 
-const [stats, setStats] = useState(initialStats);
+  const [stats, setStats] = useState(initialStats);
 
-const resetStats = () => setStats(initialStats);
+  const resetStats = () => setStats(initialStats);
 
   const activities = [
     { name: "Code", trait: "Knowledge" },
@@ -30,32 +30,28 @@ const resetStats = () => setStats(initialStats);
     { name: "Socialize", trait: "Charm" },
   ];
 
-const handleActivity = (activity) => {
-  setStats(prev => {
-    if (prev[activity.trait] >= 5) return prev; // no change
-    return {
-      ...prev,
-      [activity.trait]: prev[activity.trait] + 1,
-    };
-  });
-  setActivitiesVisible(false);
-};
+  const handleActivity = (activity) => {
+    setStats(prev => {
+      if (prev[activity.trait] >= 5) return prev; // no change
+      return {
+        ...prev,
+        [activity.trait]: prev[activity.trait] + 1,
+      };
+    });
+    setActivitiesVisible(false);
+  };
 
 
   return (
     <>
-       <img className='bg-image' src={redBgPic}></img>
       <div className='everything-container'>
-        <Header onReset={resetStats}/>
+        <img className='bg-image' src={redBgPic}></img>
+        <Header onReset={resetStats} />
         {/* <img src="src/assets/star-ref.jpeg"></img> */}
         <Star stats={stats} />
         <Dialogue activities={activities} onActivity={handleActivity} activitiesVisible={activitiesVisible}
           setActivitiesVisible={setActivitiesVisible} />
-        
       </div>
-   
-
-
     </>
   )
 }
