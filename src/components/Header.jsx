@@ -8,12 +8,13 @@ import playClick from '../utils/playClick.js';
 
 function Header({ onReset }) {
     const audioRef = useRef(null);
-    const [muted, setMuted] = useState(false);
+    const [muted, setMuted] = useState(true);
 
     useEffect(() => {
         audioRef.current = new Audio(backgroundMusic);
         audioRef.current.loop = true;
-        audioRef.current.volume = 0.5;
+        audioRef.current.volume = 0.3;
+        audioRef.current.muted = true; // start muted
         audioRef.current.play();
 
         return () => audioRef.current.pause();
@@ -39,8 +40,8 @@ function Header({ onReset }) {
                 </div>
                 <div className='right'>
 
-                    <button onClick={() => {onReset(); playClick();}}>Reset</button>
-                    <button className='sound-button' onClick={() => {toggleMute();}}>{muted ? '🔇' : '🔊'}</button>
+                    <button onClick={() => { onReset(); playClick(); }}>Reset</button>
+                    <button className='sound-button' onClick={() => { toggleMute(); }}>{muted ? '🔇' : '🔊'}</button>
                     {/* <img className='stats-logo' src={statsLogo}></img> */}
                 </div>
 

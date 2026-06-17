@@ -5,7 +5,7 @@ import {
     PolarAngleAxis, PolarRadiusAxis
 } from 'recharts';
 
-const Star = ({ stats }) => {
+const Star = React.memo(({ stats }) => {
 
     const data = [
         { name: 'Knowledge', x: stats.Knowledge },
@@ -74,10 +74,10 @@ const Star = ({ stats }) => {
                 }} />
                 <PolarRadiusAxis domain={[0, 5]} tick={false} axisLine={false} />
                 <Radar dataKey="grid" stroke="#000000" strokeWidth={13} fill="#2F2F2F" fillOpacity={1} />
-                <Radar dataKey="x" stroke="#E68C00" strokeWidth={5} fill="#FEC901" fillOpacity={1} />
+                <Radar dataKey="x" stroke="#E68C00" strokeWidth={4} fill="#FEC901" fillOpacity={1} />
             </RadarChart>
         </div>
     );
-};
+});
 
 export default Star;

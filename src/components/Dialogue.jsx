@@ -1,15 +1,29 @@
 import { useState } from 'react'
-import morganaPic from '../assets/morgana-normal.webp'
+import morganaNormal from '../assets/morgana-normal.webp'
+import morganaSmile from '../assets/morgana-smile.png'
+import morganaStar from '../assets/morgana-star.png'
 import './Dialogue.css'
 
 import playClick from '../utils/playClick.js';
 
-const Dialogue = ({ activities, onActivity, activitiesVisible, setActivitiesVisible }) => {
+const Dialogue = ({ activities, onActivity, activitiesVisible, setActivitiesVisible , expUp, setExpUp }) => {
 
     const quotes = ["Don't think too hard about it. You'll get the hang of it.",
         "Everyone starts off a little clumsy. Don't be sad if it doesn't go well at first, OK?",
         "If you have nothing to do, let's clean up this room. An uncluttered room is an uncluttered mind!"
     ];
+
+    const speechText = activitiesVisible
+        ? "What shall we do?"
+        : expUp
+            ? "Looks like your social stats are growing!"
+            : quotes[Math.floor(Math.random() * quotes.length)];
+
+    const morganaPic = activitiesVisible
+        ? morganaSmile
+        : expUp
+            ? morganaStar
+            : morganaNormal;
 
     return (
         <div className='dialogue-container'>
@@ -26,9 +40,9 @@ const Dialogue = ({ activities, onActivity, activitiesVisible, setActivitiesVisi
                     ))}
                 </div>
                 <div className='speech-container'>
-                    {!activitiesVisible && <p>{quotes[0]}</p>}
-                    {activitiesVisible && <p>What shall we do?</p>}
+                    <p>{speechText}</p>
                 </div>
+
 
             </div>
 

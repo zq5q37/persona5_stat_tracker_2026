@@ -10,6 +10,8 @@ function App() {
 
   const [activitiesVisible, setActivitiesVisible] = useState(false);
 
+  const [expUp, setExpUp] = useState(false)
+
   const initialStats = {
     Knowledge: 1,
     Guts: 1,
@@ -39,7 +41,15 @@ function App() {
       };
     });
     setActivitiesVisible(false);
+    handleExpUp();
   };
+
+  const handleExpUp = () =>{
+    setExpUp(true);
+    setTimeout(()=>{
+      setExpUp(false);
+    }, 2500)
+  }
 
 
   return (
@@ -49,7 +59,7 @@ function App() {
         <Header onReset={resetStats} />
         <Star stats={stats} />
         <Dialogue activities={activities} onActivity={handleActivity} activitiesVisible={activitiesVisible}
-          setActivitiesVisible={setActivitiesVisible} />
+          setActivitiesVisible={setActivitiesVisible} expUp={expUp} setExpUp={setExpUp} />
       </div>
     </>
   )
