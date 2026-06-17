@@ -47,7 +47,6 @@ function App() {
       <div className='everything-container'>
         <img className='bg-image' src={redBgPic}></img>
         <Header onReset={resetStats} />
-        {/* <img src="src/assets/star-ref.jpeg"></img> */}
         <Star stats={stats} />
         <Dialogue activities={activities} onActivity={handleActivity} activitiesVisible={activitiesVisible}
           setActivitiesVisible={setActivitiesVisible} />

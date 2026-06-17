@@ -38,13 +38,13 @@ const Star = ({ stats }) => {
     return (
         <div className='star-container'>
             <RadarChart height={500} width={500}
-                outerRadius="80%" data={gridData}>
+                outerRadius="85%" data={gridData}>
                 {/* <PolarGrid /> */}
                 <PolarAngleAxis dataKey="name" tick={({ x, y, payload }) => {
                     const isMax = data.find(d => d.name === payload.value)?.x >= 5;
                     const label = `${payload.value}${isMax ? ' [MAX]' : ''}`;
-                    const width = label.length * 15;
-                    const height = 35;
+                    const width = label.length * 16;
+                    const height = 40;
 
                     const isSpaces = payload.value.trim() === '';
                     if (isSpaces) return null; // skip rendering entirely
@@ -53,18 +53,19 @@ const Star = ({ stats }) => {
                         <g transform={`translate(${x},${y})`}>
                             <rect
                                 x={-width / 2}
-                                y={-height / 2}
+                                y={-(height / 2) - 5}
                                 width={width}
                                 height={height}
                                 fill="yellow"
-                                rx={3}
+                                rx={1}
                             />
                             <text
                                 textAnchor="middle"
                                 dominantBaseline="middle"
-                                fontSize={20}
+                                fontSize={26}
                                 fontWeight={600}
                                 fill="black"
+                                letterSpacing={-3}
                             >
                                 {label}
                             </text>
@@ -72,8 +73,8 @@ const Star = ({ stats }) => {
                     );
                 }} />
                 <PolarRadiusAxis domain={[0, 5]} tick={false} axisLine={false} />
-                <Radar dataKey="grid" stroke="#000000" strokeWidth={5} fill="#2F2F2F" fillOpacity={1} />
-                <Radar dataKey="x" stroke="#E68C00" strokeWidth={3} fill="#FEC901" fillOpacity={1} />
+                <Radar dataKey="grid" stroke="#000000" strokeWidth={13} fill="#2F2F2F" fillOpacity={1} />
+                <Radar dataKey="x" stroke="#E68C00" strokeWidth={5} fill="#FEC901" fillOpacity={1} />
             </RadarChart>
         </div>
     );
