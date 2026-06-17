@@ -13,7 +13,7 @@ function Header({ onReset }) {
     useEffect(() => {
         audioRef.current = new Audio(backgroundMusic);
         audioRef.current.loop = true;
-        audioRef.current.volume = 0.3;
+        audioRef.current.volume = 0.05;
         audioRef.current.muted = true; // start muted
         // audioRef.current.play();
 
