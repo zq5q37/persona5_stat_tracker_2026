@@ -3,10 +3,9 @@ import './App.css'
 import Header from './components/Header'
 import Star from './components/Star'
 import Dialogue from './components/Dialogue'
+import NotesVideo from './components/NotesVideo'
 
 import redBgPic from './assets/red_bg.jpg'
-import expUpVideoWebm from './assets/NotesSocialStats.webm'
-import expUpVideoMp4 from './assets/NotesSocialStats.mp4'
 
 
 function App() {
@@ -23,7 +22,6 @@ function App() {
     Charm: 1,
   };
 
-  const videoRef = useRef(null);
 
   // const [stats, setStats] = useState(initialStats);
   const [stats, setStats] = useState(() => {
@@ -73,25 +71,9 @@ function App() {
         <Star stats={stats} />
         <Dialogue activities={activities} onActivity={handleActivity} activitiesVisible={activitiesVisible}
           setActivitiesVisible={setActivitiesVisible} expUp={expUp} setExpUp={setExpUp} />
-        {expUp && (
-          <video
-            ref={videoRef}
-            onCanPlay={() => { videoRef.current.volume = 1; }}
-            playsInline
-            autoPlay
-            style={{
-              position: 'fixed',
-              top: 0, left: 0,
-              width: '100%', height: '100%',
-              objectFit: 'cover',
-              zIndex: 999,
-              pointerEvents: 'none',
-            }}
-          >
-            <source src={expUpVideoWebm} type="video/webm" />  {/* Chrome/desktop - has alpha */}
-            <source src={expUpVideoMp4} type="video/mp4" />    {/* iOS Safari - use .mov with alpha */}
-          </video>
-        )}
+        {expUp &&
+          <NotesVideo />
+        }
       </div>
     </>
   )
