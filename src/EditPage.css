@@ -1,7 +1,7 @@
 .edit-page {
   padding: 16px 20px 40px;
   max-width: 700px;
-  width:80%;
+  /* width:80%; */
   margin: 0 auto;
   font-family: 'Segoe UI', sans-serif;
   height: 100%;
@@ -162,4 +162,60 @@
 
 .edit-save-btn:hover {
     background: #ac1a26;
+}
+
+@media (max-width: 480px) {
+  .edit-page {
+    padding: 10px 12px 30px;
+    justify-content: flex-start;
+  }
+
+  .edit-label-text {
+    font-size: 13px;
+    padding: 3px 14px 3px 6px;
+  }
+
+  .edit-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 8px 10px;
+  }
+
+  .edit-activity-name {
+    font-size: 12px;
+  }
+
+  .edit-pills {
+    justify-content: flex-start;
+  }
+
+  .edit-pill {
+    font-size: 9px;
+    padding: 3px 3px;
+  }
+
+  .edit-add-row {
+    padding: 8px 10px 6px;
+  }
+
+  .edit-input {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .edit-add-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .edit-pills--padded {
+    padding: 0 10px 8px;
+  }
+
+  .edit-back-btn,
+  .edit-save-btn {
+    font-size: 12px;
+    padding: 8px 14px;
+  }
 }
