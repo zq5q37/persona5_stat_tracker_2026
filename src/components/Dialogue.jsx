@@ -3,10 +3,11 @@ import morganaNormal from '../assets/morgana-normal.webp'
 import morganaSmile from '../assets/morgana-smile.webp'
 import morganaStar from '../assets/morgana-star.webp'
 import './Dialogue.css'
+import { useNavigate } from 'react-router-dom';
 
 import playClick from '../utils/playClick.js';
 
-const Dialogue = ({ activities, onActivity, activitiesVisible, setActivitiesVisible , expUp, setExpUp }) => {
+const Dialogue = ({ activities, onActivity, activitiesVisible, setActivitiesVisible, expUp, setExpUp }) => {
 
     const quotes = ["Don't think too hard about it. You'll get the hang of it.",
         "Everyone starts off a little clumsy. Don't be sad if it doesn't go well at first, OK?",
@@ -24,7 +25,7 @@ const Dialogue = ({ activities, onActivity, activitiesVisible, setActivitiesVisi
         : expUp
             ? morganaStar
             : morganaNormal;
-
+    const navigate = useNavigate();
     return (
         <div className='dialogue-container'>
             <div className='morgana-container'>
@@ -33,6 +34,8 @@ const Dialogue = ({ activities, onActivity, activitiesVisible, setActivitiesVisi
             <div className='speech-options-container'>
                 <div className='options-container'>
                     {!activitiesVisible && <button className='dialogue-button' onClick={() => { setActivitiesVisible(true); playClick(); }}>Log an activity.</button>}
+                    {!activitiesVisible && <button className='dialogue-button' onClick={() => { playClick(); navigate('/edit'); }}>Edit activities.</button>}
+
                     {activitiesVisible && activities.map((activity) => (
                         <button className='dialogue-button' key={activity.name} onClick={() => { onActivity(activity); playClick(); }}>
                             {activity.name}
