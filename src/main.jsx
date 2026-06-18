@@ -22,7 +22,7 @@ const initialActivities = [
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App activities={activities} setActivities={setActivities} />} />
-        <Route path="/edit" element={<EditPage activities={activities} setActivities={setActivities} />} />
+        <Route path="/edit" element={<EditPage activities={activities} setActivities={setActivities} initialActivities={initialActivities}/>} />
       </Routes>
     </BrowserRouter>
   );

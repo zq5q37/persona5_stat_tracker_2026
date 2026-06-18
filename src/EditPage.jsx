@@ -8,13 +8,13 @@ const ALL_TRAITS = ["Knowledge", "Guts", "Proficiency", "Kindness", "Charm"];
 
 const TRAIT_COLORS = {
   Knowledge: '#4fc3f7',
-  Guts:      '#ef5350',
-  Proficiency:'#66bb6a',
-  Kindness:  '#ffa726',
-  Charm:     '#ce93d8',
+  Guts: '#ef5350',
+  Proficiency: '#66bb6a',
+  Kindness: '#ffa726',
+  Charm: '#ce93d8',
 };
 
-export default function EditPage({ activities, setActivities }) {
+export default function EditPage({ activities, setActivities, initialActivities }) {
   const navigate = useNavigate();
 
   const [draft, setDraft] = useState(() =>
@@ -53,10 +53,25 @@ export default function EditPage({ activities, setActivities }) {
     navigate(-1);
   };
 
+const handleResetActivities = () => {
+  const resetActivities = initialActivities.map(activity => ({
+    ...activity,
+    traits: [...activity.traits],
+  }));
+
+  setActivities(resetActivities);
+
+  setDraft(
+    Object.fromEntries(
+      resetActivities.map(a => [a.name, [...a.traits]])
+    )
+  );
+};
+
   return (
     <div className='everything-container'>
       <img className='bg-image' src={redBgPic} />
-      <Header />
+      <Header onReset={() => handleResetActivities()} />
 
       <div className='edit-page'>
 
