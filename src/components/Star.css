@@ -1,9 +1,10 @@
 .star-container {
-    height: 52%;
+    height: 51%;
     display: flex;
     width: 100%;
     justify-content: center;
     pointer-events: none;
+    margin-top: 20px;
 }
 
 .recharts-wrapper{

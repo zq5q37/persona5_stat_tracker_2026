@@ -35,22 +35,19 @@
     flex-wrap: wrap;
     justify-content: flex-end;
     /* max-height: 100%; */
-    gap: 5px;
+    gap: 10px;
 
-}
-
-button {
-    border: rgb(255, 255, 255) solid 3px;
-    background-color: rgba(0, 0, 0, 0.747);
-    color: white;
-    /* padding: 5px 10px; */
 }
 
 .dialogue-button {
+    border: rgb(255, 255, 255) solid 3px;
+    background-color: rgba(0, 0, 0, 0.747);
+    color: white;
     padding: 5px 10px;
+    font-weight: 600;
 }
 
-button:hover {
+.dialogue-button:hover {
     border: rgb(0, 0, 0) solid 3px;
     background-color: white;
     color: rgb(0, 0, 0);
