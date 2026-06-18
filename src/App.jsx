@@ -8,7 +8,7 @@ import NotesVideo from './components/NotesVideo'
 import redBgPic from './assets/red_bg.webp'
 
 
-function App() {
+function App({activities, setActivities}) {
 
   const [activitiesVisible, setActivitiesVisible] = useState(false);
 
@@ -35,27 +35,27 @@ function App() {
 
   const resetStats = () => setStats(initialStats);
 
-  const activities = [
-    { name: "Code", trait: "Knowledge" },
-    { name: "Exercise", trait: "Guts" },
-    { name: "Clean", trait: "Proficiency" },
-    { name: "Help someone", trait: "Kindness" },
-    { name: "Socialize", trait: "Charm" },
-  ];
+  
 
-  const handleActivity = (activity) => {
-    setStats(prev => {
-      if (prev[activity.trait] >= 5) return prev; // no change
-      return {
-        ...prev,
-        [activity.trait]: prev[activity.trait] + 1,
-      };
+
+
+const handleActivity = (activity) => {
+  setStats(prev => {
+    const updated = { ...prev };
+    activity.traits.forEach(trait => {
+      if (updated[trait] < 5) {
+        updated[trait] += 1;
+      }
     });
-    setActivitiesVisible(false);
-    if (stats[activity.trait] < 5) {
-      handleExpUp();
-    }
-  };
+    return updated;
+  });
+
+  setActivitiesVisible(false);
+
+  if (activity.traits.some(trait => stats[trait] < 5)) {
+    handleExpUp();
+  }
+};
 
   const handleExpUp = () => {
     setExpUp(true);

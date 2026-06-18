@@ -4,8 +4,12 @@ import Header from './components/Header';
 import redBgPic from './assets/red_bg.webp'
 
 
-export default function EditPage() {
+export default function EditPage({activities, setActivities}) {
     const navigate = useNavigate();
+
+    const handleClick = () => {
+        
+    }
 
     return (
         <>
@@ -14,6 +18,11 @@ export default function EditPage() {
                 <Header />
                 <div className='header'>
                     <h1>Edit Activities</h1>
+                </div>
+                <div className='activities-container'>
+                    {activities.map((activity)=> (
+                        <button onClick={() => {handleClick();}}>{activity.name}</button>
+                    ))}
                 </div>
                 <button onClick={() => navigate(-1)}>← Back</button>
             </div>
