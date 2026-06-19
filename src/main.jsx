@@ -10,7 +10,7 @@ import EditPage from './EditPage.jsx'
 const initialActivities = [
   { name: "Code", traits: ["Knowledge", "Proficiency"] },
   { name: "Exercise", traits: ["Guts"] },
-  { name: "Craft", traits: ["Proficiency"] },
+  { name: "Clean", traits: ["Proficiency"] },
   { name: "Help someone", traits: ["Kindness"] },
   { name: "Socialize", traits: ["Charm"] },
 ];
