@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
@@ -16,7 +16,14 @@ const initialActivities = [
 ];
 
 function Root() {
-  const [activities, setActivities] = useState(initialActivities);
+  const [activities, setActivities] = useState(() => {
+    const saved = localStorage.getItem('activities');
+    return saved ? JSON.parse(saved) : initialActivities;
+});
+
+useEffect(() => {
+    localStorage.setItem('activities', JSON.stringify(activities));
+}, [activities]);
 
   return (
     <BrowserRouter>
