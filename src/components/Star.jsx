@@ -35,16 +35,19 @@ const Star = React.memo(({ stats }) => {
 
     const gridData = [];
 
+    const inset = 0.3;
     for (let i = 0; i < data.length; i++) {
         gridData.push({ ...starData[i * 2], grid: 5 });
         const fractional = (5 * 2) * 0.18;
         gridData.push({ ...starData[i * 2 + 1], grid: fractional });
     }
 
+    const outlineData = gridData.map(d => ({ ...d, xOutline: d.x !== undefined ? (d.x * 0.5 ) : undefined }));
+
     return (
         <div className='star-container'>
             <RadarChart height={500} width={500}
-                outerRadius="85%" data={gridData}>
+                outerRadius="85%" data={outlineData}>
                 <PolarAngleAxis dataKey="name" tick={({ x, y, payload }) => {
                     const statValue = data.find(d => d.name === payload.value)?.x;
                     const isMax = statValue >= 5;
@@ -113,7 +116,18 @@ const Star = React.memo(({ stats }) => {
                 }} />
                 <PolarRadiusAxis domain={[0, 5]} tick={false} axisLine={false} />
                 <Radar isAnimationActive={false} dataKey="grid" stroke="#000000" strokeWidth={13} fill="#353535" fillOpacity={1} />
-                <Radar dataKey="x" stroke="#E68C00" strokeWidth={4} fill="#FEC901" fillOpacity={1} />
+                {/* <Radar dataKey="x" stroke="#E68C00" strokeWidth={4} fill="#FEC901" fillOpacity={1} /> */}
+                {/* <Radar
+                    dataKey="x"
+                    stroke="#E68C00"
+                    strokeWidth={2} 
+                    fill="#FEC901"
+                    fillOpacity={1}
+                    style={{ filter: 'drop-shadow(0 0 5px #E68C00) drop-shadow(0 0 6px #E68C00)' }}
+                /> */}
+               
+                <Radar dataKey="x" stroke="none" fill="#E68C00" fillOpacity={1} />
+                 <Radar dataKey="xOutline" stroke="none" fill="#FEC901" fillOpacity={1} />
             </RadarChart>
         </div>
     );
