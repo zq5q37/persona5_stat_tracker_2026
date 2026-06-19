@@ -1,6 +1,10 @@
 import './Header.css'
 import p5Logo from '../assets/Persona-5-Logo.png'
 import statsLogo from '../assets/stats-logo.png'
+
+import volumeLogo from '../assets/volume.png'
+import muteLogo from '../assets/mute.png'
+
 import backgroundMusic from '../assets/sounds/beneathTheMask.mp3';
 import { useState, useEffect, useRef } from 'react';
 
@@ -35,11 +39,15 @@ function Header({ onReset }) {
                     <div className="logo">
                         <img src={p5Logo}></img>
                     </div>
+                    <button className='dialogue-button reset-button' onClick={() => { onReset(); playClick(); }}>Reset</button>
+                    <button className='sound-button' onClick={toggleMute}>
+                        <img src={muted ? muteLogo : volumeLogo} alt="sound" />
+                    </button>
+
                 </div>
                 <div className='right'>
-                    <button className='dialogue-button' onClick={() => { onReset(); playClick(); }}>Reset</button>
-                    <button className='sound-button' onClick={() => { toggleMute(); }}>{muted ? '🔇' : '🔊'}</button>
-                    {/* <img className='stats-logo' src={statsLogo}></img> */}
+                    <img className='stats-logo' src={statsLogo}></img>
+
                 </div>
 
             </div>
