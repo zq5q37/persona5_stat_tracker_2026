@@ -1,9 +1,9 @@
 import './Header.css'
 import p5Logo from '../assets/Persona-5-Logo.png'
-import statsLogo from '../assets/stats-logo.png'
+import statsLogo from '../assets/stats-logo.webp'
 
-import volumeLogo from '../assets/volume.png'
-import muteLogo from '../assets/mute.png'
+import volumeLogo from '../assets/volume.webp'
+import muteLogo from '../assets/mute.webp'
 
 import backgroundMusic from '../assets/sounds/beneathTheMask.mp3';
 import { useState, useEffect, useRef } from 'react';

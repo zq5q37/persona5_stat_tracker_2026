@@ -2,7 +2,7 @@ import { useState } from 'react'
 import morganaNormal from '../assets/morgana-normal.webp'
 import morganaSmile from '../assets/morgana-smile.webp'
 import morganaStar from '../assets/morgana-star.webp'
-import morganaGrin from '../assets/morgana-grin.png'
+import morganaGrin from '../assets/morgana-grin.webp'
 
 import './Dialogue.css'
 import { useNavigate } from 'react-router-dom';
