@@ -8,7 +8,35 @@
     padding-top: 20px;
 }
 
-.recharts-wrapper{
-    height:100% !important;
-    width:100% !important;
+.recharts-wrapper {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+
+.rank-up-logo {
+    position: absolute;
+    top: 32%;
+    left: 52%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: 30%; /* default/resting state */
+    opacity: 0; /* hidden by default */
+
+    img {
+        width: auto;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+    }
+}
+
+.rank-up-logo.animating {
+    animation: logo-shrink 0.3s ease-out forwards;
+    opacity: 1;
+}
+
+@keyframes logo-shrink {
+    from { height: 100%; }
+    to   { height: 30%; }
 }

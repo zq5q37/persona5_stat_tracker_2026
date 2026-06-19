@@ -5,6 +5,10 @@ import {
     PolarAngleAxis, PolarRadiusAxis
 } from 'recharts';
 
+import rankUpLogo from '../assets/rank-up.png'
+import rankUpMaxLogo from '../assets/rank-up-max.png'
+
+
 const RANK_NAMES = {
     Knowledge: ['Oblivious', 'Learned', 'Scholarly', 'Encyclopedic', 'Erudite'],
     Guts: ['Milquetoast', 'Bold', 'Staunch', 'Dauntless', 'Lionhearted'],
@@ -13,7 +17,7 @@ const RANK_NAMES = {
     Charm: ['Existent', 'Head-turning', 'Suave', 'Charismatic', 'Debonair'],
 };
 
-const Star = React.memo(({ stats }) => {
+const Star = React.memo(({ stats, expUp }) => {
 
     const data = [
         { name: 'Knowledge', x: stats.Knowledge },
@@ -42,7 +46,7 @@ const Star = React.memo(({ stats }) => {
         gridData.push({ ...starData[i * 2 + 1], grid: fractional });
     }
 
-    const outlineData = gridData.map(d => ({ ...d, xOutline: d.x !== undefined ? (d.x * 0.5 ) : undefined }));
+    const outlineData = gridData.map(d => ({ ...d, xOutline: d.x !== undefined ? (d.x * 0.5) : undefined }));
 
     return (
         <div className='star-container'>
@@ -80,6 +84,7 @@ const Star = React.memo(({ stats }) => {
                     return (
                         <g transform={`translate(${x},${y})`}>
                             <rect
+                                key={payload.value}
                                 x={-boxWidth / 2}
                                 y={-(boxHeight / 2) - 11}
                                 width={boxWidth}
@@ -116,20 +121,14 @@ const Star = React.memo(({ stats }) => {
                 }} />
                 <PolarRadiusAxis domain={[0, 5]} tick={false} axisLine={false} />
                 <Radar isAnimationActive={false} dataKey="grid" stroke="#000000" strokeWidth={13} fill="#353535" fillOpacity={1} />
-                {/* <Radar dataKey="x" stroke="#E68C00" strokeWidth={4} fill="#FEC901" fillOpacity={1} /> */}
-                {/* <Radar
-                    dataKey="x"
-                    stroke="#E68C00"
-                    strokeWidth={2} 
-                    fill="#FEC901"
-                    fillOpacity={1}
-                    style={{ filter: 'drop-shadow(0 0 5px #E68C00) drop-shadow(0 0 6px #E68C00)' }}
-                /> */}
-               
                 <Radar dataKey="x" stroke="none" fill="#E68C00" fillOpacity={1} />
-                 <Radar dataKey="xOutline" stroke="none" fill="#FEC901" fillOpacity={1} />
+                <Radar dataKey="xOutline" stroke="none" fill="#FEC901" fillOpacity={1} />
             </RadarChart>
+            {/* <div className={`rank-up-logo ${expUp ? 'animating' : ''}`}>
+                <img src={rankUpLogo}></img>
+            </div> */}
         </div>
+
     );
 });
 

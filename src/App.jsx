@@ -70,7 +70,7 @@ const handleActivity = (activity) => {
       <div className='everything-container'>
         <img className='bg-image' src={redBgPic}></img>
         <Header onReset={resetStats} />
-        <Star stats={stats} />
+        <Star stats={stats} expUp={expUp}/>
         <Dialogue stats={stats} activities={activities} onActivity={handleActivity} activitiesVisible={activitiesVisible}
           setActivitiesVisible={setActivitiesVisible} expUp={expUp} setExpUp={setExpUp} />
         {!('ontouchstart' in window) && <NotesVideo expUp={expUp} />}
