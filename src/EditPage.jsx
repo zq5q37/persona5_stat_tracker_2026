@@ -144,7 +144,7 @@ const handleResetActivities = () => {
         </div>
 
         <div className='edit-actions'>
-          <button className='edit-back-btn' onClick={() => navigate(-1)}>BACK</button>
+<button className='edit-back-btn' onClick={() => navigate('/')}>BACK</button>
           <button className='edit-save-btn' onClick={handleSave}>SAVE CHANGES</button>
         </div>
 

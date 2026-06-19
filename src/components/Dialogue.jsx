@@ -1,50 +1,79 @@
-import { useState } from 'react'
-import morganaNormal from '../assets/morgana-normal.webp'
-import morganaSmile from '../assets/morgana-smile.webp'
-import morganaStar from '../assets/morgana-star.webp'
-import morganaGrin from '../assets/morgana-grin.webp'
-
-import './Dialogue.css'
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import playClick from '../utils/playClick.js';
+import morganaNormal from '../assets/morgana-normal.webp';
+import morganaSmile from '../assets/morgana-smile.webp';
+import morganaStar from '../assets/morgana-star.webp';
+import morganaGrin from '../assets/morgana-grin.webp';
 
-const Dialogue = ({ stats, activities, onActivity, activitiesVisible, setActivitiesVisible, expUp, setExpUp }) => {
+import playClick from '../utils/playClick.js';
+import './Dialogue.css';
+
+// ── Constants ────────────────────────────────────────────────────────────────
+
+const QUOTES = [
+    "Don't think too hard about it. You'll get the hang of it.",
+    "Everyone starts off a little clumsy. Don't be sad if it doesn't go well at first, OK?",
+    "If you have nothing to do, let's clean up this room. An uncluttered room is an uncluttered mind!",
+];
+
+const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+// ── Component ────────────────────────────────────────────────────────────────
+
+const Dialogue = ({ stats, activities, onActivity, activitiesVisible, setActivitiesVisible, expUp }) => {
+
+    const navigate = useNavigate();
+    const [assist, setAssist] = useState(false);
+    const [assistSuggestion, setAssistSuggestion] = useState(null);
+
+    useEffect(() => { resetAssist(); }, []);
+
+    // ── Helpers ──────────────────────────────────────────────────────────────
+
+    const resetAssist = () => {
+        setAssist(false);
+        setAssistSuggestion(null);
+    };
 
     const checkLowestStat = () => {
-        // Find the lowest value
         const lowestVal = Math.min(...Object.values(stats));
-
-        // Collect all stats tied at that value
         const lowestStats = Object.entries(stats)
             .filter(([, val]) => val === lowestVal)
             .map(([stat]) => stat);
-
-        // Pick a random one from the tied lowest stats
-        const lowestStat = lowestStats[Math.floor(Math.random() * lowestStats.length)];
-
-        // Find a random activity that trains it
-        const matching = activities.filter(activity => activity.traits.includes(lowestStat));
-        const suggestion = matching[Math.floor(Math.random() * matching.length)];
-
+        const lowestStat = randomItem(lowestStats);
+        const matching = activities.filter(a => a.traits.includes(lowestStat));
+        const suggestion = randomItem(matching);
         return { lowestStat, suggestion };
     };
 
-    const [assist, setAssist] = useState(false);
-    const [assistSuggestion, setAssistSuggestion] = useState(null);
+    // ── Handlers ─────────────────────────────────────────────────────────────
 
     const handleAssist = () => {
         const { lowestStat, suggestion } = checkLowestStat();
         setAssistSuggestion({ lowestStat, suggestion });
         setAssist(true);
-    }
+        playClick();
+    };
 
-    const resetAssist = () => { setAssist(false); setAssistSuggestion(null); };
+    const handleEdit = () => {
+        resetAssist();
+        playClick();
+        navigate('/edit');
+    };
 
-    const quotes = ["Don't think too hard about it. You'll get the hang of it.",
-        "Everyone starts off a little clumsy. Don't be sad if it doesn't go well at first, OK?",
-        "If you have nothing to do, let's clean up this room. An uncluttered room is an uncluttered mind!"
-    ];
+    const handleLog = () => {
+        resetAssist();
+        setActivitiesVisible(true);
+        playClick();
+    };
+
+    const handleActivity = (activity) => {
+        onActivity(activity);
+        playClick();
+    };
+
+    // ── Derived state ────────────────────────────────────────────────────────
 
     const speechText = activitiesVisible
         ? "What shall we do?"
@@ -54,32 +83,29 @@ const Dialogue = ({ stats, activities, onActivity, activitiesVisible, setActivit
                 : `Your ${assistSuggestion?.lowestStat} is low, but I don't know any activities for it yet!`
             : expUp
                 ? "Looks like your social stats are growing!"
-                : quotes[Math.floor(Math.random() * quotes.length)];
+                : randomItem(QUOTES);
 
-    const morganaPic = activitiesVisible
-        ? morganaSmile
-        : assist
-            ? morganaGrin
-            : expUp
-                ? morganaStar
+    const morganaPic = activitiesVisible ? morganaSmile
+        : assist ? morganaGrin
+            : expUp ? morganaStar
                 : morganaNormal;
 
-    const navigate = useNavigate();
-
+    // ── Render ───────────────────────────────────────────────────────────────
 
     return (
         <div className='dialogue-container'>
             <div className='morgana-container'>
-                <img src={morganaPic}></img>
+                <img src={morganaPic} />
             </div>
             <div className='speech-options-container'>
                 <div className='options-container'>
-                    {!activitiesVisible && <button className='dialogue-button' onClick={() => { resetAssist(); playClick(); navigate('/edit');  }}>Edit activities</button>}
-                    {!activitiesVisible && <button className='dialogue-button' onClick={() => { setActivitiesVisible(true); resetAssist(); playClick(); }}>Log an activity</button>}
-                    {!activitiesVisible && <button className='dialogue-button' onClick={() => { handleAssist(); playClick(); }}>Assist</button>}
+                    {!activitiesVisible && <>
+    <button className='dialogue-button' onClick={handleLog}>Log Activity</button>
+    <button className='dialogue-button' onClick={handleAssist}>What should I do?</button>
 
+</>}
                     {activitiesVisible && activities.map((activity) => (
-                        <button className='dialogue-button' key={activity.name} onClick={() => { onActivity(activity); playClick(); }}>
+                        <button className='dialogue-button' key={activity.name} onClick={() => handleActivity(activity)}>
                             {activity.name}
                         </button>
                     ))}
@@ -87,10 +113,7 @@ const Dialogue = ({ stats, activities, onActivity, activitiesVisible, setActivit
                 <div className='speech-container'>
                     <p>{speechText}</p>
                 </div>
-
-
             </div>
-
         </div>
     );
 };

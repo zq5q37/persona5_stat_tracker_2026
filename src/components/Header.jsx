@@ -7,6 +7,7 @@ import muteLogo from '../assets/mute.webp'
 
 import backgroundMusic from '../assets/sounds/beneathTheMask.mp3';
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import playClick from '../utils/playClick.js';
 
@@ -31,6 +32,12 @@ function Header({ onReset }) {
         audioRef.current.muted = !audioRef.current.muted;
         setMuted(prev => !prev);
     };
+   const navigate = useNavigate();
+        const handleEdit = () => {
+        // resetAssist();
+        playClick();
+        navigate('/edit');
+    };
 
     return (
         <>
@@ -39,7 +46,8 @@ function Header({ onReset }) {
                     <div className="logo">
                         <img src={p5Logo}></img>
                     </div>
-                    <button className='dialogue-button reset-button' onClick={() => { onReset(); playClick(); }}>Reset</button>
+                    <button className='dialogue-button header-button' onClick={() => { onReset(); playClick(); }}>Reset</button>
+                        <button className='dialogue-button header-button' onClick={handleEdit}>Edit activities</button>
                     <button className='sound-button' onClick={toggleMute}>
                         <img src={muted ? muteLogo : volumeLogo} alt="sound" />
                     </button>

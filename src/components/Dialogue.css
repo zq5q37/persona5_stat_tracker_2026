@@ -96,10 +96,10 @@
 }
 }
 
-@media (max-height: 600px) {
+/* @media (max-height: 600px) {
     .speech-container {
         display: none;
         width: 0%;
         height: 0%;
     }
-}
+} */
