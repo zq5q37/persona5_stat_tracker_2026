@@ -35,7 +35,7 @@
     flex-wrap: wrap;
     justify-content: flex-end;
     /* max-height: 100%; */
-    gap: 10px;
+    gap: 5px;
 
 }
 
@@ -93,13 +93,12 @@
     p {
         font-size: 18px;
     }
+        margin-bottom: 0px;
 }
 }
 
-/* @media (max-height: 600px) {
+@media (max-height: 600px) {
     .speech-container {
-        display: none;
-        width: 0%;
-        height: 0%;
+    margin-bottom: 0px;
     }
-} */
+}
