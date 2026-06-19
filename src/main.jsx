@@ -10,19 +10,19 @@ import EditPage from './EditPage.jsx'
 const initialActivities = [
   { name: "Code", traits: ["Knowledge", "Proficiency"] },
   { name: "Exercise", traits: ["Guts"] },
-  { name: "Clean", traits: ["Proficiency"] },
+  { name: "Craft", traits: ["Proficiency"] },
   { name: "Help someone", traits: ["Kindness"] },
   { name: "Socialize", traits: ["Charm"] },
 ];
 
-  function Root() {
+function Root() {
   const [activities, setActivities] = useState(initialActivities);
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App activities={activities} setActivities={setActivities} />} />
-        <Route path="/edit" element={<EditPage activities={activities} setActivities={setActivities} initialActivities={initialActivities}/>} />
+        <Route path="/edit" element={<EditPage activities={activities} setActivities={setActivities} initialActivities={initialActivities} />} />
       </Routes>
     </BrowserRouter>
   );
