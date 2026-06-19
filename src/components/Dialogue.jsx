@@ -74,7 +74,7 @@ const Dialogue = ({ stats, activities, onActivity, activitiesVisible, setActivit
             </div>
             <div className='speech-options-container'>
                 <div className='options-container'>
-                    {!activitiesVisible && <button className='dialogue-button' onClick={() => { navigate('/edit'); playClick(); resetAssist(); }}>Edit activities</button>}
+                    {!activitiesVisible && <button className='dialogue-button' onClick={() => { resetAssist(); playClick(); navigate('/edit');  }}>Edit activities</button>}
                     {!activitiesVisible && <button className='dialogue-button' onClick={() => { setActivitiesVisible(true); resetAssist(); playClick(); }}>Log an activity</button>}
                     {!activitiesVisible && <button className='dialogue-button' onClick={() => { handleAssist(); playClick(); }}>Assist</button>}
 
