@@ -39,13 +39,13 @@ function App({activities, setActivities}) {
 
 
 
+const [isMax, setIsMax] = useState(false);
+
 const handleActivity = (activity) => {
   setStats(prev => {
     const updated = { ...prev };
     activity.traits.forEach(trait => {
-      if (updated[trait] < 5) {
-        updated[trait] += 1;
-      }
+      if (updated[trait] < 5) updated[trait] += 1;
     });
     return updated;
   });
@@ -53,6 +53,8 @@ const handleActivity = (activity) => {
   setActivitiesVisible(false);
 
   if (activity.traits.some(trait => stats[trait] < 5)) {
+    const willMax = activity.traits.some(trait => stats[trait] === 4);
+    setIsMax(willMax);
     handleExpUp();
   }
 };
@@ -70,7 +72,7 @@ const handleActivity = (activity) => {
       <div className='everything-container'>
         <img className='bg-image' src={redBgPic}></img>
         <Header onReset={resetStats} />
-        <Star stats={stats} expUp={expUp}/>
+        <Star stats={stats} expUp={expUp} isMax={isMax}/>
         <Dialogue stats={stats} activities={activities} onActivity={handleActivity} activitiesVisible={activitiesVisible}
           setActivitiesVisible={setActivitiesVisible} expUp={expUp} setExpUp={setExpUp} />
         {!('ontouchstart' in window) && <NotesVideo expUp={expUp} />}

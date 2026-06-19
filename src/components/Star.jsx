@@ -17,7 +17,7 @@ const RANK_NAMES = {
     Charm: ['Existent', 'Head-turning', 'Suave', 'Charismatic', 'Debonair'],
 };
 
-const Star = React.memo(({ stats, expUp }) => {
+const Star = React.memo(({ stats, expUp, isMax }) => {
 
     const data = [
         { name: 'Knowledge', x: stats.Knowledge },
@@ -124,9 +124,11 @@ const Star = React.memo(({ stats, expUp }) => {
                 <Radar dataKey="x" stroke="none" fill="#E68C00" fillOpacity={1} />
                 <Radar dataKey="xOutline" stroke="none" fill="#FEC901" fillOpacity={1} />
             </RadarChart>
-            {/* <div className={`rank-up-logo ${expUp ? 'animating' : ''}`}>
-                <img src={rankUpLogo}></img>
-            </div> */}
+            {isMax &&
+                <div className={`rank-up-logo ${expUp ? 'animating' : ''}`}>
+                    <img src={rankUpMaxLogo}></img>
+                </div>
+            }
         </div>
 
     );
