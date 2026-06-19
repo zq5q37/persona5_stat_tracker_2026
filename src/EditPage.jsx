@@ -53,20 +53,29 @@ export default function EditPage({ activities, setActivities, initialActivities 
     navigate(-1);
   };
 
-const handleResetActivities = () => {
-  const resetActivities = initialActivities.map(activity => ({
-    ...activity,
-    traits: [...activity.traits],
-  }));
+  const handleDelete = (activityName) => {
+    setActivities(prev => prev.filter(a => a.name !== activityName));
+    setDraft(prev => {
+      const updated = { ...prev };
+      delete updated[activityName];
+      return updated;
+    });
+  };
 
-  setActivities(resetActivities);
+  const handleResetActivities = () => {
+    const resetActivities = initialActivities.map(activity => ({
+      ...activity,
+      traits: [...activity.traits],
+    }));
 
-  setDraft(
-    Object.fromEntries(
-      resetActivities.map(a => [a.name, [...a.traits]])
-    )
-  );
-};
+    setActivities(resetActivities);
+
+    setDraft(
+      Object.fromEntries(
+        resetActivities.map(a => [a.name, [...a.traits]])
+      )
+    );
+  };
 
   return (
     <div className='everything-container'>
@@ -102,6 +111,7 @@ const handleResetActivities = () => {
                   );
                 })}
               </div>
+              <button className='edit-delete-btn' onClick={() => handleDelete(activity.name)}>✕</button>
             </div>
           ))}
         </div>
@@ -144,7 +154,7 @@ const handleResetActivities = () => {
         </div>
 
         <div className='edit-actions'>
-<button className='edit-back-btn' onClick={() => navigate('/')}>BACK</button>
+          <button className='edit-back-btn' onClick={() => navigate('/')}>BACK</button>
           <button className='edit-save-btn' onClick={handleSave}>SAVE CHANGES</button>
         </div>
 

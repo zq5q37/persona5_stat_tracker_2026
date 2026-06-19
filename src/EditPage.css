@@ -224,3 +224,20 @@
     padding: 8px 14px;
   }
 }
+
+.edit-delete-btn {
+    background: transparent;
+    border: 1px solid #555;
+    color: #ff5252;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.edit-delete-btn:hover {
+    background: #ff5252;
+    color: white;
+    border-color: #ff5252;
+}
