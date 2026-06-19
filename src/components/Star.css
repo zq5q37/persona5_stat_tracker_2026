@@ -4,7 +4,8 @@
     width: 100%;
     justify-content: center;
     pointer-events: none;
-    margin-bottom: -50px;
+    /* margin-bottom: -50px; */
+    padding-top: 20px;
 }
 
 .recharts-wrapper{

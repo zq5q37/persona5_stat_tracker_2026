@@ -33,8 +33,8 @@ const Dialogue = ({ activities, onActivity, activitiesVisible, setActivitiesVisi
             </div>
             <div className='speech-options-container'>
                 <div className='options-container'>
-                    {!activitiesVisible && <button className='dialogue-button' onClick={() => { setActivitiesVisible(true); playClick(); }}>Log an activity.</button>}
-                    {!activitiesVisible && <button className='dialogue-button' onClick={() => { playClick(); navigate('/edit'); }}>Edit activities.</button>}
+                    {!activitiesVisible && <button className='dialogue-button' onClick={() => { playClick(); navigate('/edit'); }}>Edit activities</button>}
+                    {!activitiesVisible && <button className='dialogue-button' onClick={() => { setActivitiesVisible(true); playClick(); }}>Log an activity</button>}
 
                     {activitiesVisible && activities.map((activity) => (
                         <button className='dialogue-button' key={activity.name} onClick={() => { onActivity(activity); playClick(); }}>

@@ -81,13 +81,17 @@
         }
     }
 
+    .dialogue-button {
+    font-size: 18px;
+}
+
     .speech-options-container {
         width: 100%;
     }
 
     .speech-container {
     p {
-        font-size: 20px;
+        font-size: 18px;
     }
 }
 }
