@@ -20,8 +20,8 @@
     left: 52%;
     transform: translate(-50%, -50%);
     width: auto;
-    height: 30%; /* default/resting state */
-    opacity: 0; /* hidden by default */
+    height: 30%;
+    opacity: 0;
 
     img {
         width: auto;
@@ -37,6 +37,6 @@
 }
 
 @keyframes logo-shrink {
-    from { height: 100%; }
-    to   { height: 30%; }
+    from { transform: translate(-50%, -50%) scale(3.33); }
+    to   { transform: translate(-50%, -50%) scale(1); }
 }
