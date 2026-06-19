@@ -44,7 +44,7 @@
 
 .sound-button:hover {
     background-color: white;
-    border: black solid 1px;
+    border: black solid 3px;
 
     img {
         filter: none;
