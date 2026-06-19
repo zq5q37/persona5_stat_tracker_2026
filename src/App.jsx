@@ -61,7 +61,7 @@ const handleActivity = (activity) => {
     setExpUp(true);
     setTimeout(() => {
       setExpUp(false);
-    }, 3000)
+    }, 3500)
   }
 
 
