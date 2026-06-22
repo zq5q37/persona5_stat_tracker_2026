@@ -19,11 +19,11 @@ function Root() {
   const [activities, setActivities] = useState(() => {
     const saved = localStorage.getItem('activities');
     return saved ? JSON.parse(saved) : initialActivities;
-});
+  });
 
-useEffect(() => {
+  useEffect(() => {
     localStorage.setItem('activities', JSON.stringify(activities));
-}, [activities]);
+  }, [activities]);
 
   return (
     <BrowserRouter>

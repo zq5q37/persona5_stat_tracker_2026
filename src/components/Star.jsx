@@ -20,11 +20,11 @@ const RANK_NAMES = {
 const Star = React.memo(({ stats, expUp, isMax }) => {
 
     const data = [
-        { name: 'Knowledge', x: stats.Knowledge },
-        { name: 'Guts', x: stats.Guts },
-        { name: 'Proficiency', x: stats.Proficiency },
-        { name: 'Kindness', x: stats.Kindness },
-        { name: 'Charm', x: stats.Charm },
+        { name: 'Knowledge', x: stats.Knowledge.level },
+        { name: 'Guts', x: stats.Guts.level },
+        { name: 'Proficiency', x: stats.Proficiency.level },
+        { name: 'Kindness', x: stats.Kindness.level },
+        { name: 'Charm', x: stats.Charm.level },
     ];
 
     const starData = [];

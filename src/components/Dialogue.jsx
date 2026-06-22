@@ -35,18 +35,16 @@ const Dialogue = ({ stats, activities, onActivity, activitiesVisible, setActivit
         setAssist(false);
         setAssistSuggestion(null);
     };
-
     const checkLowestStat = () => {
-        const lowestVal = Math.min(...Object.values(stats));
+        const lowestVal = Math.min(...Object.values(stats).map(s => s.level));
         const lowestStats = Object.entries(stats)
-            .filter(([, val]) => val === lowestVal)
+            .filter(([, s]) => s.level === lowestVal)
             .map(([stat]) => stat);
         const lowestStat = randomItem(lowestStats);
         const matching = activities.filter(a => a.traits.includes(lowestStat));
         const suggestion = randomItem(matching);
         return { lowestStat, suggestion };
     };
-
     // ── Handlers ─────────────────────────────────────────────────────────────
 
     const handleAssist = () => {
@@ -95,15 +93,15 @@ const Dialogue = ({ stats, activities, onActivity, activitiesVisible, setActivit
     return (
         <div className='dialogue-container'>
             <div className='morgana-container'>
-                <img src={morganaPic} />
+                <img src={morganaPic} alt="Morgana" />
             </div>
             <div className='speech-options-container'>
                 <div className='options-container'>
                     {!activitiesVisible && <>
-    <button className='dialogue-button' onClick={handleLog}>Log Activity</button>
-    <button className='dialogue-button' onClick={handleAssist}>What should I do?</button>
-
-</>}
+                        <button className='dialogue-button' onClick={handleLog}>Log Activity</button>
+                        <button className='dialogue-button' onClick={handleAssist}>What should I do?</button>
+                        {/* <button className='dialogue-button' onClick={handleEdit}>Edit Activities</button> */}
+                    </>}
                     {activitiesVisible && activities.map((activity) => (
                         <button className='dialogue-button' key={activity.name} onClick={() => handleActivity(activity)}>
                             {activity.name}
