@@ -25,6 +25,16 @@ function Root() {
     localStorage.setItem('activities', JSON.stringify(activities));
   }, [activities]);
 
+  useEffect(() => {
+    const setAppHeight = () => {
+      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+    };
+
+    setAppHeight();
+    window.addEventListener('resize', setAppHeight);
+    return () => window.removeEventListener('resize', setAppHeight);
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>

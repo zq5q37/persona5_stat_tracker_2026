@@ -1,10 +1,12 @@
 .dialogue-container {
     height: 40%;
     width: 90%;
-    margin: 0 auto;
+    /* margin: 0 auto; */
     display: flex;
     flex-direction: row;
     /* border: purple solid 2px; */
+    position: fixed;
+    bottom: 0;
 }
 
 .morgana-container {
