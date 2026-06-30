@@ -94,6 +94,18 @@
   color: black;
 }
 
+@media (hover: hover) and (pointer: fine) {
+.edit-pill:hover{
+  background-color: white;
+  color: black;
+}
+}
+
+.edit-pill:active {
+  background-color: white;
+  color: black;
+}
+
 .edit-add-row {
   display: flex;
   gap: 8px;

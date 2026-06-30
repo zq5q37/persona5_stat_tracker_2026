@@ -36,6 +36,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.1s ease;
 
     img {
         height: 70%;
@@ -52,6 +53,18 @@
     img {
         filter: none;
     }
+}
+
+@media (hover: hover) and (pointer: fine) {
+.edit-pill:hover{
+  background-color: white;
+  color: black;
+}
+}
+
+.edit-pill:active {
+  background-color: white;
+  color: black;
 }
 
 .header-button{
