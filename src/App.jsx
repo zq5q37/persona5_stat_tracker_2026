@@ -81,7 +81,8 @@ function App({ activities, setActivities }) {
         onActivity={handleActivity}
         expUp={expUp}
       />
-      {!('ontouchstart' in window) && <NotesVideo expUp={expUp} />}
+      {/* {!('ontouchstart' in window) && <NotesVideo expUp={expUp} />} */}
+      <NotesVideo expUp={expUp} />
     </div>
   );
 }

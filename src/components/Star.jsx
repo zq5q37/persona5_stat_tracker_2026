@@ -34,7 +34,7 @@ const TickLabel = React.memo(function TickLabel({ x, y, payload, statLookup, ran
     if (isSpaces) return null;
 
     const boxWidth = measureText(label) + 7;
-    const boxHeight = 38;
+    const boxHeight = 35;
 
     return (
         <g transform={`translate(${x},${y})`}>
