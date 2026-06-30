@@ -17,24 +17,40 @@ const QUOTES = [
     "If you have nothing to do, let's clean up this room. An uncluttered room is an uncluttered mind!",
 ];
 
+const INTENSITIES = [
+    { label: 'Low intensity', exp: 10 },
+    { label: 'Medium intensity', exp: 20 },
+    { label: 'High intensity', exp: 30 },
+];
+
+const DIALOGUE_STATE = {
+    IDLE: 'idle',
+    ASSIST: 'assist',
+    LOG: 'log',
+    INTENSITY: 'intensity',
+};
+
 const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 // ── Component ────────────────────────────────────────────────────────────────
 
-const Dialogue = ({ stats, activities, onActivity, activitiesVisible, setActivitiesVisible, expUp }) => {
+const Dialogue = ({ stats, activities, onActivity, expUp }) => {
 
     const navigate = useNavigate();
-    const [assist, setAssist] = useState(false);
+    const [dialogueState, setDialogueState] = useState(DIALOGUE_STATE.IDLE);
     const [assistSuggestion, setAssistSuggestion] = useState(null);
+    const [selectedActivity, setSelectedActivity] = useState(null);
 
-    useEffect(() => { resetAssist(); }, []);
+    useEffect(() => { resetDialogue(); }, []);
 
     // ── Helpers ──────────────────────────────────────────────────────────────
 
-    const resetAssist = () => {
-        setAssist(false);
+    const resetDialogue = () => {
+        setDialogueState(DIALOGUE_STATE.IDLE);
         setAssistSuggestion(null);
+        setSelectedActivity(null);
     };
+
     const checkLowestStat = () => {
         const lowestVal = Math.min(...Object.values(stats).map(s => s.level));
         const lowestStats = Object.entries(stats)
@@ -45,47 +61,62 @@ const Dialogue = ({ stats, activities, onActivity, activitiesVisible, setActivit
         const suggestion = randomItem(matching);
         return { lowestStat, suggestion };
     };
+
     // ── Handlers ─────────────────────────────────────────────────────────────
 
     const handleAssist = () => {
         const { lowestStat, suggestion } = checkLowestStat();
         setAssistSuggestion({ lowestStat, suggestion });
-        setAssist(true);
+        setDialogueState(DIALOGUE_STATE.ASSIST);
         playClick();
     };
 
     const handleEdit = () => {
-        resetAssist();
+        resetDialogue();
         playClick();
         navigate('/edit');
     };
 
     const handleLog = () => {
-        resetAssist();
-        setActivitiesVisible(true);
+        setDialogueState(DIALOGUE_STATE.LOG);
+        setAssistSuggestion(null);
         playClick();
     };
 
-    const handleActivity = (activity) => {
-        onActivity(activity);
+    // Step 1: pick which activity
+    const handleSelectActivity = (activity) => {
+        setSelectedActivity(activity);
+        setDialogueState(DIALOGUE_STATE.INTENSITY);
         playClick();
+    };
+
+    // Step 2: pick intensity, then actually log it
+    const handleSelectIntensity = (exp) => {
+        onActivity({ ...selectedActivity, exp });
+        playClick();
+        resetDialogue();
     };
 
     // ── Derived state ────────────────────────────────────────────────────────
 
-    const speechText = activitiesVisible
+    const speechText = dialogueState === DIALOGUE_STATE.LOG
         ? "What shall we do?"
-        : assist
-            ? assistSuggestion?.suggestion
-                ? `Your ${assistSuggestion.lowestStat} is looking low... try "${assistSuggestion.suggestion.name}"!`
-                : `Your ${assistSuggestion?.lowestStat} is low, but I don't know any activities for it yet!`
-            : expUp
-                ? "Looks like your social stats are growing!"
-                : randomItem(QUOTES);
+        : dialogueState === DIALOGUE_STATE.INTENSITY
+            ? `How intense was "${selectedActivity?.name}"?`
+            : dialogueState === DIALOGUE_STATE.ASSIST
+                ? assistSuggestion?.suggestion
+                    ? `Your ${assistSuggestion.lowestStat} is looking low... try "${assistSuggestion.suggestion.name}"!`
+                    : `Your ${assistSuggestion?.lowestStat} is low, but I don't know any activities for it yet!`
+                : expUp
+                    ? "Looks like your social stats are growing!"
+                    : randomItem(QUOTES);
 
-    const morganaPic = activitiesVisible ? morganaSmile
-        : assist ? morganaGrin
-            : expUp ? morganaStar
+    const morganaPic = (dialogueState === DIALOGUE_STATE.LOG || dialogueState === DIALOGUE_STATE.INTENSITY)
+        ? morganaSmile
+        : dialogueState === DIALOGUE_STATE.ASSIST
+            ? morganaGrin
+            : expUp
+                ? morganaStar
                 : morganaNormal;
 
     // ── Render ───────────────────────────────────────────────────────────────
@@ -97,14 +128,29 @@ const Dialogue = ({ stats, activities, onActivity, activitiesVisible, setActivit
             </div>
             <div className='speech-options-container'>
                 <div className='options-container'>
-                    {!activitiesVisible && <>
+                    {dialogueState === DIALOGUE_STATE.IDLE && <>
                         <button className='dialogue-button' onClick={handleLog}>Log Activity</button>
                         <button className='dialogue-button' onClick={handleAssist}>What should I do?</button>
                         {/* <button className='dialogue-button' onClick={handleEdit}>Edit Activities</button> */}
                     </>}
-                    {activitiesVisible && activities.map((activity) => (
-                        <button className='dialogue-button' key={activity.name} onClick={() => handleActivity(activity)}>
+
+                    {dialogueState === DIALOGUE_STATE.LOG && activities.map((activity) => (
+                        <button
+                            className='dialogue-button'
+                            key={activity.name}
+                            onClick={() => handleSelectActivity(activity)}
+                        >
                             {activity.name}
+                        </button>
+                    ))}
+
+                    {dialogueState === DIALOGUE_STATE.INTENSITY && INTENSITIES.map(({ label, exp }) => (
+                        <button
+                            className='dialogue-button'
+                            key={label}
+                            onClick={() => handleSelectIntensity(exp)}
+                        >
+                            {label}
                         </button>
                     ))}
                 </div>

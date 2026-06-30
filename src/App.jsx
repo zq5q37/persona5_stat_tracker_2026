@@ -7,7 +7,6 @@ import NotesVideo from './components/NotesVideo'
 import redBgPic from './assets/red_bg.webp'
 
 function App({ activities, setActivities }) {
-  const [activitiesVisible, setActivitiesVisible] = useState(false);
   const [expUp, setExpUp] = useState(false);
   const [isMax, setIsMax] = useState(false);
 
@@ -33,7 +32,7 @@ function App({ activities, setActivities }) {
   const resetStats = () => setStats(initialStats);
 
   const handleActivity = (activity) => {
-    const traits = activity.traits;
+    const { traits, exp: expGain } = activity;
 
     setStats(prev => {
       const updated = { ...prev };
@@ -41,7 +40,7 @@ function App({ activities, setActivities }) {
         const stat = prev[trait];
         if (!stat || stat.level >= 5) continue;
 
-        const newExp = stat.exp + 10;
+        const newExp = stat.exp + expGain;
         const required = expToNextLevel(stat.level);
 
         updated[trait] = newExp >= required
@@ -51,12 +50,10 @@ function App({ activities, setActivities }) {
       return updated;
     });
 
-    setActivitiesVisible(false);
-
     const willMax = traits.some(trait => {
       const stat = stats[trait];
       if (!stat || stat.level >= 5) return false;
-      const expAfter = stat.exp + 10;
+      const expAfter = stat.exp + expGain;
       const willLevelUp = expAfter >= expToNextLevel(stat.level);
       return willLevelUp && stat.level === 4;
     });
@@ -82,8 +79,6 @@ function App({ activities, setActivities }) {
         stats={stats}
         activities={activities}
         onActivity={handleActivity}
-        activitiesVisible={activitiesVisible}
-        setActivitiesVisible={setActivitiesVisible}
         expUp={expUp}
         setExpUp={setExpUp}
       />
