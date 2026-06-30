@@ -1,23 +1,30 @@
-import React from 'react';
 import { useState, useEffect, useRef } from 'react'
 import expUpVideoWebm from '../assets/NotesSocialStats.webm'
 import expUpVideoMp4 from '../assets/NotesSocialStats.mp4'
 import expUpVideoMov from '../assets/NotesSocialStats.mov'
 
-const NotesVideo = ({expUp}) => {
+const NotesVideo = ({ expUp }) => {
     const videoRef = useRef(null);
+    const [isPlaying, setIsPlaying] = useState(false);
 
+    // Trigger a play whenever expUp flips true — ignore it flipping false
     useEffect(() => {
         if (expUp && videoRef.current) {
             videoRef.current.currentTime = 0;
             videoRef.current.play();
+            setIsPlaying(true);
         }
     }, [expUp]);
+
+    const handleEnded = () => {
+        setIsPlaying(false);
+    };
 
     return (
         <video
             ref={videoRef}
             onCanPlay={() => { videoRef.current.volume = 1; }}
+            onEnded={handleEnded}
             playsInline
             preload="auto"
             style={{
@@ -27,6 +34,8 @@ const NotesVideo = ({expUp}) => {
                 objectFit: 'cover',
                 zIndex: 999,
                 pointerEvents: 'none',
+                opacity: isPlaying ? 1 : 0,
+                transition: 'opacity 0.2s ease',
             }}
         >
             <source src={expUpVideoWebm} type="video/webm" />

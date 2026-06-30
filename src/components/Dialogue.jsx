@@ -40,6 +40,14 @@ const Dialogue = ({ stats, activities, onActivity, expUp }) => {
     const [dialogueState, setDialogueState] = useState(DIALOGUE_STATE.IDLE);
     const [assistSuggestion, setAssistSuggestion] = useState(null);
     const [selectedActivity, setSelectedActivity] = useState(null);
+    const [idleQuote, setIdleQuote] = useState(() => randomItem(QUOTES));
+
+    useEffect(() => {
+        if (dialogueState === DIALOGUE_STATE.IDLE && !expUp) {
+            setIdleQuote(randomItem(QUOTES));
+        }
+        // only re-pick when we transition INTO this idle/non-expUp state
+    }, [expUp]); // fires once when expUp flips false→true→false etc.
 
     useEffect(() => { resetDialogue(); }, []);
 
@@ -99,25 +107,30 @@ const Dialogue = ({ stats, activities, onActivity, expUp }) => {
 
     // ── Derived state ────────────────────────────────────────────────────────
 
-    const speechText = dialogueState === DIALOGUE_STATE.LOG
-        ? "What shall we do?"
-        : dialogueState === DIALOGUE_STATE.INTENSITY
-            ? `How intense was "${selectedActivity?.name}"?`
-            : dialogueState === DIALOGUE_STATE.ASSIST
-                ? assistSuggestion?.suggestion
-                    ? `Your ${assistSuggestion.lowestStat} is looking low... try "${assistSuggestion.suggestion.name}"!`
-                    : `Your ${assistSuggestion?.lowestStat} is low, but I don't know any activities for it yet!`
-                : expUp
-                    ? "Looks like your social stats are growing!"
-                    : randomItem(QUOTES);
+    const getDialogueDisplay = () => {
+        switch (dialogueState) {
+            case DIALOGUE_STATE.LOG:
+                return { text: "What shall we do?", pic: morganaSmile };
 
-    const morganaPic = (dialogueState === DIALOGUE_STATE.LOG || dialogueState === DIALOGUE_STATE.INTENSITY)
-        ? morganaSmile
-        : dialogueState === DIALOGUE_STATE.ASSIST
-            ? morganaGrin
-            : expUp
-                ? morganaStar
-                : morganaNormal;
+            case DIALOGUE_STATE.INTENSITY:
+                return { text: `How intense was "${selectedActivity?.name}"?`, pic: morganaSmile };
+
+            case DIALOGUE_STATE.ASSIST:
+                return {
+                    text: assistSuggestion?.suggestion
+                        ? `Your ${assistSuggestion.lowestStat} is looking low... try "${assistSuggestion.suggestion.name}"!`
+                        : `Your ${assistSuggestion?.lowestStat} is low, but I don't know any activities for it yet!`,
+                    pic: morganaGrin,
+                };
+
+            default:
+                return expUp
+                    ? { text: "Looks like your social stats are growing!", pic: morganaStar }
+                    : { text: idleQuote, pic: morganaNormal };
+        }
+    };
+
+    const { text: speechText, pic: morganaPic } = getDialogueDisplay();
 
     // ── Render ───────────────────────────────────────────────────────────────
 
