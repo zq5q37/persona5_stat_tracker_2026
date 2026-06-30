@@ -17,6 +17,64 @@ const RANK_NAMES = {
     Charm: ['Existent', 'Head-turning', 'Suave', 'Charismatic', 'Debonair'],
 };
 
+const TickLabel = React.memo(function TickLabel({ x, y, payload, statLookup, rankNames }) {
+    const statValue = statLookup[payload.value] ?? 0;
+    const isMax = statValue >= 5;
+    const label = `${payload.value}${isMax ? ' [MAX]' : ''}`;
+    const rankIndex = Math.min(Math.max(Math.ceil(statValue) - 1, 0), 4);
+    const rankName = rankNames[payload.value]?.[rankIndex] ?? '';
+
+    const measureText = (text, font = '600 26px sans-serif') => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.font = font;
+        return ctx.measureText(text).width;
+    };
+
+    const isSpaces = payload.value.trim() === '';
+    if (isSpaces) return null;
+
+    const boxWidth = measureText(label) + 7;
+    const boxHeight = 38;
+
+    return (
+        <g transform={`translate(${x},${y})`}>
+            <rect
+                x={-boxWidth / 2}
+                y={-(boxHeight / 2) - 11}
+                width={boxWidth}
+                height={boxHeight}
+                fill="yellow"
+                rx={1}
+            />
+            <text
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fontSize={27}
+                fontWeight={600}
+                fill="black"
+                letterSpacing={-3}
+                y={-10}
+            >
+                {label}
+            </text>
+            <text
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fontSize={18}
+                fontWeight={600}
+                fill="white"
+                stroke="#353535"
+                strokeWidth={4}
+                paintOrder="stroke"
+                y={20}
+            >
+                {rankName}
+            </text>
+        </g>
+    );
+});
+
 const Star = React.memo(({ stats, expUp, isMax }) => {
 
     const data = [
@@ -52,73 +110,16 @@ const Star = React.memo(({ stats, expUp, isMax }) => {
         <div className='star-container'>
             <RadarChart height={500} width={500}
                 outerRadius="75%" data={outlineData}>
-                <PolarAngleAxis dataKey="name" tick={({ x, y, payload }) => {
-                    const statValue = data.find(d => d.name === payload.value)?.x;
-                    const isMax = statValue >= 5;
-                    const label = `${payload.value}${isMax ? ' [MAX]' : ''}`;
-                    const rankIndex = Math.min(Math.max(Math.ceil(statValue) - 1, 0), 4);
-                    const rankName = RANK_NAMES[payload.value]?.[rankIndex] ?? '';
-
-                    const measureText = (text, font = '600 26px sans-serif') => {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        ctx.font = font;
-                        return ctx.measureText(text).width;
-                    };
-
-                    const measureTextSmall = (text, font = '500 18px sans-serif') => {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        ctx.font = font;
-                        return ctx.measureText(text).width;
-                    };
-
-                    const isSpaces = payload.value.trim() === '';
-                    if (isSpaces) return null;
-
-                    const labelWidth = measureText(label) + 7;
-                    const rankWidth = measureTextSmall(rankName) + 3;
-                    const boxWidth = labelWidth;
-                    const boxHeight = 38;
-
-                    return (
-                        <g transform={`translate(${x},${y})`}>
-                            <rect
-                                key={payload.value}
-                                x={-boxWidth / 2}
-                                y={-(boxHeight / 2) - 11}
-                                width={boxWidth}
-                                height={boxHeight}
-                                fill="yellow"
-                                rx={1}
-                            />
-                            <text
-                                textAnchor="middle"
-                                dominantBaseline="middle"
-                                fontSize={27}
-                                fontWeight={600}
-                                fill="black"
-                                letterSpacing={-3}
-                                y={-10}
-                            >
-                                {label}
-                            </text>
-                            <text
-                                textAnchor="middle"
-                                dominantBaseline="middle"
-                                fontSize={18}
-                                fontWeight={600}
-                                fill="white"
-                                stroke="#353535"
-                                strokeWidth={4}
-                                paintOrder="stroke"
-                                y={20}
-                            >
-                                {rankName}
-                            </text>
-                        </g>
-                    );
-                }} />
+                <PolarAngleAxis
+                    dataKey="name"
+                    tick={(props) => (
+                        <TickLabel
+                            {...props}
+                            statLookup={Object.fromEntries(data.map(d => [d.name, d.x]))}
+                            rankNames={RANK_NAMES}
+                        />
+                    )}
+                />
                 <PolarRadiusAxis domain={[0, 5]} tick={false} axisLine={false} />
                 <Radar isAnimationActive={false} dataKey="grid" stroke="#000000" strokeWidth={13} fill="#353535" fillOpacity={1} />
                 <Radar dataKey="x" stroke="none" fill="#E68C00" fillOpacity={1} />

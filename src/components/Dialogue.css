@@ -45,11 +45,11 @@
 
 .dialogue-button {
     border: rgb(255, 255, 255) solid 3px;
-    background-color: rgba(0, 0, 0, 0.747);
+    background-color: #000000bb;
     color: white;
     padding: 5px 10px;
     font-weight: 600;
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    transition: background-color 0.1s ease, color 0.1s ease, border-color 0.1s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -68,7 +68,7 @@
 
 .speech-container {
     border: rgb(255, 255, 255) solid 5px;
-    background: #000000b6;
+    background: #000000de;
     margin-bottom: 30px;
     min-height: 150px;
 
