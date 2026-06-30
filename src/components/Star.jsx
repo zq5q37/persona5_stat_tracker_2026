@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useCallback, useRef, useState, useEffect } from 'react';
 import './Star.css'
 import {
     Radar, RadarChart, PolarGrid,
@@ -7,7 +7,6 @@ import {
 
 import rankUpLogo from '../assets/rank-up.png'
 import rankUpMaxLogo from '../assets/rank-up-max.png'
-
 
 const RANK_NAMES = {
     Knowledge: ['Oblivious', 'Learned', 'Scholarly', 'Encyclopedic', 'Erudite'],
@@ -50,7 +49,7 @@ const TickLabel = React.memo(function TickLabel({ x, y, payload, statLookup, ran
             <text
                 textAnchor="middle"
                 dominantBaseline="middle"
-                fontSize={27}
+                fontSize={25}
                 fontWeight={600}
                 fill="black"
                 letterSpacing={-3}
@@ -77,61 +76,100 @@ const TickLabel = React.memo(function TickLabel({ x, y, payload, statLookup, ran
 
 const Star = React.memo(({ stats, expUp, isMax }) => {
 
-    const data = [
-        { name: 'Knowledge', x: stats.Knowledge.level },
-        { name: 'Guts', x: stats.Guts.level },
-        { name: 'Proficiency', x: stats.Proficiency.level },
-        { name: 'Kindness', x: stats.Kindness.level },
-        { name: 'Charm', x: stats.Charm.level },
-    ];
+    const { Knowledge, Guts, Proficiency, Kindness, Charm } = stats;
 
-    const starData = [];
+    const prevStatsRef = useRef(stats);
+    const [levelUp, setLevelUp] = useState(false);
 
-    for (let i = 0; i < data.length; i++) {
-        starData.push(data[i]);
-        const inBetweenValue = (data[i].x + data[(i + 1) % data.length].x);
-        const fractionalValue = inBetweenValue * 0.18;
-        const iName = ' '.repeat(i);
-        starData.push({ name: iName, x: fractionalValue })
-    };
+    useEffect(() => {
+        const prev = prevStatsRef.current;
+        const anyLeveledUp = Object.keys(stats).some(
+            (key) => stats[key].level > prev[key].level
+        );
+        if (anyLeveledUp) {
+            setLevelUp(true);
+        }
+        prevStatsRef.current = stats;
+    }, [stats]);
 
-    const gridData = [];
+    // reset levelUp once the expUp animation cycle ends
+    useEffect(() => {
+        if (!expUp) {
+            setLevelUp(false);
+        }
+    }, [expUp]);
 
-    const inset = 0.3;
-    for (let i = 0; i < data.length; i++) {
-        gridData.push({ ...starData[i * 2], grid: 5 });
-        const fractional = (5 * 2) * 0.18;
-        gridData.push({ ...starData[i * 2 + 1], grid: fractional });
-    }
+    // Recompute ONLY when the actual stat levels change — not on expUp toggles.
+    const { outlineData, statLookup } = useMemo(() => {
+        const data = [
+            { name: 'Knowledge', x: Knowledge.level },
+            { name: 'Guts', x: Guts.level },
+            { name: 'Proficiency', x: Proficiency.level },
+            { name: 'Kindness', x: Kindness.level },
+            { name: 'Charm', x: Charm.level },
+        ];
 
-    const outlineData = gridData.map(d => ({ ...d, xOutline: d.x !== undefined ? (d.x * 0.5) : undefined }));
+        const starData = [];
+        for (let i = 0; i < data.length; i++) {
+            starData.push(data[i]);
+            const inBetweenValue = (data[i].x + data[(i + 1) % data.length].x);
+            const fractionalValue = inBetweenValue * 0.18;
+            const iName = ' '.repeat(i);
+            starData.push({ name: iName, x: fractionalValue });
+        }
+
+        const gridData = [];
+        for (let i = 0; i < data.length; i++) {
+            gridData.push({ ...starData[i * 2], grid: 5 });
+            const fractional = (5 * 2) * 0.18;
+            gridData.push({ ...starData[i * 2 + 1], grid: fractional });
+        }
+
+        const outlineData = gridData.map(d => ({
+            ...d,
+            xOutline: d.x !== undefined ? (d.x * 0.5) : undefined,
+        }));
+
+        const statLookup = Object.fromEntries(data.map(d => [d.name, d.x]));
+
+        return { outlineData, statLookup };
+    }, [Knowledge.level, Guts.level, Proficiency.level, Kindness.level, Charm.level]);
+
+    const renderTick = useCallback(
+        (props) => (
+            <TickLabel
+                {...props}
+                statLookup={statLookup}
+                rankNames={RANK_NAMES}
+            />
+        ),
+        [statLookup]
+    );
 
     return (
         <div className='star-container'>
             <RadarChart height={500} width={500}
-                outerRadius="75%" data={outlineData}>
+                outerRadius="70%" data={outlineData}>
                 <PolarAngleAxis
                     dataKey="name"
-                    tick={(props) => (
-                        <TickLabel
-                            {...props}
-                            statLookup={Object.fromEntries(data.map(d => [d.name, d.x]))}
-                            rankNames={RANK_NAMES}
-                        />
-                    )}
+                    tick={renderTick}
                 />
                 <PolarRadiusAxis domain={[0, 5]} tick={false} axisLine={false} />
                 <Radar isAnimationActive={false} dataKey="grid" stroke="#000000" strokeWidth={13} fill="#353535" fillOpacity={1} />
                 <Radar dataKey="x" stroke="none" fill="#E68C00" fillOpacity={1} />
                 <Radar dataKey="xOutline" stroke="none" fill="#FEC901" fillOpacity={1} />
             </RadarChart>
-            {isMax &&
+            {levelUp && !isMax &&
                 <div className={`rank-up-logo ${expUp ? 'animating' : ''}`}>
+                    <img src={rankUpLogo}></img>
+                </div>
+            }
+            {isMax &&
+                <div className={`rank-up-logo rank-up-max-logo ${expUp ? 'animating' : ''}`}>
                     <img src={rankUpMaxLogo}></img>
                 </div>
             }
         </div>
-
     );
 });
 

@@ -1,10 +1,9 @@
-
 .star-container {
-  width: min(100%, 520px);
-  /* aspect-ratio: 1 / 1; */
+  position: relative;
+  width: min(100%, 620px);
   max-width: 700px;
   margin: 0 auto;
-  padding-top: 8.5vh;;
+  padding-top: 8.5vh;
   pointer-events: none;
 }
 
@@ -16,12 +15,13 @@
 
 .rank-up-logo {
     position: absolute;
-    top: 32%;
-    left: 52%;
+    top: 52%;
+    left: 55%;
     transform: translate(-50%, -50%);
     width: auto;
     height: 30%;
     opacity: 0;
+    z-index: 100;
 
     img {
         width: auto;
@@ -29,6 +29,11 @@
         object-fit: contain;
         object-position: center;
     }
+}
+
+.rank-up-max-logo {
+    top: 50%;
+    left: 52%;
 }
 
 .rank-up-logo.animating {

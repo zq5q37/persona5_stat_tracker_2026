@@ -141,11 +141,13 @@ const Dialogue = ({ stats, activities, onActivity, expUp }) => {
             </div>
             <div className='speech-options-container'>
                 <div className='options-container'>
-                    {dialogueState === DIALOGUE_STATE.IDLE && <>
-                        <button className='dialogue-button' onClick={handleLog}>Log Activity</button>
-                        <button className='dialogue-button' onClick={handleAssist}>What should I do?</button>
-                        {/* <button className='dialogue-button' onClick={handleEdit}>Edit Activities</button> */}
-                    </>}
+                    {dialogueState === DIALOGUE_STATE.IDLE || dialogueState === DIALOGUE_STATE.ASSIST ? (
+                        <>
+                            <button className='dialogue-button' onClick={handleLog}>Log Activity</button>
+                            <button className='dialogue-button' onClick={handleAssist}>What should I do?</button>
+                            {/* <button className='dialogue-button' onClick={handleEdit}>Edit Activities</button> */}
+                        </>
+                    ) : null}
 
                     {dialogueState === DIALOGUE_STATE.LOG && activities.map((activity) => (
                         <button

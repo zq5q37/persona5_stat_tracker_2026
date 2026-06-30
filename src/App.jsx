@@ -80,7 +80,6 @@ function App({ activities, setActivities }) {
         activities={activities}
         onActivity={handleActivity}
         expUp={expUp}
-        setExpUp={setExpUp}
       />
       {!('ontouchstart' in window) && <NotesVideo expUp={expUp} />}
     </div>
