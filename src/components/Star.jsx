@@ -51,7 +51,7 @@ const Star = React.memo(({ stats, expUp, isMax }) => {
     return (
         <div className='star-container'>
             <RadarChart height={500} width={500}
-                outerRadius="80%" data={outlineData}>
+                outerRadius="75%" data={outlineData}>
                 <PolarAngleAxis dataKey="name" tick={({ x, y, payload }) => {
                     const statValue = data.find(d => d.name === payload.value)?.x;
                     const isMax = statValue >= 5;
