@@ -150,15 +150,20 @@ const Dialogue = ({ stats, activities, onActivity, expUp, confidant = 'morgana' 
                         </>
                     ) : null}
 
-                    {dialogueState === DIALOGUE_STATE.LOG && activities.map((activity) => (
-                        <button
-                            className='dialogue-button'
-                            key={activity.name}
-                            onClick={() => handleSelectActivity(activity)}
-                        >
-                            {activity.name}
-                        </button>
-                    ))}
+                    {dialogueState === DIALOGUE_STATE.LOG && (
+                        <>
+                            {activities.map((activity) => (
+                                <button
+                                    className='dialogue-button'
+                                    key={activity.name}
+                                    onClick={() => handleSelectActivity(activity)}
+                                >
+                                    {activity.name}
+                                </button>
+                            ))}
+                            <button className='dialogue-button' onClick={resetDialogue}>Nevermind.</button>
+                        </>
+                    )}
 
                     {dialogueState === DIALOGUE_STATE.INTENSITY && INTENSITIES.map(({ label, exp }) => (
                         <button
