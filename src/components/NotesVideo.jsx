@@ -21,8 +21,9 @@ const NotesVideo = ({ expUp }) => {
     useEffect(() => {
         if (expUp && videoRef.current) {
             videoRef.current.currentTime = 0;
-            videoRef.current.play();
+            videoRef.current.play().catch(() => {});
             setIsPlaying(true);
+
         }
     }, [expUp]);
 
@@ -70,7 +71,7 @@ const NotesVideo = ({ expUp }) => {
                 ref={videoRef}
                 onPlay={handlePlay}
                 onEnded={handleEnded}
-                onCanPlay={() => { videoRef.current.volume = 1; }}
+                onCanPlay={() => { if (videoRef.current) { videoRef.current.volume = 1; videoRef.current.muted = false; } }}
                 playsInline
                 preload="auto"
                 style={{ display: 'none' }}

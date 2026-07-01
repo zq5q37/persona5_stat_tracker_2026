@@ -19,17 +19,27 @@ function Header({ onReset }) {
         audioRef.current = new Audio(backgroundMusic);
         audioRef.current.loop = true;
         audioRef.current.volume = 0.05;
-        audioRef.current.muted = true; // start muted
-        // audioRef.current.play();
+        audioRef.current.muted = muted;
 
-        return () => audioRef.current.pause();
+        return () => {
+            if (audioRef.current) {
+                audioRef.current.pause();
+            }
+        };
     }, []);
 
-    const toggleMute = () => {
-        if (audioRef.current.paused) {
-            audioRef.current.play();
+    useEffect(() => {
+        if (!audioRef.current) return;
+
+        audioRef.current.muted = muted;
+        if (!muted) {
+            audioRef.current.play().catch(() => {});
+        } else {
+            audioRef.current.pause();
         }
-        audioRef.current.muted = !audioRef.current.muted;
+    }, [muted]);
+
+    const toggleMute = () => {
         setMuted(prev => !prev);
     };
    const navigate = useNavigate();
