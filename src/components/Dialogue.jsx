@@ -17,10 +17,12 @@ const QUOTES = [
     "If you have nothing to do, let's clean up this room. An uncluttered room is an uncluttered mind!",
 ];
 
+const WELCOME_MSG = "Welcome to Persona 5 Stat Tracker! Turn real-life habits into a game: log an activity, watch your stats grow, and use \"Edit\" to tailor activities to your lifestyle."
+
 const INTENSITIES = [
-    { label: 'Low intensity', exp: 10 },
-    { label: 'Medium intensity', exp: 20 },
-    { label: 'High intensity', exp: 30 },
+    { label: 'Low', exp: 10 },
+    { label: 'Medium', exp: 20 },
+    { label: 'High', exp: 30 },
 ];
 
 const DIALOGUE_STATE = {
@@ -41,6 +43,10 @@ const Dialogue = ({ stats, activities, onActivity, expUp }) => {
     const [assistSuggestion, setAssistSuggestion] = useState(null);
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [idleQuote, setIdleQuote] = useState(() => randomItem(QUOTES));
+
+    const isNewUser = Object.values(stats ?? {}).every((stat) => {
+        return stat?.level === 1 && stat?.exp === 0;
+    });
 
     useEffect(() => {
         if (dialogueState === DIALOGUE_STATE.IDLE && !expUp) {
@@ -108,6 +114,10 @@ const Dialogue = ({ stats, activities, onActivity, expUp }) => {
     // ── Derived state ────────────────────────────────────────────────────────
 
     const getDialogueDisplay = () => {
+        if (dialogueState === DIALOGUE_STATE.IDLE && isNewUser) {
+            return { text: WELCOME_MSG, pic: morganaNormal };
+        }
+
         switch (dialogueState) {
             case DIALOGUE_STATE.LOG:
                 return { text: "What shall we do?", pic: morganaSmile };
