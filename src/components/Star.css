@@ -1,10 +1,11 @@
 .star-container {
-  position: relative;
-  width: min(100%, 620px);
-  max-width: 700px;
-  margin: 0 auto;
-  padding-top: 8.5vh;
-  pointer-events: none;
+    position: relative;
+    width: min(100%, 620px);
+    max-width: 700px;
+    margin: 0 auto;
+    padding-top: 8.5vh;
+    pointer-events: none;
+    overflow: hidden;
 }
 
 .recharts-wrapper {
@@ -17,23 +18,29 @@
     position: absolute;
     top: 52%;
     left: 55%;
-    transform: translate(-50%, -50%);
-    width: auto;
-    height: 30%;
+    transform: translate(-50%, -50%) scale(1);
+    transform-origin: center center;
+    width: min(60%, 400px);
+    height: auto;
+    max-width: 90%;
+    max-height: 90%;
     opacity: 0;
     z-index: 100;
+    pointer-events: none;
+}
 
-    img {
-        width: auto;
-        height: 100%;
-        object-fit: contain;
-        object-position: center;
-    }
+.rank-up-logo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
 }
 
 .rank-up-max-logo {
-    top: 50%;
-    left: 52%;
+    top: 54%;
+    left: 51%;
+    width: min(60%, 420px);
 }
 
 .rank-up-logo.animating {
@@ -42,6 +49,11 @@
 }
 
 @keyframes logo-shrink {
-    from { transform: translate(-50%, -50%) scale(3.33); }
-    to   { transform: translate(-50%, -50%) scale(1); }
+    from {
+        transform: translate(-50%, -50%) scale(3.33);
+    }
+
+    to {
+        transform: translate(-50%, -50%) scale(1);
+    }
 }

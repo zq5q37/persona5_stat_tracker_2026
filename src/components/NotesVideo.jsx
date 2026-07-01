@@ -81,7 +81,9 @@ const NotesVideo = ({ expUp }) => {
                     zIndex: 999,
                     pointerEvents: 'none',
                     opacity: isPlaying ? 1 : 0,
-                    transition: 'opacity 0.2s ease',
+                    transition: 'opacity 0.1s ease',
+                    backgroundColor: 'transparent',
+                    mixBlendMode: 'plus-lighter',
                 }}
             />
         </>
