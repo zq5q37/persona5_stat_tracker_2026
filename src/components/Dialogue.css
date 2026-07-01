@@ -82,7 +82,7 @@
 
     p {
         padding: 10px 25px;
-        text-wrap: balance;
+        /* text-wrap: balance; */
     }
 }
 

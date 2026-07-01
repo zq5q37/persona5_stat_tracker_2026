@@ -50,8 +50,8 @@ function Root() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App activities={activities} setActivities={setActivities} selectedConfidant={selectedConfidant} />} />
-        <Route path="/edit" element={<EditPage activities={activities} setActivities={setActivities} initialActivities={initialActivities} />} />
-        <Route path="/confidants" element={<ConfidantPage selectedConfidant={selectedConfidant} onSelectConfidant={setSelectedConfidant} />} />
+        <Route path="/edit" element={<EditPage activities={activities} setActivities={setActivities} initialActivities={initialActivities} selectedConfidant={selectedConfidant} onSelectConfidant={setSelectedConfidant} setSelectedConfidant={setSelectedConfidant} />} />
+        {/* <Route path="/confidants" element={<ConfidantPage selectedConfidant={selectedConfidant} onSelectConfidant={setSelectedConfidant} />} /> */}
       </Routes>
     </BrowserRouter>
   );

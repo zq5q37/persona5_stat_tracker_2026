@@ -58,9 +58,9 @@ function Header({ onReset, onChangeConfidant }) {
                     </div>
                     <button className='dialogue-button header-button' onClick={() => { onReset(); playClick(); }}>Reset</button>
                     <button className='dialogue-button header-button' onClick={handleEdit}>Edit</button>
-                    <button className='dialogue-button header-button confidant-button' onClick={() => { onChangeConfidant(); playClick(); }}>
+                    {/* <button className='dialogue-button header-button confidant-button' onClick={() => { onChangeConfidant(); playClick(); }}>
                         Confidant
-                    </button>
+                    </button> */}
                     <button className='sound-button' onClick={toggleMute}>
                         <img src={muted ? muteLogo : volumeLogo} alt="sound" />
                     </button>

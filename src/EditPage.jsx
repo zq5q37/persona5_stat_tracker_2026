@@ -4,6 +4,8 @@ import Header from './components/Header';
 import redBgPic from './assets/red_bg.webp';
 import './EditPage.css';
 
+import ConfidantPanel from './ConfidantPanel.jsx';
+
 const ALL_TRAITS = ["Knowledge", "Guts", "Proficiency", "Kindness", "Charm"];
 
 const TRAIT_COLORS = {
@@ -14,7 +16,7 @@ const TRAIT_COLORS = {
   Charm: '#ce93d8',
 };
 
-export default function EditPage({ activities, setActivities, initialActivities }) {
+export default function EditPage({ activities, setActivities, initialActivities, selectedConfidant, onSelectConfidant, setSelectedConfidant }) {
   const navigate = useNavigate();
 
   const [draft, setDraft] = useState(() =>
@@ -80,9 +82,12 @@ export default function EditPage({ activities, setActivities, initialActivities 
   return (
     <div className='everything-container'>
       <img className='bg-image' src={redBgPic} />
-      <Header onReset={() => handleResetActivities()} />
+      {/* <Header onReset={() => handleResetActivities()} /> */}
+      <Header onReset={() => handleResetActivities()} onChangeConfidant={() => navigate('/confidants')} currentConfidant={selectedConfidant} />
 
       <div className='edit-page'>
+
+        <ConfidantPanel selectedConfidant={selectedConfidant} onSelectConfidant={setSelectedConfidant} />
 
         <div className='edit-section-label'>
           <span className='edit-label-text'>ACTIVITIES</span>

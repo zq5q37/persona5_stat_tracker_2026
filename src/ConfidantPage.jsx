@@ -12,7 +12,7 @@ export default function ConfidantPage({ selectedConfidant, onSelectConfidant }) 
   return (
     <div className='everything-container'>
       <img className='bg-image' src={redBgPic} />
-      <Header onReset={() => {}} />
+      <Header onReset={() => { }} />
 
       <main className='character-page'>
         <section className='character-page__panel'>
@@ -35,7 +35,7 @@ export default function ConfidantPage({ selectedConfidant, onSelectConfidant }) 
                 <div className='character-card__image'>
                   <img src={confidant.images.idle} alt={confidant.label} />
                 </div>
-                <span className='character-card__label'>{confidant.label}</span>
+                {/* <span className='character-card__label'>{confidant.label}</span> */}
               </button>
             ))}
           </div>
