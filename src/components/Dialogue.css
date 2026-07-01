@@ -4,6 +4,7 @@
     margin: 0 auto;
     display: flex;
     flex-direction: row;
+    justify-content: center;
     /* border: purple solid 2px; */
     position: fixed;
     bottom: 0;
@@ -24,7 +25,10 @@
 .speech-options-container {
     /* border: red solid 2px; */
     padding: 10px;
+    padding-left: 0px;
+    padding-bottom: 30px;
     width: 70%;
+    max-width: 800px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -69,8 +73,8 @@
 .speech-container {
     border: rgb(255, 255, 255) solid 5px;
     background: #000000de;
-    margin-bottom: 30px;
     min-height: 150px;
+    overflow-x: hidden;
 
     display: flex;
     flex-direction: column;
@@ -78,6 +82,7 @@
 
     p {
         padding: 10px 25px;
+        text-wrap: balance;
     }
 }
 
@@ -99,6 +104,7 @@
 
     .speech-options-container {
         width: 100%;
+        padding: 10px;
     }
 
     .speech-container {
