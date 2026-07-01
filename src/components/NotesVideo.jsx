@@ -2,14 +2,21 @@ import { useState, useEffect, useRef } from 'react'
 import expUpVideoWebm from '../assets/NotesSocialStats.webm'
 import expUpVideoMp4 from '../assets/NotesSocialStats.mp4'
 
+const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
 const KEY_COLOR = { r: 0, g: 255, b: 0 }; // adjust to match your actual green screen
-const SIMILARITY = 90; // 0-255ish; raise if green still shows, lower if subject gets eaten
+const SIMILARITY = 160; // 0-255ish; raise if green still shows, lower if subject gets eaten
 
 const NotesVideo = ({ expUp }) => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const rafRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [useBlendMode, setUseBlendMode] = useState(() => isTouchDevice());
+
+    useEffect(() => {
+        setUseBlendMode(isTouchDevice());
+    }, []);
 
     useEffect(() => {
         if (expUp && videoRef.current) {
@@ -83,7 +90,7 @@ const NotesVideo = ({ expUp }) => {
                     opacity: isPlaying ? 1 : 0,
                     transition: 'opacity 0.1s ease',
                     backgroundColor: 'transparent',
-                    mixBlendMode: 'plus-lighter',
+                    mixBlendMode: useBlendMode ? 'plus-lighter' : 'normal',
                 }}
             />
         </>
