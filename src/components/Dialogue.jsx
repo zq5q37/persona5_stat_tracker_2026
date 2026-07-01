@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import morganaNormal from '../assets/morgana-normal.webp';
-import morganaSmile from '../assets/morgana-smile.webp';
-import morganaStar from '../assets/morgana-star.webp';
-import morganaGrin from '../assets/morgana-grin.webp';
+import morganaNormal from '../assets/characters/morgana/morgana-normal.webp';
+import morganaSmile from '../assets/characters/morgana/morgana-smile.webp';
+import morganaStar from '../assets/characters/morgana/morgana-star.webp';
+import morganaGrin from '../assets/characters/morgana/morgana-grin.webp';
+import futabaAvatar from '../assets/characters/futaba/futaba_normal.png';
+import makotoAvatar from '../assets/characters/makoto/makoto_normal.png';
 
 import playClick from '../utils/playClick.js';
 import './Dialogue.css';
@@ -34,9 +36,30 @@ const DIALOGUE_STATE = {
 
 const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
+const CONFIDANT_IMAGES = {
+    morgana: {
+        idle: morganaNormal,
+        smile: morganaSmile,
+        star: morganaStar,
+        grin: morganaGrin,
+    },
+    futaba: {
+        idle: futabaAvatar,
+        smile: futabaAvatar,
+        star: futabaAvatar,
+        grin: futabaAvatar,
+    },
+    makoto: {
+        idle: makotoAvatar,
+        smile: makotoAvatar,
+        star: makotoAvatar,
+        grin: makotoAvatar,
+    },
+};
+
 // ── Component ────────────────────────────────────────────────────────────────
 
-const Dialogue = ({ stats, activities, onActivity, expUp }) => {
+const Dialogue = ({ stats, activities, onActivity, expUp, confidant = 'morgana' }) => {
 
     const navigate = useNavigate();
     const [dialogueState, setDialogueState] = useState(DIALOGUE_STATE.IDLE);
@@ -114,29 +137,31 @@ const Dialogue = ({ stats, activities, onActivity, expUp }) => {
     // ── Derived state ────────────────────────────────────────────────────────
 
     const getDialogueDisplay = () => {
+        const avatarSet = CONFIDANT_IMAGES[confidant] || CONFIDANT_IMAGES.morgana;
+
         if (dialogueState === DIALOGUE_STATE.IDLE && isNewUser) {
-            return { text: WELCOME_MSG, pic: morganaNormal };
+            return { text: WELCOME_MSG, pic: avatarSet.idle };
         }
 
         switch (dialogueState) {
             case DIALOGUE_STATE.LOG:
-                return { text: "What shall we do?", pic: morganaSmile };
+                return { text: "What shall we do?", pic: avatarSet.smile };
 
             case DIALOGUE_STATE.INTENSITY:
-                return { text: `How intense was "${selectedActivity?.name}"?`, pic: morganaSmile };
+                return { text: `How intense was "${selectedActivity?.name}"?`, pic: avatarSet.smile };
 
             case DIALOGUE_STATE.ASSIST:
                 return {
                     text: assistSuggestion?.suggestion
                         ? `Your ${assistSuggestion.lowestStat} is looking low... try "${assistSuggestion.suggestion.name}"!`
                         : `Your ${assistSuggestion?.lowestStat} is low, but I don't know any activities for it yet!`,
-                    pic: morganaGrin,
+                    pic: avatarSet.grin,
                 };
 
             default:
                 return expUp
-                    ? { text: "Looks like your social stats are growing!", pic: morganaStar }
-                    : { text: idleQuote, pic: morganaNormal };
+                    ? { text: "Looks like your social stats are growing!", pic: avatarSet.star }
+                    : { text: idleQuote, pic: avatarSet.idle };
         }
     };
 

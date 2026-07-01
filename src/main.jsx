@@ -5,7 +5,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import EditPage from './EditPage.jsx'
+import ConfidantPage from './ConfidantPage.jsx'
 
+const CONFIDANT_OPTIONS = ['morgana', 'futaba', 'makoto'];
 
 const initialActivities = [
   { name: "Code", traits: ["Knowledge", "Proficiency"] },
@@ -35,11 +37,21 @@ function Root() {
     return () => window.removeEventListener('resize', setAppHeight);
   }, []);
 
+  const [selectedConfidant, setSelectedConfidant] = useState(() => {
+    const saved = localStorage.getItem('selectedConfidant');
+    return saved && CONFIDANT_OPTIONS.includes(saved) ? saved : 'morgana';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('selectedConfidant', selectedConfidant);
+  }, [selectedConfidant]);
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App activities={activities} setActivities={setActivities} />} />
+        <Route path="/" element={<App activities={activities} setActivities={setActivities} selectedConfidant={selectedConfidant} />} />
         <Route path="/edit" element={<EditPage activities={activities} setActivities={setActivities} initialActivities={initialActivities} />} />
+        <Route path="/confidants" element={<ConfidantPage selectedConfidant={selectedConfidant} onSelectConfidant={setSelectedConfidant} />} />
       </Routes>
     </BrowserRouter>
   );

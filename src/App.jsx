@@ -5,8 +5,10 @@ import Star from './components/Star'
 import Dialogue from './components/Dialogue'
 import NotesVideo from './components/NotesVideo'
 import redBgPic from './assets/red_bg.webp'
+import { useNavigate } from 'react-router-dom'
 
-function App({ activities, setActivities }) {
+function App({ activities, setActivities, selectedConfidant }) {
+  const navigate = useNavigate();
   const [expUp, setExpUp] = useState(false);
   const [isMax, setIsMax] = useState(false);
 
@@ -73,13 +75,14 @@ function App({ activities, setActivities }) {
   return (
     <div className='everything-container'>
       <img className='bg-image' src={redBgPic} alt="" />
-      <Header onReset={resetStats} />
+      <Header onReset={resetStats} onChangeConfidant={() => navigate('/confidants')} currentConfidant={selectedConfidant} />
       <Star stats={stats} expUp={expUp} isMax={isMax} />
       <Dialogue
         stats={stats}
         activities={activities}
         onActivity={handleActivity}
         expUp={expUp}
+        confidant={selectedConfidant}
       />
       {/* {!('ontouchstart' in window) && <NotesVideo expUp={expUp} />} */}
       <NotesVideo expUp={expUp} />
