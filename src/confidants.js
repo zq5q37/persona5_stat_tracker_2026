@@ -1,8 +1,13 @@
-import morganaNormal from './assets/characters/morgana/morgana-normal.webp';
-import morganaSmile from './assets/characters/morgana/morgana-smile.webp';
-import morganaStar from './assets/characters/morgana/morgana-star.webp';
-import morganaGrin from './assets/characters/morgana/morgana-grin.webp';
+import morganaIdle from './assets/characters/morgana/morgana_idle.png';
+import morganaAssist from './assets/characters/morgana/morgana_assist.png';
+import morganaLog from './assets/characters/morgana/morgana_log.png';
+import morganaStar from './assets/characters/morgana/morgana_star.png';
+
 import futabaNormal from './assets/characters/futaba/futaba_normal.png';
+import futabaAssist from './assets/characters/futaba/futaba_assist.png';
+import futabaLog from './assets/characters/futaba/futaba_log.png';
+import futabaStar from './assets/characters/futaba/futaba_star.png';
+
 import makotoNormal from './assets/characters/makoto/makoto_normal.png';
 
 const CONFIDANTS = {
@@ -10,9 +15,9 @@ const CONFIDANTS = {
     key: 'morgana',
     label: 'Morgana',
     images: {
-      idle: morganaNormal,
-      smile: morganaSmile,
-      grin: morganaGrin,
+      idle: morganaIdle,
+      smile: morganaAssist,
+      grin: morganaLog,
       star: morganaStar,
     },
     welcome: 'Welcome to Persona 5 Stat Tracker. Let’s turn your routine into something worth leveling up.',
@@ -34,9 +39,9 @@ const CONFIDANTS = {
     label: 'Futaba',
     images: {
       idle: futabaNormal,
-      smile: futabaNormal,
-      grin: futabaNormal,
-      star: futabaNormal,
+      smile: futabaLog,
+      grin: futabaAssist,
+      star: futabaStar,
     },
     welcome: 'Ready to hack your routine? Log an activity and climb your confidant rank.',
     idleQuotes: [
