@@ -1,16 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import Header from './components/Header';
 import redBgPic from './assets/red_bg.webp';
-import morganaAvatar from './assets/characters/morgana/morgana-normal.webp';
-import futabaAvatar from './assets/characters/futaba/futaba_normal.png';
-import makotoAvatar from './assets/characters/makoto/makoto_normal.png';
+import { CONFIDANT_LIST } from './confidants.js';
 import './ConfidantPage.css';
 
-const CHARACTER_OPTIONS = [
-  { key: 'morgana', label: 'Morgana', image: morganaAvatar },
-  { key: 'futaba', label: 'Futaba', image: futabaAvatar },
-  { key: 'makoto', label: 'Makoto', image: makotoAvatar },
-];
+const CHARACTER_OPTIONS = CONFIDANT_LIST;
 
 export default function ConfidantPage({ selectedConfidant, onSelectConfidant }) {
   const navigate = useNavigate();
@@ -39,7 +33,7 @@ export default function ConfidantPage({ selectedConfidant, onSelectConfidant }) 
                 }}
               >
                 <div className='character-card__image'>
-                  <img src={confidant.image} alt={confidant.label} />
+                  <img src={confidant.images.idle} alt={confidant.label} />
                 </div>
                 <span className='character-card__label'>{confidant.label}</span>
               </button>
