@@ -9,6 +9,14 @@ import futabaLog from './assets/characters/futaba/futaba_log.png';
 import futabaStar from './assets/characters/futaba/futaba_star.png';
 
 import makotoNormal from './assets/characters/makoto/makoto_normal.png';
+import makotoAssist from './assets/characters/makoto/makoto_assist.png';
+import makotoLog from './assets/characters/makoto/makoto_log.png';
+import makotoStar from './assets/characters/makoto/makoto_star.png';
+
+import lavenzaIdle from './assets/characters/lavenza/lavenza_idle.png';
+import lavenzaAssist from './assets/characters/lavenza/lavenza_assist.png';
+import lavenzaLog from './assets/characters/lavenza/lavenza_log.png';
+import lavenzaStar from './assets/characters/lavenza/lavenza_star.png';
 
 const CONFIDANTS = {
   morgana: {
@@ -62,9 +70,9 @@ const CONFIDANTS = {
     label: 'Makoto',
     images: {
       idle: makotoNormal,
-      smile: makotoNormal,
-      grin: makotoNormal,
-      star: makotoNormal,
+      smile: makotoLog,
+      grin: makotoAssist,
+      star: makotoStar,
     },
     welcome: 'Let’s train your mind and heart. Log an action and grow as a confidant.',
     idleQuotes: [
@@ -79,6 +87,29 @@ const CONFIDANTS = {
     logPrompt: 'Which activity will you choose?',
     intensityPrompt: (activityName) => `How intense was "${activityName}"?`,
     expUpText: 'Excellent. Your confidant connection is growing.',
+  },
+  lavenza: {
+    key: 'lavenza',
+    label: 'Lavenza',
+    images: {
+      idle: lavenzaIdle,
+      smile: lavenzaLog,
+      grin: lavenzaAssist,
+      star: lavenzaStar,
+    },
+    welcome: 'Every choice matters. Log your next action and progress together.',
+    idleQuotes: [
+      "A little effort can change the whole day.",
+      "Keep your focus steady and the rest will follow.",
+      "Ordering your time is the first step to winning it.",
+    ],
+    assist: {
+      hasSuggestion: 'Your {lowestStat} needs some attention. Try "{suggestion}".',
+      noSuggestion: 'Your {lowestStat} is a bit low, but I need more data to suggest something.',
+    },
+    logPrompt: 'What would you like to log?',
+    intensityPrompt: (activityName) => `How intense was "${activityName}"?`,
+    expUpText: 'Your progress is steady. Keep moving forward.',
   },
 };
 
