@@ -6,6 +6,7 @@
     justify-content: space-between;
     position: relative;
     z-index: 1;
+     overflow: hidden;
     /* pointer-events: none; */
 }
 
@@ -20,6 +21,7 @@ button {
 
 body {
     margin: 0;
+    overflow: hidden;
 }
 
 .bg-image {

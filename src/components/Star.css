@@ -2,10 +2,12 @@
     position: relative;
     width: min(100%, 620px);
     max-width: 700px;
+    max-height: 700px;
     margin: 0 auto;
-    padding-top: 8.5vh;
+    margin-top: 8.5vh;
     pointer-events: none;
-    overflow: hidden;
+    overflow: visible;
+    padding-bottom: 2rem;
 }
 
 .recharts-wrapper {
@@ -16,17 +18,18 @@
 
 .rank-up-logo {
     position: absolute;
-    top: 52%;
+    top: 45%;
     left: 55%;
     transform: translate(-50%, -50%) scale(1);
     transform-origin: center center;
     width: min(60%, 400px);
     height: auto;
-    max-width: 90%;
-    max-height: 90%;
-    opacity: 0;
+    max-width: min(90%, 400px);
+    max-height: min(90%, 300px);
+    /* opacity: 0; */
     z-index: 100;
     pointer-events: none;
+    overflow: visible;
 }
 
 .rank-up-logo img {
@@ -38,9 +41,9 @@
 }
 
 .rank-up-max-logo {
-    top: 54%;
+    top: 45%;
     left: 51%;
-    width: min(60%, 420px);
+    width: min(80%, 500px);
 }
 
 .rank-up-logo.animating {
