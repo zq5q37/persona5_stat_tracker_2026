@@ -68,8 +68,8 @@ const NotesVideo = ({ expUp }) => {
                 preload="auto"
                 style={{ display: 'none' }}
             >
-                <source src={expUpVideoWebm} type="video/webm" />
                 <source src={expUpVideoMp4} type="video/mp4" />
+                <source src={expUpVideoWebm} type="video/webm" />
             </video>
             <canvas
                 ref={canvasRef}
