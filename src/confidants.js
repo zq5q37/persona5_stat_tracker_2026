@@ -1,22 +1,22 @@
-import morganaIdle from './assets/characters/morgana/morgana_idle.png';
-import morganaAssist from './assets/characters/morgana/morgana_assist.png';
-import morganaLog from './assets/characters/morgana/morgana_log.png';
-import morganaStar from './assets/characters/morgana/morgana_star.png';
+import morganaIdle from './assets/characters/morgana/morgana_idle.webp';
+import morganaAssist from './assets/characters/morgana/morgana_assist.webp';
+import morganaLog from './assets/characters/morgana/morgana_log.webp';
+import morganaStar from './assets/characters/morgana/morgana_star.webp';
 
-import futabaNormal from './assets/characters/futaba/futaba_normal.png';
-import futabaAssist from './assets/characters/futaba/futaba_assist.png';
-import futabaLog from './assets/characters/futaba/futaba_log.png';
-import futabaStar from './assets/characters/futaba/futaba_star.png';
+import futabaNormal from './assets/characters/futaba/futaba_normal.webp';
+import futabaAssist from './assets/characters/futaba/futaba_assist.webp';
+import futabaLog from './assets/characters/futaba/futaba_log.webp';
+import futabaStar from './assets/characters/futaba/futaba_star.webp';
 
-import makotoNormal from './assets/characters/makoto/makoto_normal.png';
-import makotoAssist from './assets/characters/makoto/makoto_assist.png';
-import makotoLog from './assets/characters/makoto/makoto_log.png';
-import makotoStar from './assets/characters/makoto/makoto_star.png';
+import makotoNormal from './assets/characters/makoto/makoto_normal.webp';
+import makotoAssist from './assets/characters/makoto/makoto_assist.webp';
+import makotoLog from './assets/characters/makoto/makoto_log.webp';
+import makotoStar from './assets/characters/makoto/makoto_star.webp';
 
-import lavenzaIdle from './assets/characters/lavenza/lavenza_idle.png';
-import lavenzaAssist from './assets/characters/lavenza/lavenza_assist.png';
-import lavenzaLog from './assets/characters/lavenza/lavenza_log.png';
-import lavenzaStar from './assets/characters/lavenza/lavenza_star.png';
+import lavenzaIdle from './assets/characters/lavenza/lavenza_idle.webp';
+import lavenzaAssist from './assets/characters/lavenza/lavenza_assist.webp';
+import lavenzaLog from './assets/characters/lavenza/lavenza_log.webp';
+import lavenzaStar from './assets/characters/lavenza/lavenza_star.webp';
 
 const CONFIDANTS = {
   morgana: {
