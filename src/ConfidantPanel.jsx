@@ -29,7 +29,7 @@ export default function ConfidantPage({ selectedConfidant, onSelectConfidant }) 
                         className={`character-card ${selectedConfidant === confidant.key ? 'selected' : ''}`}
                         onClick={() => {
                             onSelectConfidant(confidant.key);
-                            navigate('/');
+                            // navigate('/');
                         }}
                     >
                         <div className='character-card__image'>
@@ -40,9 +40,9 @@ export default function ConfidantPage({ selectedConfidant, onSelectConfidant }) 
                 ))}
             </div>
 
-            <div className='character-page__actions'>
-                <button className='character-button' onClick={() => navigate('/')}>Continue</button>
-            </div>
+            {/* <div className='character-page__actions'> */}
+                {/* <button className='character-button' onClick={() => navigate('/')}>Continue</button> */}
+            {/* </div> */}
         </section>
 
     );
