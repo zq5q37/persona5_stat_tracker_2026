@@ -15,8 +15,8 @@
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
   /* border-radius: 28px; */
-  padding: 24px;
-  padding-top: 0px;
+  padding: 14px;
+  /* padding-top: 0px; */
   width: min(100%, 720px);
   margin: 0 auto;
   margin-bottom: 20px;
