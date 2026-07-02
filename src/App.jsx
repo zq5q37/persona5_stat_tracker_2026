@@ -18,6 +18,7 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
   const [isMax, setIsMax] = useState(false);
 
   const { user, authLoading, login, logout } = useAuth();
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   const initialStats = {
     Knowledge: { level: 1, exp: 0 },
@@ -38,10 +39,13 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
   useEffect(() => {
     localStorage.setItem('stats', JSON.stringify(stats));
   }, [stats]);
+  const [suppressLevelUp, setSuppressLevelUp] = useState(false);
 
-  // When user logs in, load their Firestore data (or seed it from local data if first login)
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setDataLoaded(false);
+      return;
+    }
 
     const loadData = async () => {
       const userDocRef = doc(db, 'users', user.uid);
@@ -49,31 +53,35 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
 
       if (snapshot.exists()) {
         const data = snapshot.data();
-        if (data.stats) setStats(data.stats);
+        if (data.stats) {
+          setSuppressLevelUp(true); // don't animate this load
+          setStats(data.stats);
+        }
         if (data.activities) setActivities(data.activities);
       } else {
-        // first login: push whatever's currently local up to Firestore
         await setDoc(userDocRef, { stats, activities });
       }
+
+      setDataLoaded(true);
     };
 
     loadData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  // Sync stats to Firestore whenever they change, if logged in
+  // Sync stats to Firestore whenever they change, if logged in — guarded by dataLoaded
   useEffect(() => {
-    if (!user) return;
+    if (!user || !dataLoaded) return;
     const userDocRef = doc(db, 'users', user.uid);
     setDoc(userDocRef, { stats }, { merge: true });
-  }, [stats, user]);
+  }, [stats, user, dataLoaded]);
 
-  // Sync activities to Firestore whenever they change, if logged in
+  // Sync activities to Firestore whenever they change, if logged in — guarded by dataLoaded
   useEffect(() => {
-    if (!user) return;
+    if (!user || !dataLoaded) return;
     const userDocRef = doc(db, 'users', user.uid);
     setDoc(userDocRef, { activities }, { merge: true });
-  }, [activities, user]);
+  }, [activities, user, dataLoaded]);
 
   const resetStats = () => setStats(initialStats);
 
@@ -157,6 +165,8 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
           expUp={expUp}
           isMax={isMax}
           selectedConfidant={selectedConfidant}
+          suppressLevelUp={suppressLevelUp}
+          onLevelUpHandled={() => setSuppressLevelUp(false)}
         />
       )}
     </div>

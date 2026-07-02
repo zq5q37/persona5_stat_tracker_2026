@@ -74,7 +74,7 @@ const TickLabel = React.memo(function TickLabel({ x, y, payload, statLookup, ran
     );
 });
 
-const Star = React.memo(({ stats, expUp, isMax }) => {
+const Star = React.memo(({ stats, expUp, isMax, suppressLevelUp, onLevelUpHandled }) => {
 
     const { Knowledge, Guts, Proficiency, Kindness, Charm } = stats;
 
@@ -86,10 +86,14 @@ const Star = React.memo(({ stats, expUp, isMax }) => {
         const anyLeveledUp = Object.keys(stats).some(
             (key) => stats[key].level > prev[key].level
         );
-        if (anyLeveledUp) {
+        if (anyLeveledUp && !suppressLevelUp) {
             setLevelUp(true);
         }
         prevStatsRef.current = stats;
+
+        if (suppressLevelUp) {
+            onLevelUpHandled?.();
+        }
     }, [stats]);
 
     // reset levelUp once the expUp animation cycle ends
