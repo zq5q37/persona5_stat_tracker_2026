@@ -87,7 +87,7 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
       <img className='bg-image' src={redBgPic} alt="" />
       <Header
         onReset={isEditPage ? resetActivities : resetStats}
-        resetLabel={isEditPage ? 'Reset Activities' : 'Reset Stats'}
+        // resetLabel={isEditPage ? 'Reset Activities' : 'Reset Stats'}
         onChangeConfidant={() => navigate('/confidants')}
         currentConfidant={selectedConfidant}
       />
