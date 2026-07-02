@@ -87,7 +87,9 @@ export default function EditPage({ activities, setActivities, initialActivities,
       <img className='bg-image' src={redBgPic} />
 
       <div className='edit-page'>
-
+        <div className='edit-section-label'>
+          <span className='edit-label-text'>CONFIDANT</span>
+        </div>
         <ConfidantPanel selectedConfidant={selectedConfidant} onSelectConfidant={setSelectedConfidant} />
 
         <div className='edit-section-label'>

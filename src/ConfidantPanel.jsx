@@ -17,7 +17,7 @@ export default function ConfidantPage({ selectedConfidant, onSelectConfidant }) 
         // <main className='character-page'>
         <section className='character-page__panel'>
             <div className='character-page__header'>
-                <h1 className='character-page__title'>Choose your confidant</h1>
+                {/* <h1 className='character-page__title'>Choose your confidant</h1> */}
                 {/* <p className='character-page__subtitle'>Click the avatar which you feel best represents you or create your own.</p> */}
             </div>
 

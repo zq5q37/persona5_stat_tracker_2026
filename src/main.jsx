@@ -5,7 +5,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import EditPage from './EditPage.jsx'
-import ConfidantPage from './ConfidantPage.jsx'
 
 const CONFIDANT_OPTIONS = ['morgana', 'futaba', 'makoto'];
 
@@ -73,7 +72,6 @@ function Root() {
             />
           }
         />
-        {/* <Route path="/confidants" element={<ConfidantPage selectedConfidant={selectedConfidant} onSelectConfidant={setSelectedConfidant} />} /> */}
       </Routes>
     </BrowserRouter>
   );

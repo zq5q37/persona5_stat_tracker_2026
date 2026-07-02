@@ -25,10 +25,10 @@
 .edit-label-text {
   background: #e63946;
   color: #fff;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 24px;
-  letter-spacing: 0.15em;
-  padding: 6px 20px 6px 10px;
+  letter-spacing: 0.05em;
+  padding: 5px 20px 6px 10px;
   clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%);
 }
 
@@ -130,7 +130,7 @@
   color: #fff;
   border: none;
   /* border-radius: 2px; */
-  font-weight: 800;
+  font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.1em;
   padding: 7px 14px;
@@ -170,7 +170,7 @@
   background: #e63946;
   border: none;
   color: #fff;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.12em;
   padding: 9px 24px;
