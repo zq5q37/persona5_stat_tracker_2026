@@ -5,6 +5,10 @@ import redBgPic from './assets/red_bg.webp'
 import { useNavigate, useLocation } from 'react-router-dom'
 import HomePage from './HomePage'
 import EditPage from './EditPage'
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { db } from './firebase';
+
+import useAuth from './hooks/useAuth';
 
 function App({ activities, setActivities, initialActivities, selectedConfidant, setSelectedConfidant }) {
   const navigate = useNavigate();
@@ -12,6 +16,8 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
   const isEditPage = location.pathname === '/edit';
   const [expUp, setExpUp] = useState(false);
   const [isMax, setIsMax] = useState(false);
+
+  const { user, authLoading, login, logout } = useAuth();
 
   const initialStats = {
     Knowledge: { level: 1, exp: 0 },
@@ -28,9 +34,46 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
     return saved ? JSON.parse(saved) : initialStats;
   });
 
+  // Always keep localStorage as a local fallback/cache
   useEffect(() => {
     localStorage.setItem('stats', JSON.stringify(stats));
   }, [stats]);
+
+  // When user logs in, load their Firestore data (or seed it from local data if first login)
+  useEffect(() => {
+    if (!user) return;
+
+    const loadData = async () => {
+      const userDocRef = doc(db, 'users', user.uid);
+      const snapshot = await getDoc(userDocRef);
+
+      if (snapshot.exists()) {
+        const data = snapshot.data();
+        if (data.stats) setStats(data.stats);
+        if (data.activities) setActivities(data.activities);
+      } else {
+        // first login: push whatever's currently local up to Firestore
+        await setDoc(userDocRef, { stats, activities });
+      }
+    };
+
+    loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  // Sync stats to Firestore whenever they change, if logged in
+  useEffect(() => {
+    if (!user) return;
+    const userDocRef = doc(db, 'users', user.uid);
+    setDoc(userDocRef, { stats }, { merge: true });
+  }, [stats, user]);
+
+  // Sync activities to Firestore whenever they change, if logged in
+  useEffect(() => {
+    if (!user) return;
+    const userDocRef = doc(db, 'users', user.uid);
+    setDoc(userDocRef, { activities }, { merge: true });
+  }, [activities, user]);
 
   const resetStats = () => setStats(initialStats);
 
@@ -82,14 +125,20 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
     setTimeout(() => setExpUp(false), 3500);
   };
 
+  if (authLoading) {
+    return <div className='everything-container'>Loading...</div>;
+  }
+
   return (
     <div className='everything-container'>
       <img className='bg-image' src={redBgPic} alt="" />
       <Header
         onReset={isEditPage ? resetActivities : resetStats}
-        // resetLabel={isEditPage ? 'Reset Activities' : 'Reset Stats'}
         onChangeConfidant={() => navigate('/confidants')}
         currentConfidant={selectedConfidant}
+        user={user}
+        onLogin={login}
+        onLogout={logout}
       />
 
       {isEditPage ? (

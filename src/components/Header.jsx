@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 import playClick from '../utils/playClick.js';
 
-function Header({ onReset, onChangeConfidant, resetLabel = 'Reset' }) {
+function Header({ onReset, onChangeConfidant, resetLabel = 'Reset', user, onLogin, onLogout }) {
     const audioRef = useRef(null);
     const [muted, setMuted] = useState(true);
 
@@ -49,6 +49,15 @@ function Header({ onReset, onChangeConfidant, resetLabel = 'Reset' }) {
         navigate('/edit');
     };
 
+    const handleAuthClick = () => {
+        playClick();
+        if (user) {
+            onLogout();
+        } else {
+            onLogin();
+        }
+    };
+
     return (
         <>
             <div className="header-bar">
@@ -67,6 +76,9 @@ function Header({ onReset, onChangeConfidant, resetLabel = 'Reset' }) {
 
                 </div>
                 <div className='right'>
+                    <button className='dialogue-button header-button auth-button' onClick={handleAuthClick}>
+                        {user ? `Sign Out (${user.displayName?.split(' ')[0] || 'User'})` : 'Sign In'}
+                    </button>
                     <img className='stats-logo' src={statsLogo}></img>
 
                 </div>
