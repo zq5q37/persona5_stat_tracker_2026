@@ -113,10 +113,6 @@
     }
         margin-bottom: 0px;
 }
-.dialogue-container {
-    height: auto;
-    /* width: 100%; */
-}
 }
 
 @media (max-height: 600px) {
