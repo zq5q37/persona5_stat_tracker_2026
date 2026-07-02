@@ -1,10 +1,18 @@
 # Persona 5 Stat Tracker
 
-A Persona 5-inspired stat tracker built with React and Vite. Users can manage character stats, choose activities that raise traits like Knowledge, Guts, Proficiency, Kindness, and Charm, and edit the available activities to suit their lifestyle.
+A Persona 5-inspired stat tracker built with React and Vite. Users can manage character stats, choose activities that raise traits like Knowledge, Guts, Proficiency, Kindness, and Charm, edit the available activities to suit their lifestyle, and switch between confidants for a different in-app companion experience.
+
+### Main Tracker Page
+
+![Main Tracker Page](./screenshots/main-page.png)
+
+### Edit Activities Page
+
+![Edit Page](./screenshots/edit-page.png)
 
 ## Project Description
 
-The app displays a visual stat tracker on the main page and lets users select activities that increment trait values. Stats are persisted in `localStorage`, so progress remains after refreshing the browser. An edit page allows customizing activity names and trait effects.
+The app displays a visual stat tracker on the main page and lets users select activities that increment trait values. Stats are persisted in `localStorage`, so progress remains after refreshing the browser. The app also includes a confidant selection feature that changes the companion character, dialogue, and visual presentation, alongside an edit page for customizing activity names and trait effects.
 
 ## Technologies Used
 
@@ -53,25 +61,13 @@ https://persona5stats.netlify.app/
   - Displays character stats in a Persona 5-inspired UI.
   - Lets users pick activities to improve trait values.
   - Shows visual feedback for level-ups and maxed traits.
+  - Supports choosing a confidant to change the companion character and style.
 - **Edit Page**
   - Customize activity names.
   - Toggle which traits each activity affects.
   - Add or remove activities.
   - Reset the activity list to default values.
-
-## Screenshots
-
-### Main Tracker Page
-
-![Main Tracker Page](./screenshots/main-page.png)
-
-### Edit Activities Page
-
-![Edit Page](./screenshots/edit-page.png)
-
-
-## Notes
-
-- Stats and activity configuration are saved in the browser using `localStorage`.
-- The project uses React Router for navigation between the main tracker and edit pages.
-- Audio playback is available with a mute/unmute toggle in the header.
+  - Change the selected confidant from the same flow.
+- **Header Controls**
+  - Includes reset actions that are tailored to the current page.
+  - Offers a mute/unmute toggle for the background audio.
