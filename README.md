@@ -10,6 +10,10 @@ A Persona 5-inspired stat tracker built with React and Vite. Users can manage ch
 
 ![Edit Page](./screenshots/edit-page.png)
 
+## Live Demo
+
+https://persona5stats.netlify.app/
+
 ## Project Description
 
 The app displays a visual stat tracker on the main page and lets users select activities that increment trait values. Stats are persisted in `localStorage`, so progress remains after refreshing the browser. The app also includes a confidant selection feature that changes the companion character, dialogue, and visual presentation, alongside an edit page for customizing activity names and trait effects.
@@ -51,18 +55,14 @@ The app displays a visual stat tracker on the main page and lets users select ac
   npm run preview
   ```
 
-## Live Demo
-
-https://persona5stats.netlify.app/
-
 ## Pages and Features
 
 - **Main Tracker Page**
   - Displays character stats in a Persona 5-inspired UI.
   - Lets users pick activities to improve trait values.
   - Shows visual feedback for level-ups and maxed traits.
-  - Supports choosing a confidant to change the companion character and style.
 - **Edit Page**
+  - Supports choosing a confidant to change the companion character and style.
   - Customize activity names.
   - Toggle which traits each activity affects.
   - Add or remove activities.
