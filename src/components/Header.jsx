@@ -71,11 +71,13 @@ function Header({ onReset, onChangeConfidant, resetLabel = 'Reset', user, onLogi
                         <img src={muted ? muteLogo : volumeLogo} alt="sound" />
                     </button>
 
+                    <button className='dialogue-button header-button auth-button' onClick={handleAuthClick}>
+                        {user ? `Logout (${user.displayName?.split(' ')[0] || 'User'})` : 'Login'}
+                    </button>
+
                 </div>
                 <div className='right'>
-                    <button className='dialogue-button header-button auth-button' onClick={handleAuthClick}>
-                        {user ? `Sign Out (${user.displayName?.split(' ')[0] || 'User'})` : 'Sign In'}
-                    </button>
+                    
                     <img className='stats-logo' src={statsLogo}></img>
 
                 </div>
