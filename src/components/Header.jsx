@@ -11,14 +11,14 @@ import { useNavigate } from 'react-router-dom';
 
 import playClick from '../utils/playClick.js';
 
-function Header({ onReset, onChangeConfidant }) {
+function Header({ onReset, onChangeConfidant, resetLabel = 'Reset' }) {
     const audioRef = useRef(null);
     const [muted, setMuted] = useState(true);
 
     useEffect(() => {
         audioRef.current = new Audio(backgroundMusic);
         audioRef.current.loop = true;
-        audioRef.current.volume = 0.05;
+        audioRef.current.volume = 0.15;
         audioRef.current.muted = muted;
 
         return () => {
@@ -56,7 +56,7 @@ function Header({ onReset, onChangeConfidant }) {
                     <div className="logo">
                         <img src={p5Logo}></img>
                     </div>
-                    <button className='dialogue-button header-button' onClick={() => { onReset(); playClick(); }}>Reset</button>
+                    <button className='dialogue-button header-button' onClick={() => { onReset(); playClick(); }}>{resetLabel}</button>
                     <button className='dialogue-button header-button' onClick={handleEdit}>Edit</button>
                     {/* <button className='dialogue-button header-button confidant-button' onClick={() => { onChangeConfidant(); playClick(); }}>
                         Confidant

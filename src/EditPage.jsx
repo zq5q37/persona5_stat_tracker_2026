@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Header from './components/Header';
 import redBgPic from './assets/red_bg.webp';
 import './EditPage.css';
 
@@ -22,6 +21,10 @@ export default function EditPage({ activities, setActivities, initialActivities,
   const [draft, setDraft] = useState(() =>
     Object.fromEntries(activities.map(a => [a.name, [...a.traits]]))
   );
+
+  useEffect(() => {
+    setDraft(Object.fromEntries(activities.map(a => [a.name, [...a.traits]])));
+  }, [activities]);
   const [newName, setNewName] = useState('');
   const [newTraits, setNewTraits] = useState([]);
 
@@ -82,8 +85,6 @@ export default function EditPage({ activities, setActivities, initialActivities,
   return (
     <div className='everything-container'>
       <img className='bg-image' src={redBgPic} />
-      {/* <Header onReset={() => handleResetActivities()} /> */}
-      <Header onReset={() => handleResetActivities()} onChangeConfidant={() => navigate('/confidants')} currentConfidant={selectedConfidant} />
 
       <div className='edit-page'>
 

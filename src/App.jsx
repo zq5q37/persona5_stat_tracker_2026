@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import Header from './components/Header'
-import Star from './components/Star'
-import Dialogue from './components/Dialogue'
-import NotesVideo from './components/NotesVideo'
 import redBgPic from './assets/red_bg.webp'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+import HomePage from './HomePage'
+import EditPage from './EditPage'
 
-function App({ activities, setActivities, selectedConfidant }) {
+function App({ activities, setActivities, initialActivities, selectedConfidant, setSelectedConfidant }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isEditPage = location.pathname === '/edit';
   const [expUp, setExpUp] = useState(false);
   const [isMax, setIsMax] = useState(false);
 
@@ -32,6 +33,15 @@ function App({ activities, setActivities, selectedConfidant }) {
   }, [stats]);
 
   const resetStats = () => setStats(initialStats);
+
+  const resetActivities = () => {
+    setActivities(
+      initialActivities.map(activity => ({
+        ...activity,
+        traits: [...activity.traits],
+      }))
+    );
+  };
 
   const handleActivity = (activity) => {
     const { traits, exp: expGain } = activity;
@@ -75,17 +85,31 @@ function App({ activities, setActivities, selectedConfidant }) {
   return (
     <div className='everything-container'>
       <img className='bg-image' src={redBgPic} alt="" />
-      <Header onReset={resetStats} onChangeConfidant={() => navigate('/confidants')} currentConfidant={selectedConfidant} />
-      <Star stats={stats} expUp={expUp} isMax={isMax} />
-      <Dialogue
-        stats={stats}
-        activities={activities}
-        onActivity={handleActivity}
-        expUp={expUp}
-        confidant={selectedConfidant}
+      <Header
+        onReset={isEditPage ? resetActivities : resetStats}
+        resetLabel={isEditPage ? 'Reset Activities' : 'Reset Stats'}
+        onChangeConfidant={() => navigate('/confidants')}
+        currentConfidant={selectedConfidant}
       />
-      {/* {!('ontouchstart' in window) && <NotesVideo expUp={expUp} />} */}
-      <NotesVideo expUp={expUp} />
+
+      {isEditPage ? (
+        <EditPage
+          activities={activities}
+          setActivities={setActivities}
+          initialActivities={initialActivities}
+          selectedConfidant={selectedConfidant}
+          setSelectedConfidant={setSelectedConfidant}
+        />
+      ) : (
+        <HomePage
+          stats={stats}
+          activities={activities}
+          onActivity={handleActivity}
+          expUp={expUp}
+          isMax={isMax}
+          selectedConfidant={selectedConfidant}
+        />
+      )}
     </div>
   );
 }
