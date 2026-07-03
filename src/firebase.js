@@ -1,7 +1,7 @@
 // firebase.js
 import { initializeApp } from "firebase/app";
 import { getAnalytics, isSupported } from "firebase/analytics";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { initializeAuth, indexedDBLocalPersistence, browserPopupRedirectResolver, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -16,15 +16,15 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-// Analytics is optional — don't let it block auth/firestore if unsupported
 isSupported().then((supported) => {
   if (supported) {
     getAnalytics(app);
   }
-}).catch(() => {
-  // silently skip analytics if the environment check itself fails
-});
+}).catch(() => {});
 
-export const auth = getAuth(app);
+export const auth = initializeAuth(app, {
+  persistence: indexedDBLocalPersistence,
+  popupRedirectResolver: browserPopupRedirectResolver,
+});
 export const googleProvider = new GoogleAuthProvider();
 export const db = getFirestore(app);
