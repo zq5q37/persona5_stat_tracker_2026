@@ -2,35 +2,15 @@ import { useState, useEffect } from 'react';
 import {
   onAuthStateChanged,
   signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
   signOut,
 } from 'firebase/auth';
 import { auth, googleProvider } from '../firebase';
-
-// Detect mobile devices (including iOS Safari, where popups are unreliable)
-const isMobile = () => {
-  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-};
 
 function useAuth() {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    // Handle the redirect result after returning from Google sign-in (mobile path)
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result) {
-          alert(`Signed in: ${result.user.email}`); // TEMPORARY
-        } else {
-          alert('No redirect result found'); // TEMPORARY
-        }
-      })
-      .catch((error) => {
-        alert(`Auth error: ${error.code}`); // TEMPORARY
-      });
-
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setAuthLoading(false);
@@ -40,22 +20,11 @@ function useAuth() {
   }, []);
 
   const login = async () => {
-    if (isMobile()) {
-      await signInWithRedirect(auth, googleProvider);
-    } else {
-      try {
-        await signInWithPopup(auth, googleProvider);
-      } catch (error) {
-        // Fallback to redirect if the popup gets blocked on desktop too
-        if (
-          error.code === 'auth/popup-blocked' ||
-          error.code === 'auth/cancelled-popup-request'
-        ) {
-          await signInWithRedirect(auth, googleProvider);
-        } else {
-          console.error('Sign-in error:', error);
-        }
-      }
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error('Sign-in error:', error.code, error.message);
+      alert(`Sign-in failed: ${error.code}`); // TEMPORARY — remove once confirmed working
     }
   };
 
