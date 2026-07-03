@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 import playClick from '../utils/playClick.js';
 
-function Header({ onReset, onChangeConfidant, resetLabel = 'Reset', user, onLogin, onLogout }) {
+function Header({ onChangeConfidant, user, onLogin, onLogout }) {
     const audioRef = useRef(null);
     const [muted, setMuted] = useState(true);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -84,7 +84,7 @@ function Header({ onReset, onChangeConfidant, resetLabel = 'Reset', user, onLogi
                      <button className='sound-button' onClick={toggleMute}>
                         <img src={muted ? muteLogo : volumeLogo} alt="sound" />
                     </button>
-                    <button className='dialogue-button reset-button' onClick={() => { onReset(); playClick(); }}>{resetLabel}</button>
+                    {/* <button className='dialogue-button reset-button' onClick={() => { onReset(); playClick(); }}>{resetLabel}</button> */}
                     <button className='dialogue-button header-button' onClick={handleEdit}>Edit</button>
                    <button className='dialogue-button header-button' onClick={() => { handleHistory(); handleMenuItemClick(); }}>History</button>
 

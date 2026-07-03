@@ -15,7 +15,7 @@ const TRAIT_COLORS = {
   Charm: '#ce93d8',
 };
 
-export default function EditPage({ activities, setActivities, initialActivities, selectedConfidant, onSelectConfidant, setSelectedConfidant }) {
+export default function EditPage({ activities, setActivities, initialActivities, selectedConfidant, onSelectConfidant, setSelectedConfidant, onResetActivities }) {
   const navigate = useNavigate();
 
   const [draft, setDraft] = useState(() =>
@@ -123,6 +123,8 @@ export default function EditPage({ activities, setActivities, initialActivities,
             </div>
           ))}
         </div>
+
+        <button className='dialogue-button reset-activities-button' onClick={() => { onResetActivities(); playClick(); }}>Reset Activities</button>
 
         <div className='edit-section-label edit-section-label--spaced'>
           <span className='edit-label-text'>NEW ACTIVITY</span>

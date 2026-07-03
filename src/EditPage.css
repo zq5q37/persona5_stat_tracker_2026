@@ -254,3 +254,8 @@
     color: white;
     border-color: #ff5252;
 }
+
+.reset-activities-button{
+  margin-right: auto;
+  margin-top: 10px;
+}

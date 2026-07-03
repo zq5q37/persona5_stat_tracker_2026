@@ -141,16 +141,17 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
     <div className='everything-container'>
       <img className='bg-image' src={redBgPic} alt="" />
       <Header
-        onReset={isEditPage ? resetActivities : resetStats}
-        onChangeConfidant={() => navigate('/confidants')}
-        currentConfidant={selectedConfidant}
-        user={user}
+        // onReset={isEditPage ? resetActivities : resetStats}
+        // onChangeConfidant={() => navigate('/confidants')}
+        // currentConfidant={selectedConfidant}
+        // user={user}
         onLogin={login}
         onLogout={logout}
       />
 
       {isEditPage ? (
         <EditPage
+        onResetActivities={resetActivities}
           activities={activities}
           setActivities={setActivities}
           initialActivities={initialActivities}
@@ -159,6 +160,7 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
         />
       ) : (
         <HomePage
+          onResetStats={resetStats}
           stats={stats}
           activities={activities}
           onActivity={handleActivity}
