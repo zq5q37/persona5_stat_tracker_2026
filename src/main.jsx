@@ -7,7 +7,7 @@ import App from './App.jsx'
 import EditPage from './EditPage.jsx'
 import HistoryPage from './HistoryPage.jsx'
 
-const CONFIDANT_OPTIONS = ['morgana', 'futaba', 'makoto'];
+const CONFIDANT_OPTIONS = ['morgana', 'futaba', 'makoto', 'lavenza'];
 
 const initialActivities = [
   { name: "Code", traits: ["Knowledge", "Proficiency"] },
