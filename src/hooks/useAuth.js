@@ -19,9 +19,17 @@ function useAuth() {
 
   useEffect(() => {
     // Handle the redirect result after returning from Google sign-in (mobile path)
-    getRedirectResult(auth).catch((error) => {
-      console.error('Redirect sign-in error:', error);
-    });
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result) {
+          alert(`Signed in: ${result.user.email}`); // TEMPORARY
+        } else {
+          alert('No redirect result found'); // TEMPORARY
+        }
+      })
+      .catch((error) => {
+        alert(`Auth error: ${error.code}`); // TEMPORARY
+      });
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
