@@ -35,6 +35,15 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
     return saved ? JSON.parse(saved) : initialStats;
   });
 
+  const [history, setHistory] = useState(() => {
+    const saved = localStorage.getItem('history');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('history', JSON.stringify(history));
+  }, [history]);
+
   // Always keep localStorage as a local fallback/cache
   useEffect(() => {
     localStorage.setItem('stats', JSON.stringify(stats));
@@ -54,12 +63,13 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
       if (snapshot.exists()) {
         const data = snapshot.data();
         if (data.stats) {
-          setSuppressLevelUp(true); // don't animate this load
+          setSuppressLevelUp(true);
           setStats(data.stats);
         }
         if (data.activities) setActivities(data.activities);
+        if (data.history) setHistory(data.history);
       } else {
-        await setDoc(userDocRef, { stats, activities });
+        await setDoc(userDocRef, { stats, activities, history });
       }
 
       setDataLoaded(true);
@@ -83,6 +93,12 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
     setDoc(userDocRef, { activities }, { merge: true });
   }, [activities, user, dataLoaded]);
 
+  useEffect(() => {
+    if (!user || !dataLoaded) return;
+    const userDocRef = doc(db, 'users', user.uid);
+    setDoc(userDocRef, { history }, { merge: true });
+  }, [history, user, dataLoaded]);
+
   const resetStats = () => setStats(initialStats);
 
   const resetActivities = () => {
@@ -94,7 +110,7 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
     );
   };
 
-  const handleActivity = (activity) => {
+  const handleActivity = (activity, intensityLabel) => {
     const { traits, exp: expGain } = activity;
 
     setStats(prev => {
@@ -126,6 +142,12 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
       setIsMax(willMax);
       handleExpUp();
     }
+
+    // Log this activity to history, newest first
+    setHistory(prev => [
+      { timestamp: Date.now(), activityName: activity.name, intensity: intensityLabel },
+      ...prev,
+    ]);
   };
 
   const handleExpUp = () => {
@@ -151,7 +173,7 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
 
       {isEditPage ? (
         <EditPage
-        onResetActivities={resetActivities}
+          onResetActivities={resetActivities}
           activities={activities}
           setActivities={setActivities}
           initialActivities={initialActivities}

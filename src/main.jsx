@@ -75,7 +75,7 @@ function Root() {
         />
         <Route
           path="/history"
-          element={<HistoryPage activities={activities} />}
+          element={<HistoryPage />}
         />
       </Routes>
     </BrowserRouter>

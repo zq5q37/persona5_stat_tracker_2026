@@ -94,8 +94,8 @@ const Dialogue = ({ stats, activities, onActivity, expUp, confidant = 'morgana' 
     };
 
     // Step 2: pick intensity, then actually log it
-    const handleSelectIntensity = (exp) => {
-        onActivity({ ...selectedActivity, exp });
+    const handleSelectIntensity = (exp, intensityLabel) => {
+        onActivity({ ...selectedActivity, exp }, intensityLabel);
         playClick();
         resetDialogue();
     };
@@ -169,7 +169,7 @@ const Dialogue = ({ stats, activities, onActivity, expUp, confidant = 'morgana' 
                         <button
                             className='dialogue-button'
                             key={label}
-                            onClick={() => handleSelectIntensity(exp)}
+                            onClick={() => handleSelectIntensity(exp, label)}
                         >
                             {label}
                         </button>
