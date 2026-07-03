@@ -144,7 +144,7 @@ function App({ activities, setActivities, initialActivities, selectedConfidant, 
         // onReset={isEditPage ? resetActivities : resetStats}
         // onChangeConfidant={() => navigate('/confidants')}
         // currentConfidant={selectedConfidant}
-        // user={user}
+        user={user}
         onLogin={login}
         onLogout={logout}
       />

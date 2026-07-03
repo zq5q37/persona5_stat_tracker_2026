@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 import playClick from '../utils/playClick.js';
 
-function Header({ onChangeConfidant, user, onLogin, onLogout }) {
+function Header({ user, onLogin, onLogout }) {
     const audioRef = useRef(null);
     const [muted, setMuted] = useState(true);
     const [menuOpen, setMenuOpen] = useState(false);
