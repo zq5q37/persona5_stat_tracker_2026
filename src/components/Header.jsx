@@ -72,7 +72,7 @@ function Header({ onReset, onChangeConfidant, resetLabel = 'Reset', user, onLogi
                     </button>
 
                     <button className='dialogue-button header-button auth-button' onClick={handleAuthClick}>
-                        {user ? `Logout (${user.displayName?.split(' ')[0] || 'User'})` : 'Login'}
+                        {user ? 'Logout' : 'Login'}
                     </button>
 
                 </div>
