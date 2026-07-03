@@ -1,0 +1,71 @@
+.history-page {
+  /* margin-top: 8vh; */
+  min-height: 100vh;
+  padding: 20px;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.history-container {
+  max-width: 800px;
+  margin: 0 auto;
+  /* background-color: rgba(0, 0, 0, 0.9); */
+  /* border: white solid 3px; */
+  /* padding: 30px; */
+  /* border-radius: 8px; */
+}
+
+.history-container h1 {
+  color: white;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2em;
+}
+
+.activities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.activity-item {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: white solid 2px;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.activity-item h3 {
+  color: white;
+  margin: 0 0 10px 0;
+  font-size: 1.1em;
+}
+
+.traits-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.trait-badge {
+  background-color: #333;
+  border: 1px solid white;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.no-activities {
+  color: white;
+  text-align: center;
+  font-size: 1.1em;
+  margin: 30px 0;
+}
+
+.back-button {
+  width: 100%;
+  padding: 10px;
+}

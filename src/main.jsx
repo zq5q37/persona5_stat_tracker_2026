@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import EditPage from './EditPage.jsx'
+import HistoryPage from './HistoryPage.jsx'
 
 const CONFIDANT_OPTIONS = ['morgana', 'futaba', 'makoto'];
 
@@ -71,6 +72,10 @@ function Root() {
               setSelectedConfidant={setSelectedConfidant}
             />
           }
+        />
+        <Route
+          path="/history"
+          element={<HistoryPage activities={activities} />}
         />
       </Routes>
     </BrowserRouter>

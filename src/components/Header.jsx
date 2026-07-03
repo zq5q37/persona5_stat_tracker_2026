@@ -69,6 +69,11 @@ function Header({ onReset, onChangeConfidant, resetLabel = 'Reset', user, onLogi
         navigate('/');
     };
 
+    const handleHistory = () => {
+        playClick();
+        navigate('/history');
+    };
+
     return (
         <>
             <div className="header-bar">
@@ -81,7 +86,7 @@ function Header({ onReset, onChangeConfidant, resetLabel = 'Reset', user, onLogi
                     </button>
                     <button className='dialogue-button reset-button' onClick={() => { onReset(); playClick(); }}>{resetLabel}</button>
                     <button className='dialogue-button header-button' onClick={handleEdit}>Edit</button>
-                   
+                   <button className='dialogue-button header-button' onClick={() => { handleHistory(); handleMenuItemClick(); }}>History</button>
 
                     <button className='dialogue-button header-button auth-button' onClick={handleAuthClick}>
                         {user ? 'Logout' : 'Login'}
@@ -99,6 +104,7 @@ function Header({ onReset, onChangeConfidant, resetLabel = 'Reset', user, onLogi
                     {menuOpen && (
                         <div className='mobile-menu'>
                             <button className='menu-item' onClick={() => { handleEdit(); handleMenuItemClick(); }}>Edit</button>
+                            <button className='menu-item' onClick={() => { handleHistory(); handleMenuItemClick(); }}>History</button>
                             <button className='menu-item' onClick={() => { handleAuthClick(); handleMenuItemClick(); }}>
                                 {user ? 'Logout' : 'Login'}
                             </button>
