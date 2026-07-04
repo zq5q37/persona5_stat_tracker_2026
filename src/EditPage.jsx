@@ -55,7 +55,7 @@ export default function EditPage({ activities, setActivities, initialActivities,
 
   const handleSave = () => {
     setActivities(prev => prev.map(a => ({ ...a, traits: draft[a.name] })));
-    navigate(-1);
+    navigate('/');
   };
 
   const handleDelete = (activityName) => {
