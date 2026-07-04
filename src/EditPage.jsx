@@ -4,6 +4,7 @@ import redBgPic from './assets/red_bg.webp';
 import './EditPage.css';
 
 import ConfidantPanel from './ConfidantPanel.jsx';
+import playClick from './utils/playClick.js';
 
 const ALL_TRAITS = ["Knowledge", "Guts", "Proficiency", "Kindness", "Charm"];
 
@@ -15,7 +16,7 @@ const TRAIT_COLORS = {
   Charm: '#ce93d8',
 };
 
-export default function EditPage({ activities, setActivities, initialActivities, selectedConfidant, onSelectConfidant, setSelectedConfidant, onResetActivities }) {
+export default function EditPage({ activities, setActivities, initialActivities, selectedConfidant, setSelectedConfidant, onResetActivities, userName, setUserName }) {
   const navigate = useNavigate();
 
   const [draft, setDraft] = useState(() =>
@@ -25,8 +26,14 @@ export default function EditPage({ activities, setActivities, initialActivities,
   useEffect(() => {
     setDraft(Object.fromEntries(activities.map(a => [a.name, [...a.traits]])));
   }, [activities]);
+
   const [newName, setNewName] = useState('');
   const [newTraits, setNewTraits] = useState([]);
+  const [nameDraft, setNameDraft] = useState(userName || 'Joker');
+
+  useEffect(() => {
+    setNameDraft(userName || 'Joker');
+  }, [userName]);
 
   const toggleTrait = (activityName, trait) => {
     setDraft(prev => {
@@ -55,6 +62,7 @@ export default function EditPage({ activities, setActivities, initialActivities,
 
   const handleSave = () => {
     setActivities(prev => prev.map(a => ({ ...a, traits: draft[a.name] })));
+    setUserName(nameDraft.trim() || 'Joker');
     navigate('/');
   };
 
@@ -67,26 +75,28 @@ export default function EditPage({ activities, setActivities, initialActivities,
     });
   };
 
-  const handleResetActivities = () => {
-    const resetActivities = initialActivities.map(activity => ({
-      ...activity,
-      traits: [...activity.traits],
-    }));
-
-    setActivities(resetActivities);
-
-    setDraft(
-      Object.fromEntries(
-        resetActivities.map(a => [a.name, [...a.traits]])
-      )
-    );
-  };
-
   return (
     <div className='everything-container'>
       <img className='bg-image' src={redBgPic} />
 
       <div className='edit-page'>
+
+        <div className='edit-section-label'>
+          <span className='edit-label-text'>NAME</span>
+        </div>
+        <div className='edit-card'>
+          <div className='edit-add-row'>
+            <input
+              className='edit-input'
+              type='text'
+              placeholder='Joker'
+              value={nameDraft}
+              onChange={e => setNameDraft(e.target.value)}
+              maxLength={20}
+            />
+          </div>
+        </div>
+
         <div className='edit-section-label'>
           <span className='edit-label-text'>CONFIDANT</span>
         </div>

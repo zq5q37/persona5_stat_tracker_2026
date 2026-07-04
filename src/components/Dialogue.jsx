@@ -24,7 +24,7 @@ const getConfidant = (key) => CONFIDANTS[key] || CONFIDANTS.morgana;
 
 // ── Component ────────────────────────────────────────────────────────────────
 
-const Dialogue = ({ stats, activities, onActivity, expUp, confidant = 'morgana' }) => {
+const Dialogue = ({ stats, activities, onActivity, expUp, confidant = 'morgana', userName = 'Joker' }) => {
 
     const navigate = useNavigate();
     const [dialogueState, setDialogueState] = useState(DIALOGUE_STATE.IDLE);
@@ -36,7 +36,7 @@ const Dialogue = ({ stats, activities, onActivity, expUp, confidant = 'morgana' 
     const isNewUser = Object.values(stats ?? {}).every((stat) => {
         return stat?.level === 1 && stat?.exp === 0;
     });
-
+    const interpolate = (str) => str.replace(/{name}/g, userName);
     useEffect(() => {
         if (dialogueState === DIALOGUE_STATE.IDLE && !expUp) {
             setIdleQuote(randomItem(confidantData.idleQuotes));
@@ -106,28 +106,30 @@ const Dialogue = ({ stats, activities, onActivity, expUp, confidant = 'morgana' 
         const avatarSet = confidantData.images;
 
         if (dialogueState === DIALOGUE_STATE.IDLE && isNewUser) {
-            return { text: confidantData.welcome, pic: avatarSet.idle };
+            return { text: interpolate(confidantData.welcome), pic: avatarSet.idle };
         }
 
         switch (dialogueState) {
             case DIALOGUE_STATE.LOG:
-                return { text: confidantData.logPrompt, pic: avatarSet.smile };
+                return { text: interpolate(confidantData.logPrompt), pic: avatarSet.smile };
 
             case DIALOGUE_STATE.INTENSITY:
-                return { text: confidantData.intensityPrompt(selectedActivity?.name), pic: avatarSet.smile };
+                return { text: interpolate(confidantData.intensityPrompt(selectedActivity?.name)), pic: avatarSet.smile };
 
             case DIALOGUE_STATE.ASSIST:
                 return {
-                    text: assistSuggestion?.suggestion
-                        ? confidantData.assist.hasSuggestion.replace('{lowestStat}', assistSuggestion.lowestStat).replace('{suggestion}', assistSuggestion.suggestion.name)
-                        : confidantData.assist.noSuggestion.replace('{lowestStat}', assistSuggestion?.lowestStat || 'stat'),
+                    text: interpolate(
+                        assistSuggestion?.suggestion
+                            ? confidantData.assist.hasSuggestion.replace('{lowestStat}', assistSuggestion.lowestStat).replace('{suggestion}', assistSuggestion.suggestion.name)
+                            : confidantData.assist.noSuggestion.replace('{lowestStat}', assistSuggestion?.lowestStat || 'stat')
+                    ),
                     pic: avatarSet.grin,
                 };
 
             default:
                 return expUp
-                    ? { text: confidantData.expUpText, pic: avatarSet.star }
-                    : { text: randomItem(confidantData.idleQuotes), pic: avatarSet.idle };
+                    ? { text: interpolate(confidantData.expUpText), pic: avatarSet.star }
+                    : { text: interpolate(randomItem(confidantData.idleQuotes)), pic: avatarSet.idle };
         }
     };
 

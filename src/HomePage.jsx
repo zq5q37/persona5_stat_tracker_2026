@@ -4,7 +4,7 @@ import Star from './components/Star'
 import Dialogue from './components/Dialogue'
 import NotesVideo from './components/NotesVideo'
 
-function HomePage({ stats, activities, onActivity, expUp, isMax, selectedConfidant, suppressLevelUp, onLevelUpHandled, onResetStats }) {
+function HomePage({ stats, activities, onActivity, expUp, isMax, selectedConfidant, suppressLevelUp, onLevelUpHandled, onResetStats, userName }) {
 
   return (
     <>
@@ -26,6 +26,7 @@ function HomePage({ stats, activities, onActivity, expUp, isMax, selectedConfida
         onActivity={onActivity}
         expUp={expUp}
         confidant={selectedConfidant}
+        userName={userName}
       />
       <NotesVideo expUp={expUp} />
     </>

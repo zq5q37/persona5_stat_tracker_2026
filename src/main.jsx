@@ -59,6 +59,11 @@ function Root() {
     return saved && CONFIDANT_OPTIONS.includes(saved) ? saved : 'morgana';
   });
 
+  const [userName, setUserName] = useState(() => {
+    const saved = localStorage.getItem('userName');
+    return saved || 'Joker';
+  });
+
   useEffect(() => {
     localStorage.setItem('activities', JSON.stringify(activities));
   }, [activities]);
@@ -74,6 +79,10 @@ function Root() {
   useEffect(() => {
     localStorage.setItem('selectedConfidant', selectedConfidant);
   }, [selectedConfidant]);
+
+  useEffect(() => {
+    localStorage.setItem('userName', userName);
+  }, [userName]);
 
   useEffect(() => {
     const setAppHeight = () => {
@@ -102,8 +111,9 @@ function Root() {
         }
         if (data.activities) setActivities(data.activities);
         if (data.history) setHistory(data.history);
+        if (data.userName) setUserName(data.userName);
       } else {
-        await setDoc(userDocRef, { stats, activities, history });
+        await setDoc(userDocRef, { stats, activities, history, userName });
       }
 
       setDataLoaded(true);
@@ -130,6 +140,12 @@ function Root() {
     const userDocRef = doc(db, 'users', user.uid);
     setDoc(userDocRef, { history }, { merge: true });
   }, [history, user, dataLoaded]);
+
+  useEffect(() => {
+    if (!user || !dataLoaded) return;
+    const userDocRef = doc(db, 'users', user.uid);
+    setDoc(userDocRef, { userName }, { merge: true });
+  }, [userName, user, dataLoaded]);
 
   const resetStats = () => {
     if (window.confirm('Reset all stats? This cannot be undone.')) {
@@ -228,6 +244,7 @@ function Root() {
                 suppressLevelUp={suppressLevelUp}
                 onLevelUpHandled={() => setSuppressLevelUp(false)}
                 onResetStats={resetStats}
+                userName={userName}
               />
             }
           />
@@ -241,6 +258,8 @@ function Root() {
                 selectedConfidant={selectedConfidant}
                 setSelectedConfidant={setSelectedConfidant}
                 onResetActivities={resetActivities}
+                userName={userName}
+                setUserName={setUserName}
               />
             }
           />

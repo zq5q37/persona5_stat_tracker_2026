@@ -9,8 +9,6 @@ function Layout({ user, onLogin, onLogout, selectedConfidant }) {
         <div className='everything-container'>
             <img className='bg-image' src={redBgPic} alt="" />
             <Header
-                onChangeConfidant={() => navigate('/confidants')}
-                currentConfidant={selectedConfidant}
                 user={user}
                 onLogin={onLogin}
                 onLogout={onLogout}
