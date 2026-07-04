@@ -148,6 +148,12 @@ function Root() {
     }
   };
 
+  const resetHistory = () => {
+    if (window.confirm('Clear all history? This cannot be undone.')) {
+      setHistory([]);
+    }
+  };
+
   const handleExpUp = () => {
     setExpUp(true);
     setTimeout(() => setExpUp(false), 3500);
@@ -240,7 +246,7 @@ function Root() {
           />
           <Route
             path="/history"
-            element={<HistoryPage history={history} />}
+            element={<HistoryPage history={history} onClearHistory={resetHistory} />}
           />
         </Route>
       </Routes>

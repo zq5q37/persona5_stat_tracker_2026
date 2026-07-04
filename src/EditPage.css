@@ -3,7 +3,7 @@
   max-width: 850px;
   /* width:80%; */
   margin: 0 auto;
-  margin-top: 8.5vh;
+  margin-top: 55px;
   font-family: 'Segoe UI', sans-serif;
   height: 100%;
   display: flex;
@@ -23,21 +23,21 @@
 }
 
 .edit-label-text {
-  background: #e63946;
-  color: #fff;
-  font-weight: 700;
-  font-size: 24px;
-  letter-spacing: 0.05em;
-  padding: 5px 20px 6px 10px;
-  clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%);
+  background: #e60004;
+  color: #000000;
+  font-weight: 800;
+  font-size: 26px;
+  /* letter-spacing: 0.05em; */
+  padding: 2px 15px;
+  /* clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%); */
+  border: #000000 solid 4px;
 }
 
 .edit-card {
   background: rgba(0, 0, 0, 0.85);
   border: 2px solid rgba(255, 255, 255, 0.2);
-  /* border-left: 3px solid #e63946; */
-  /* border-radius: 2px; */
   overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
 }
 
 .edit-row {
@@ -73,6 +73,7 @@
 
 .edit-pills--padded {
   padding: 0 14px 10px;
+  justify-content: start;
 }
 
 .edit-pill {
@@ -89,16 +90,16 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
-.edit-pill:hover{
+.edit-pill:hover {
   background-color: white;
   color: black;
 }
 
 @media (hover: hover) and (pointer: fine) {
-.edit-pill:hover{
-  background-color: white;
-  color: black;
-}
+  .edit-pill:hover {
+    background-color: white;
+    color: black;
+  }
 }
 
 .edit-pill:active {
@@ -126,7 +127,7 @@
 }
 
 .edit-add-btn {
-  background: #e63946;
+  background: #d00004;
   color: #fff;
   border: none;
   /* border-radius: 2px; */
@@ -138,7 +139,7 @@
 }
 
 .edit-add-btn:hover {
-    background: #ac1a26;
+  background: #ac1a26;
 }
 
 .edit-actions {
@@ -153,33 +154,33 @@
   border: 3px solid rgb(255, 255, 255);
   color: rgba(255, 255, 255, 0.897);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 0.1em;
   padding: 9px 18px;
   /* border-radius: 3px; */
   cursor: pointer;
 }
 
-.edit-back-btn:hover{
-    color: rgba(0, 0, 0, 0.8);
-    background: #fff;
-    border: 3px solid rgba(0, 0, 0, 0.747);
+.edit-back-btn:hover {
+  color: rgba(0, 0, 0, 0.8);
+  background: #fff;
+  border: 3px solid rgba(0, 0, 0, 0.747);
 }
 
 .edit-save-btn {
-  background: #e63946;
+  background: #d00004;
   border: none;
   color: #fff;
   font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.12em;
+  font-size: 18px;
+  letter-spacing: 0.1em;
   padding: 9px 24px;
   /* border-radius: 2px; */
   cursor: pointer;
 }
 
 .edit-save-btn:hover {
-    background: #ac1a26;
+  background: #ac1a26;
 }
 
 @media (max-width: 480px) {
@@ -229,6 +230,7 @@
 
   .edit-pills--padded {
     padding: 0 10px 8px;
+    margin: auto;
   }
 
   .edit-back-btn,
@@ -239,23 +241,23 @@
 }
 
 .edit-delete-btn {
-    background: transparent;
-    border: 1px solid #555;
-    color: #ff5252;
-    cursor: pointer;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 14px;
-    flex-shrink: 0;
+  background: transparent;
+  border: 1px solid #555;
+  color: #ff5252;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  flex-shrink: 0;
 }
 
 .edit-delete-btn:hover {
-    background: #ff5252;
-    color: white;
-    border-color: #ff5252;
+  background: #ff5252;
+  color: white;
+  border-color: #ff5252;
 }
 
-.reset-activities-button{
+.reset-activities-button {
   margin-right: auto;
   margin-top: 10px;
 }

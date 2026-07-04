@@ -81,26 +81,26 @@ function Header({ user, onLogin, onLogout }) {
                     <div className="logo" onClick={handleHome}>
                         <img src={p5Logo}></img>
                     </div>
-                     <button className='sound-button' onClick={toggleMute}>
-                        <img src={muted ? muteLogo : volumeLogo} alt="sound" />
-                    </button>
+
                     {/* <button className='dialogue-button reset-button' onClick={() => { onReset(); playClick(); }}>{resetLabel}</button> */}
                     <button className='dialogue-button header-button' onClick={handleEdit}>Edit</button>
-                   <button className='dialogue-button header-button' onClick={() => { handleHistory(); handleMenuItemClick(); }}>History</button>
-
+                    <button className='dialogue-button header-button' onClick={() => { handleHistory(); handleMenuItemClick(); }}>History</button>
+                    <button className='sound-button' onClick={toggleMute}>
+                        <img src={muted ? muteLogo : volumeLogo} alt="sound" />
+                    </button>
                     <button className='dialogue-button header-button auth-button' onClick={handleAuthClick}>
                         {user ? 'Logout' : 'Login'}
                     </button>
                 </div>
                 <div className='right'>
-                    
+
                     <img className='stats-logo' src={statsLogo}></img>
 
                     {/* Hamburger Menu for Mobile */}
                     <button className='hamburger-button' onClick={() => setMenuOpen(!menuOpen)}>
                         <img src={hamburgerLogo} alt="menu" />
                     </button>
-                    
+
                     {menuOpen && (
                         <div className='mobile-menu'>
                             <button className='menu-item' onClick={() => { handleEdit(); handleMenuItemClick(); }}>Edit</button>

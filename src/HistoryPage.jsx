@@ -1,14 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import './HistoryPage.css';
 
-const formatEntry = (entry) => {
-  const d = new Date(entry.timestamp);
+const formatDate = (timestamp) => {
+  const d = new Date(timestamp);
   const datePart = `${d.getMonth() + 1}/${d.getDate()}`;
   const timePart = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-  return `[${datePart} ${timePart}] ${entry.activityName} (${entry.intensity} intensity)`;
+  return `${datePart} ${timePart}`;
 };
 
-export default function HistoryPage({ history }) {
+export default function HistoryPage({ history, onClearHistory }) {
   const navigate = useNavigate();
 
   return (
@@ -17,17 +17,37 @@ export default function HistoryPage({ history }) {
         <span className='edit-label-text'>LOG HISTORY</span>
       </div>
 
-      <div className="history-list">
-        {history.length === 0 ? (
-          <p className="history-empty">No activities logged yet.</p>
-        ) : (
-          history.map((entry, i) => (
-            <p key={entry.timestamp ?? i} className="history-entry">
-              {formatEntry(entry)}
-            </p>
-          ))
-        )}
-      </div>
+      {history.length === 0 ? (
+        <p className="history-empty">No activities logged yet.</p>
+      ) : (
+        <table className="history-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Activity</th>
+              <th>Intensity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {history.map((entry, i) => (
+              <tr key={entry.timestamp ?? i}>
+                <td>{formatDate(entry.timestamp)}</td>
+                <td>{entry.activityName}</td>
+                <td>{entry.intensity}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      {history.length > 0 && (
+        <button
+          className="dialogue-button back-button"
+          onClick={onClearHistory}
+        >
+          Clear History
+        </button>
+      )}
 
       <button
         className="dialogue-button back-button"

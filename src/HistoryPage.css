@@ -1,71 +1,49 @@
-.history-page {
-  /* margin-top: 8vh; */
-  min-height: 100vh;
-  padding: 20px;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
-
 .history-container {
-  max-width: 800px;
+  padding: 16px 20px 40px;
+  max-width: 700px;
+  width: 80%;
   margin: 0 auto;
-  /* background-color: rgba(0, 0, 0, 0.9); */
-  /* border: white solid 3px; */
-  /* padding: 30px; */
-  /* border-radius: 8px; */
-}
-
-.history-container h1 {
-  color: white;
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 2em;
-}
-
-.activities-list {
+  margin-top: 55px;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-bottom: 30px;
+  justify-content: center;
 }
 
-.activity-item {
-  background-color: rgba(0, 0, 0, 0.5);
-  border: white solid 2px;
-  padding: 15px;
-  border-radius: 4px;
+.history-table {
+  width: 100%;
+  table-layout: fixed;
+  background: rgb(0, 0, 0);
 }
 
-.activity-item h3 {
-  color: white;
-  margin: 0 0 10px 0;
-  font-size: 1.1em;
+.history-table th {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 22px;
+  border: 3px solid #000000;
 }
 
-.traits-list {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.history-table th:nth-child(1),
+.history-table td:nth-child(1) {
+  width: 120px;
 }
 
-.trait-badge {
-  background-color: #333;
-  border: 1px solid white;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.9em;
+.history-table th:nth-child(3),
+.history-table td:nth-child(3) {
+  width: 120px;
 }
 
-.no-activities {
-  color: white;
-  text-align: center;
-  font-size: 1.1em;
-  margin: 30px 0;
+.history-table td {
+  padding: 8px 12px;
 }
 
 .back-button {
-  width: 100%;
+  margin-right: auto;
+  margin-top: 10px;
   padding: 10px;
 }

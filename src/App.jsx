@@ -1,200 +1,200 @@
-import { useState, useEffect } from 'react'
-import './App.css'
-import Header from './components/Header'
-import redBgPic from './assets/red_bg.webp'
-import { useNavigate, useLocation } from 'react-router-dom'
-import HomePage from './HomePage'
-import EditPage from './EditPage'
-import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { db } from './firebase';
+// import { useState, useEffect } from 'react'
+// import './App.css'
+// import Header from './components/Header'
+// import redBgPic from './assets/red_bg.webp'
+// import { useNavigate, useLocation } from 'react-router-dom'
+// import HomePage from './HomePage'
+// import EditPage from './EditPage'
+// import { doc, setDoc, getDoc } from 'firebase/firestore';
+// import { db } from './firebase';
 
-import useAuth from './hooks/useAuth';
+// import useAuth from './hooks/useAuth';
 
-function App({ activities, setActivities, initialActivities, selectedConfidant, setSelectedConfidant }) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const isEditPage = location.pathname === '/edit';
-  const [expUp, setExpUp] = useState(false);
-  const [isMax, setIsMax] = useState(false);
+// function App({ activities, setActivities, initialActivities, selectedConfidant, setSelectedConfidant }) {
+//   const navigate = useNavigate();
+//   const location = useLocation();
+//   const isEditPage = location.pathname === '/edit';
+//   const [expUp, setExpUp] = useState(false);
+//   const [isMax, setIsMax] = useState(false);
 
-  const { user, authLoading, login, logout } = useAuth();
-  const [dataLoaded, setDataLoaded] = useState(false);
+//   const { user, authLoading, login, logout } = useAuth();
+//   const [dataLoaded, setDataLoaded] = useState(false);
 
-  const initialStats = {
-    Knowledge: { level: 1, exp: 0 },
-    Guts: { level: 1, exp: 0 },
-    Proficiency: { level: 1, exp: 0 },
-    Kindness: { level: 1, exp: 0 },
-    Charm: { level: 1, exp: 0 },
-  };
+//   const initialStats = {
+//     Knowledge: { level: 1, exp: 0 },
+//     Guts: { level: 1, exp: 0 },
+//     Proficiency: { level: 1, exp: 0 },
+//     Kindness: { level: 1, exp: 0 },
+//     Charm: { level: 1, exp: 0 },
+//   };
 
-  const expToNextLevel = (level) => level * 20;
+//   const expToNextLevel = (level) => level * 20;
 
-  const [stats, setStats] = useState(() => {
-    const saved = localStorage.getItem('stats');
-    return saved ? JSON.parse(saved) : initialStats;
-  });
+//   const [stats, setStats] = useState(() => {
+//     const saved = localStorage.getItem('stats');
+//     return saved ? JSON.parse(saved) : initialStats;
+//   });
 
-  const [history, setHistory] = useState(() => {
-    const saved = localStorage.getItem('history');
-    return saved ? JSON.parse(saved) : [];
-  });
+//   const [history, setHistory] = useState(() => {
+//     const saved = localStorage.getItem('history');
+//     return saved ? JSON.parse(saved) : [];
+//   });
 
-  useEffect(() => {
-    localStorage.setItem('history', JSON.stringify(history));
-  }, [history]);
+//   useEffect(() => {
+//     localStorage.setItem('history', JSON.stringify(history));
+//   }, [history]);
 
-  // Always keep localStorage as a local fallback/cache
-  useEffect(() => {
-    localStorage.setItem('stats', JSON.stringify(stats));
-  }, [stats]);
-  const [suppressLevelUp, setSuppressLevelUp] = useState(false);
+//   // Always keep localStorage as a local fallback/cache
+//   useEffect(() => {
+//     localStorage.setItem('stats', JSON.stringify(stats));
+//   }, [stats]);
+//   const [suppressLevelUp, setSuppressLevelUp] = useState(false);
 
-  useEffect(() => {
-    if (!user) {
-      setDataLoaded(false);
-      return;
-    }
+//   useEffect(() => {
+//     if (!user) {
+//       setDataLoaded(false);
+//       return;
+//     }
 
-    const loadData = async () => {
-      const userDocRef = doc(db, 'users', user.uid);
-      const snapshot = await getDoc(userDocRef);
+//     const loadData = async () => {
+//       const userDocRef = doc(db, 'users', user.uid);
+//       const snapshot = await getDoc(userDocRef);
 
-      if (snapshot.exists()) {
-        const data = snapshot.data();
-        if (data.stats) {
-          setSuppressLevelUp(true);
-          setStats(data.stats);
-        }
-        if (data.activities) setActivities(data.activities);
-        if (data.history) setHistory(data.history);
-      } else {
-        await setDoc(userDocRef, { stats, activities, history });
-      }
+//       if (snapshot.exists()) {
+//         const data = snapshot.data();
+//         if (data.stats) {
+//           setSuppressLevelUp(true);
+//           setStats(data.stats);
+//         }
+//         if (data.activities) setActivities(data.activities);
+//         if (data.history) setHistory(data.history);
+//       } else {
+//         await setDoc(userDocRef, { stats, activities, history });
+//       }
 
-      setDataLoaded(true);
-    };
+//       setDataLoaded(true);
+//     };
 
-    loadData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+//     loadData();
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [user]);
 
-  // Sync stats to Firestore whenever they change, if logged in — guarded by dataLoaded
-  useEffect(() => {
-    if (!user || !dataLoaded) return;
-    const userDocRef = doc(db, 'users', user.uid);
-    setDoc(userDocRef, { stats }, { merge: true });
-  }, [stats, user, dataLoaded]);
+//   // Sync stats to Firestore whenever they change, if logged in — guarded by dataLoaded
+//   useEffect(() => {
+//     if (!user || !dataLoaded) return;
+//     const userDocRef = doc(db, 'users', user.uid);
+//     setDoc(userDocRef, { stats }, { merge: true });
+//   }, [stats, user, dataLoaded]);
 
-  // Sync activities to Firestore whenever they change, if logged in — guarded by dataLoaded
-  useEffect(() => {
-    if (!user || !dataLoaded) return;
-    const userDocRef = doc(db, 'users', user.uid);
-    setDoc(userDocRef, { activities }, { merge: true });
-  }, [activities, user, dataLoaded]);
+//   // Sync activities to Firestore whenever they change, if logged in — guarded by dataLoaded
+//   useEffect(() => {
+//     if (!user || !dataLoaded) return;
+//     const userDocRef = doc(db, 'users', user.uid);
+//     setDoc(userDocRef, { activities }, { merge: true });
+//   }, [activities, user, dataLoaded]);
 
-  useEffect(() => {
-    if (!user || !dataLoaded) return;
-    const userDocRef = doc(db, 'users', user.uid);
-    setDoc(userDocRef, { history }, { merge: true });
-  }, [history, user, dataLoaded]);
+//   useEffect(() => {
+//     if (!user || !dataLoaded) return;
+//     const userDocRef = doc(db, 'users', user.uid);
+//     setDoc(userDocRef, { history }, { merge: true });
+//   }, [history, user, dataLoaded]);
 
-  const resetStats = () => setStats(initialStats);
+//   const resetStats = () => setStats(initialStats);
 
-  const resetActivities = () => {
-    setActivities(
-      initialActivities.map(activity => ({
-        ...activity,
-        traits: [...activity.traits],
-      }))
-    );
-  };
+//   const resetActivities = () => {
+//     setActivities(
+//       initialActivities.map(activity => ({
+//         ...activity,
+//         traits: [...activity.traits],
+//       }))
+//     );
+//   };
 
-  const handleActivity = (activity, intensityLabel) => {
-    const { traits, exp: expGain } = activity;
+//   const handleActivity = (activity, intensityLabel) => {
+//     const { traits, exp: expGain } = activity;
 
-    setStats(prev => {
-      const updated = { ...prev };
-      for (const trait of traits) {
-        const stat = prev[trait];
-        if (!stat || stat.level >= 5) continue;
+//     setStats(prev => {
+//       const updated = { ...prev };
+//       for (const trait of traits) {
+//         const stat = prev[trait];
+//         if (!stat || stat.level >= 5) continue;
 
-        const newExp = stat.exp + expGain;
-        const required = expToNextLevel(stat.level);
+//         const newExp = stat.exp + expGain;
+//         const required = expToNextLevel(stat.level);
 
-        updated[trait] = newExp >= required
-          ? { level: stat.level + 1, exp: newExp - required }
-          : { ...stat, exp: newExp };
-      }
-      return updated;
-    });
+//         updated[trait] = newExp >= required
+//           ? { level: stat.level + 1, exp: newExp - required }
+//           : { ...stat, exp: newExp };
+//       }
+//       return updated;
+//     });
 
-    const willMax = traits.some(trait => {
-      const stat = stats[trait];
-      if (!stat || stat.level >= 5) return false;
-      const expAfter = stat.exp + expGain;
-      const willLevelUp = expAfter >= expToNextLevel(stat.level);
-      return willLevelUp && stat.level === 4;
-    });
+//     const willMax = traits.some(trait => {
+//       const stat = stats[trait];
+//       if (!stat || stat.level >= 5) return false;
+//       const expAfter = stat.exp + expGain;
+//       const willLevelUp = expAfter >= expToNextLevel(stat.level);
+//       return willLevelUp && stat.level === 4;
+//     });
 
-    const anyGain = traits.some(trait => stats[trait]?.level < 5);
-    if (anyGain) {
-      setIsMax(willMax);
-      handleExpUp();
-    }
+//     const anyGain = traits.some(trait => stats[trait]?.level < 5);
+//     if (anyGain) {
+//       setIsMax(willMax);
+//       handleExpUp();
+//     }
 
-    // Log this activity to history, newest first
-    setHistory(prev => [
-      { timestamp: Date.now(), activityName: activity.name, intensity: intensityLabel },
-      ...prev,
-    ]);
-  };
+//     // Log this activity to history, newest first
+//     setHistory(prev => [
+//       { timestamp: Date.now(), activityName: activity.name, intensity: intensityLabel },
+//       ...prev,
+//     ]);
+//   };
 
-  const handleExpUp = () => {
-    setExpUp(true);
-    setTimeout(() => setExpUp(false), 3500);
-  };
+//   const handleExpUp = () => {
+//     setExpUp(true);
+//     setTimeout(() => setExpUp(false), 3500);
+//   };
 
-  if (authLoading) {
-    return <div className='everything-container'>Loading...</div>;
-  }
+//   if (authLoading) {
+//     return <div className='everything-container'>Loading...</div>;
+//   }
 
-  return (
-    <div className='everything-container'>
-      <img className='bg-image' src={redBgPic} alt="" />
-      <Header
-        // onReset={isEditPage ? resetActivities : resetStats}
-        // onChangeConfidant={() => navigate('/confidants')}
-        // currentConfidant={selectedConfidant}
-        user={user}
-        onLogin={login}
-        onLogout={logout}
-      />
+//   return (
+//     <div className='everything-container'>
+//       <img className='bg-image' src={redBgPic} alt="" />
+//       <Header
+//         // onReset={isEditPage ? resetActivities : resetStats}
+//         // onChangeConfidant={() => navigate('/confidants')}
+//         // currentConfidant={selectedConfidant}
+//         user={user}
+//         onLogin={login}
+//         onLogout={logout}
+//       />
 
-      {isEditPage ? (
-        <EditPage
-          onResetActivities={resetActivities}
-          activities={activities}
-          setActivities={setActivities}
-          initialActivities={initialActivities}
-          selectedConfidant={selectedConfidant}
-          setSelectedConfidant={setSelectedConfidant}
-        />
-      ) : (
-        <HomePage
-          onResetStats={resetStats}
-          stats={stats}
-          activities={activities}
-          onActivity={handleActivity}
-          expUp={expUp}
-          isMax={isMax}
-          selectedConfidant={selectedConfidant}
-          suppressLevelUp={suppressLevelUp}
-          onLevelUpHandled={() => setSuppressLevelUp(false)}
-        />
-      )}
-    </div>
-  );
-}
+//       {isEditPage ? (
+//         <EditPage
+//           onResetActivities={resetActivities}
+//           activities={activities}
+//           setActivities={setActivities}
+//           initialActivities={initialActivities}
+//           selectedConfidant={selectedConfidant}
+//           setSelectedConfidant={setSelectedConfidant}
+//         />
+//       ) : (
+//         <HomePage
+//           onResetStats={resetStats}
+//           stats={stats}
+//           activities={activities}
+//           onActivity={handleActivity}
+//           expUp={expUp}
+//           isMax={isMax}
+//           selectedConfidant={selectedConfidant}
+//           suppressLevelUp={suppressLevelUp}
+//           onLevelUpHandled={() => setSuppressLevelUp(false)}
+//         />
+//       )}
+//     </div>
+//   );
+// }
 
-export default App
+// export default App
