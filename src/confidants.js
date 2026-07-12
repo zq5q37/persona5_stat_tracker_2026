@@ -18,6 +18,11 @@ import lavenzaAssist from "./assets/characters/lavenza/lavenza_assist.webp";
 import lavenzaLog from "./assets/characters/lavenza/lavenza_log.webp";
 import lavenzaStar from "./assets/characters/lavenza/lavenza_star.webp";
 
+import carolineIdle from "./assets/characters/caroline_justine/caroline_idle.webp";
+import carolineSmile from "./assets/characters/caroline_justine/caroline_smile.webp";
+import justineIdle from "./assets/characters/caroline_justine/justine_idle.webp";
+import justineSmile from "./assets/characters/caroline_justine/justine_smile.webp";
+
 const CONFIDANTS = {
   morgana: {
     key: "morgana",
@@ -118,6 +123,35 @@ const CONFIDANTS = {
     logPrompt: "What would you like to log?",
     intensityPrompt: (activityName) => `How intense was "${activityName}"?`,
     expUpText: "Your progress is steady. Keep moving forward.",
+  },
+  caroline_justine: {
+    key: "caroline_justine",
+    label: "Caroline & Justine",
+    images: {
+      idle: carolineIdle,
+      smile: carolineIdle,
+      grin: justineIdle,
+      star: justineIdle,
+    },
+    welcome:
+      "Listen up, inmate! Justine and I are in charge of your rehabilitation now. Log your next action, and don't make us repeat ourselves.",
+    idleQuotes: [
+      "Hmph! Standing around won't shorten your sentence, inmate.",
+      "Discipline and order are the foundations of true rehabilitation.",
+      "Every wasted second is a step closer to eternal imprisonment!",
+      "Compliance now will be reflected favorably in your record.",
+    ],
+    assist: {
+      hasSuggestion:
+        'Hmph! Your {lowestStat} is pathetic, inmate. Try "{suggestion}" or face the consequences.',
+      noSuggestion:
+        "Your {lowestStat} requires correction, but we lack sufficient data to issue a proper directive.",
+    },
+    logPrompt: "Speak, inmate. What deed shall be entered into your record?",
+    intensityPrompt: (activityName) =>
+      `How grueling was "${activityName}"? Answer truthfully, or else!`,
+    expUpText:
+      "Your rehabilitation proceeds as scheduled. Do not grow complacent.",
   },
 };
 
