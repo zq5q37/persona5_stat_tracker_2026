@@ -1,5 +1,4 @@
 import './App.css'
-import './HomePage.css'
 import Star from './components/Star'
 import Dialogue from './components/Dialogue'
 import NotesVideo from './components/NotesVideo'
