@@ -39,12 +39,12 @@
 
 .history-table th:nth-child(1),
 .history-table td:nth-child(1) {
-  width: 100px;
+  width: 120px;
 }
 
 .history-table th:nth-child(3),
 .history-table td:nth-child(3) {
-  width: 100px;
+  width: 120px;
 }
 
 .history-table td {
@@ -58,6 +58,17 @@
 }
 
 @media (max-width: 650px) {
+
+  .history-table th:nth-child(1),
+  .history-table td:nth-child(1) {
+    width: 100px;
+  }
+
+  .history-table th:nth-child(3),
+  .history-table td:nth-child(3) {
+    width: 100px;
+  }
+
   .history-container td {
     font-size: 16px;
     padding: 6px 8px;
