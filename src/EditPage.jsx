@@ -78,23 +78,24 @@ export default function EditPage({ activities, setActivities, initialActivities,
   return (
     <div className='everything-container'>
       <img className='bg-image' src={redBgPic} />
-
       <div className='edit-page'>
 
-        <div className='edit-section-label'>
-          <span className='edit-label-text'>NAME</span>
-        </div>
-        <div className='edit-card'>
-          <div className='edit-add-row'>
-            <input
-              className='edit-input'
-              type='text'
-              placeholder='Joker'
-              value={nameDraft}
-              onChange={e => setNameDraft(e.target.value)}
-              maxLength={20}
-            />
+        <div className='name-container'>
+          <div className='edit-section-name-label'>
+            <span className='edit-label-text'>NAME</span>
           </div>
+          {/* <div className='edit-card'> */}
+          {/* <div className='edit-add-row'> */}
+          <input
+            className='edit-name-input'
+            type='text'
+            placeholder='Joker'
+            value={nameDraft}
+            onChange={e => setNameDraft(e.target.value)}
+            maxLength={20}
+          />
+          {/* </div> */}
+          {/* </div> */}
         </div>
 
         <div className='edit-section-label'>
