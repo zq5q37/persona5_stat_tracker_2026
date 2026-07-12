@@ -265,14 +265,66 @@
 .name-container {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  /* width: 100%; */
-  /* height: min-content; */
+  width: 100%;
+  padding: 20px 0;
+  gap: 20px;
+  align-items: center;
+}
+
+
+.edit-label-name-text {
+  font-weight: 800;
+  font-size: 36px;
+  color: white;
+  line-height: 0.7;
+  -webkit-text-stroke: 7px black;
+  paint-order: stroke fill;
+  white-space: nowrap;
+
+  span {
+    color: black;
+    background-color: white;
+    -webkit-text-stroke: 0px black;
+    border: 4px solid black;
+    height: min-content;
+    font-size: 38px;
+  }
+
 }
 
 .edit-name-input {
-  background-color: #000000;
+  background-color: #f00507;
   color: white;
-  font-weight: 700;
-  font-size: 22px;
+  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: 0.1em;
+  padding: 6px 12px;
+  border: 3px solid black;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .name-container {
+    gap: 5px;
+  }
+
+  .edit-label-name-text {
+    font-size: 22px;
+    line-height: 1;
+    letter-spacing: 0.2em;
+
+    span {
+      background-color: transparent;
+      border: none;
+      font-size: 22px;
+      -webkit-text-stroke: 7px white;
+      paint-order: stroke fill;
+    }
+  }
+
+  .edit-name-input {
+    font-size: 16px;
+    padding: 6px 8px;
+  }
+
 }

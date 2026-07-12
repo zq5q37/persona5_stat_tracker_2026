@@ -82,20 +82,16 @@ export default function EditPage({ activities, setActivities, initialActivities,
 
         <div className='name-container'>
           <div className='edit-section-name-label'>
-            <span className='edit-label-text'>NAME</span>
+            <span className='edit-label-name-text'><span>S</span>IGN YO<span>UR</span> <br /> NAME</span>
           </div>
-          {/* <div className='edit-card'> */}
-          {/* <div className='edit-add-row'> */}
           <input
             className='edit-name-input'
             type='text'
             placeholder='Joker'
             value={nameDraft}
             onChange={e => setNameDraft(e.target.value)}
-            maxLength={20}
+            maxLength={13}
           />
-          {/* </div> */}
-          {/* </div> */}
         </div>
 
         <div className='edit-section-label'>

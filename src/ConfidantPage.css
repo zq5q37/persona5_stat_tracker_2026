@@ -12,21 +12,16 @@
 
 .character-page__panel {
   background: rgba(10, 10, 20, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-  /* border-radius: 28px; */
   padding: 14px;
-  /* padding-top: 0px; */
-  width: min(100%, 720px);
+  max-width: 850px;
   margin: 0 auto;
   margin-bottom: 20px;
   box-sizing: border-box;
 }
 
 .character-page__header {
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* gap: 10px; */
   text-align: center;
 }
 
