@@ -1,0 +1,8 @@
+.streak-badge {
+    font-size: 22px;
+}
+
+.streak-count {
+    -webkit-text-stroke: 5px black;
+    paint-order: stroke fill;
+}

@@ -10,6 +10,7 @@ import Layout from './Layout.jsx'
 import useAuth from './hooks/useAuth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
+import { computeStreakUpdate } from './utils/streak';
 
 const CONFIDANT_OPTIONS = ['morgana', 'futaba', 'makoto'];
 
@@ -64,6 +65,15 @@ function Root() {
     return saved || 'Joker';
   });
 
+  const [streak, setStreak] = useState(() => {
+    const saved = localStorage.getItem('streak');
+    return saved ? JSON.parse(saved) : { currentStreak: 0, lastActivityDate: null };
+  });
+
+  useEffect(() => {
+    localStorage.setItem('streak', JSON.stringify(streak));
+  }, [streak]);
+
   useEffect(() => {
     localStorage.setItem('activities', JSON.stringify(activities));
   }, [activities]);
@@ -112,6 +122,7 @@ function Root() {
         if (data.activities) setActivities(data.activities);
         if (data.history) setHistory(data.history);
         if (data.userName) setUserName(data.userName);
+        if (data.streak) setStreak(data.streak);
       } else {
         await setDoc(userDocRef, { stats, activities, history, userName });
       }
@@ -146,6 +157,12 @@ function Root() {
     const userDocRef = doc(db, 'users', user.uid);
     setDoc(userDocRef, { userName }, { merge: true });
   }, [userName, user, dataLoaded]);
+
+  useEffect(() => {
+    if (!user || !dataLoaded) return;
+    const userDocRef = doc(db, 'users', user.uid);
+    setDoc(userDocRef, { streak }, { merge: true });
+  }, [streak, user, dataLoaded]);
 
   const resetStats = () => {
     if (window.confirm('Reset all stats? This cannot be undone.')) {
@@ -212,6 +229,8 @@ function Root() {
       { timestamp: Date.now(), activityName: activity.name, intensity: intensityLabel },
       ...prev,
     ]);
+
+    setStreak(prev => computeStreakUpdate(prev.lastActivityDate, prev.currentStreak));
   };
 
   if (authLoading) {
@@ -245,6 +264,7 @@ function Root() {
                 onLevelUpHandled={() => setSuppressLevelUp(false)}
                 onResetStats={resetStats}
                 userName={userName}
+                currentStreak={streak.currentStreak}
               />
             }
           />

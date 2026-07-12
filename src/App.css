@@ -6,7 +6,7 @@
     justify-content: space-between;
     position: relative;
     z-index: 1;
-     overflow: hidden;
+    overflow: hidden;
     /* pointer-events: none; */
 }
 
@@ -56,15 +56,23 @@ body,
     padding: 15px;
 }
 
-.save-container{
+.save-container {
     display: flex;
     flex-direction: row;
     justify-content: end;
 }
 
-.edit-page-container{
+.edit-page-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+}
+
+.top-utils {
+    display: flex;
+    flex-direction: row;
+    margin-top: 55px;
+    gap: 10px;
+    align-items: center;
 }
