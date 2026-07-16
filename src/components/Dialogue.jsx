@@ -16,6 +16,7 @@ const DIALOGUE_STATE = {
     ASSIST: 'assist',
     LOG: 'log',
     INTENSITY: 'intensity',
+    STREAK_REWARD: 'streakReward',
 };
 
 const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -24,7 +25,10 @@ const getConfidant = (key) => CONFIDANTS[key] || CONFIDANTS.morgana;
 
 // ── Component ────────────────────────────────────────────────────────────────
 
-const Dialogue = ({ stats, activities, onActivity, expUp, confidant = 'morgana', userName = 'Joker' }) => {
+const Dialogue = ({ stats, activities, onActivity, expUp,
+    confidant = 'morgana', userName = 'Joker',
+    streakReward, onClaimReward,
+}) => {
 
     const navigate = useNavigate();
     const [dialogueState, setDialogueState] = useState(DIALOGUE_STATE.IDLE);
@@ -45,6 +49,18 @@ const Dialogue = ({ stats, activities, onActivity, expUp, confidant = 'morgana',
     }, [expUp, confidantData.idleQuotes, dialogueState]);
 
     useEffect(() => { resetDialogue(); }, []);
+
+    useEffect(() => {
+        if (streakReward) {
+            setDialogueState(DIALOGUE_STATE.STREAK_REWARD);
+        }
+    }, [streakReward]);
+
+    const handleClaimReward = () => {
+        playClick();
+        onClaimReward();
+        resetDialogue();
+    };
 
     // ── Helpers ──────────────────────────────────────────────────────────────
 
@@ -125,6 +141,13 @@ const Dialogue = ({ stats, activities, onActivity, expUp, confidant = 'morgana',
                     ),
                     pic: avatarSet.grin,
                 };
+            case DIALOGUE_STATE.STREAK_REWARD:
+                return {
+                    text: interpolate(
+                        `Nice, a ${streakReward?.streak}-day streak! Here's ¥${streakReward?.amount}.`
+                    ),
+                    pic: avatarSet.star,
+                };
 
             default:
                 return expUp
@@ -176,6 +199,11 @@ const Dialogue = ({ stats, activities, onActivity, expUp, confidant = 'morgana',
                             {label}
                         </button>
                     ))}
+                    {dialogueState === DIALOGUE_STATE.STREAK_REWARD && (
+                        <button className='dialogue-button' onClick={handleClaimReward}>
+                            Thank you!
+                        </button>
+                    )}
                 </div>
                 <div className='speech-container'>
                     <p>{speechText}</p>

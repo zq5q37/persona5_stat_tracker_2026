@@ -1,0 +1,14 @@
+/* components/YenDisplay.css */
+.yen-display {
+    font-size: 22px;
+    -webkit-text-stroke: 5px black;
+    paint-order: stroke fill;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.yen-icon {
+    font-size: 30px;
+}

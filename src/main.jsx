@@ -11,6 +11,7 @@ import useAuth from './hooks/useAuth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
 import { computeStreakUpdate } from './utils/streak';
+import { computeYenReward } from './utils/yen';
 
 const CONFIDANT_OPTIONS = ['morgana', 'futaba', 'makoto'];
 
@@ -58,6 +59,8 @@ function Root() {
   const [streak, setStreak] = useState(() =>
     loadLocal('streak', { currentStreak: 0, lastActivityDate: null })
   );
+  const [yen, setYen] = useState(() => loadLocal('yen', 0));
+  const [pendingReward, setPendingReward] = useState(null); // { streak, amount } | null
 
   // Persist everything to localStorage on change
   useEffect(() => {
@@ -67,7 +70,8 @@ function Root() {
     localStorage.setItem('selectedConfidant', selectedConfidant);
     localStorage.setItem('userName', userName);
     localStorage.setItem('streak', JSON.stringify(streak));
-  }, [activities, stats, history, selectedConfidant, userName, streak]);
+    localStorage.setItem('yen', JSON.stringify(yen));
+  }, [activities, stats, history, selectedConfidant, userName, streak, yen]);
 
   // Keep --app-height in sync with the viewport (mobile browser chrome)
   useEffect(() => {
@@ -100,8 +104,9 @@ function Root() {
         if (data.history) setHistory(data.history);
         if (data.userName) setUserName(data.userName);
         if (data.streak) setStreak(data.streak);
+        if (data.yen) setYen(data.yen);
       } else {
-        await setDoc(userDocRef, { stats, activities, history, userName });
+        await setDoc(userDocRef, { stats, activities, history, userName, yen });
       }
 
       setDataLoaded(true);
@@ -115,8 +120,8 @@ function Root() {
   useEffect(() => {
     if (!user || !dataLoaded) return;
     const userDocRef = doc(db, 'users', user.uid);
-    setDoc(userDocRef, { stats, activities, history, userName, streak }, { merge: true });
-  }, [stats, activities, history, userName, streak, user, dataLoaded]);
+    setDoc(userDocRef, { stats, activities, history, userName, streak, yen }, { merge: true });
+  }, [stats, activities, history, userName, streak, yen, user, dataLoaded]);
 
   const resetStats = () => {
     if (window.confirm('Reset all stats? This cannot be undone.')) {
@@ -184,7 +189,23 @@ function Root() {
       ...prev,
     ]);
 
-    setStreak(prev => computeStreakUpdate(prev.lastActivityDate, prev.currentStreak));
+    setStreak(prev => {
+      const updated = computeStreakUpdate(prev.lastActivityDate, prev.currentStreak);
+      // Only trigger a reward if the streak actually advanced today
+      if (updated.currentStreak > prev.currentStreak) {
+        setPendingReward({
+          streak: updated.currentStreak,
+          amount: computeYenReward(updated.currentStreak),
+        });
+      }
+      return updated;
+    });
+  };
+
+  const handleClaimReward = () => {
+    if (!pendingReward) return;
+    setYen(prev => prev + pendingReward.amount);
+    setPendingReward(null);
   };
 
   if (authLoading) {
@@ -219,6 +240,9 @@ function Root() {
                 onResetStats={resetStats}
                 userName={userName}
                 currentStreak={streak.currentStreak}
+                yen={yen}
+                pendingReward={pendingReward}
+                onClaimReward={handleClaimReward}
               />
             }
           />
