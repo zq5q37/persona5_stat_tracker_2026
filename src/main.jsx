@@ -32,6 +32,13 @@ const initialStats = {
 
 const expToNextLevel = (level) => level * 20;
 
+// Load a value from localStorage, parsing JSON if requested
+const loadLocal = (key, fallback, isJson = true) => {
+  const saved = localStorage.getItem(key);
+  if (!saved) return fallback;
+  return isJson ? JSON.parse(saved) : saved;
+};
+
 function Root() {
   const { user, authLoading, login, logout } = useAuth();
 
@@ -40,60 +47,29 @@ function Root() {
   const [dataLoaded, setDataLoaded] = useState(false);
   const [suppressLevelUp, setSuppressLevelUp] = useState(false);
 
-  const [activities, setActivities] = useState(() => {
-    const saved = localStorage.getItem('activities');
-    return saved ? JSON.parse(saved) : initialActivities;
-  });
-
-  const [stats, setStats] = useState(() => {
-    const saved = localStorage.getItem('stats');
-    return saved ? JSON.parse(saved) : initialStats;
-  });
-
-  const [history, setHistory] = useState(() => {
-    const saved = localStorage.getItem('history');
-    return saved ? JSON.parse(saved) : [];
-  });
-
+  const [activities, setActivities] = useState(() => loadLocal('activities', initialActivities));
+  const [stats, setStats] = useState(() => loadLocal('stats', initialStats));
+  const [history, setHistory] = useState(() => loadLocal('history', []));
   const [selectedConfidant, setSelectedConfidant] = useState(() => {
-    const saved = localStorage.getItem('selectedConfidant');
-    return saved && CONFIDANT_OPTIONS.includes(saved) ? saved : 'morgana';
+    const saved = loadLocal('selectedConfidant', 'morgana', false);
+    return CONFIDANT_OPTIONS.includes(saved) ? saved : 'morgana';
   });
+  const [userName, setUserName] = useState(() => loadLocal('userName', 'Joker', false));
+  const [streak, setStreak] = useState(() =>
+    loadLocal('streak', { currentStreak: 0, lastActivityDate: null })
+  );
 
-  const [userName, setUserName] = useState(() => {
-    const saved = localStorage.getItem('userName');
-    return saved || 'Joker';
-  });
-
-  const [streak, setStreak] = useState(() => {
-    const saved = localStorage.getItem('streak');
-    return saved ? JSON.parse(saved) : { currentStreak: 0, lastActivityDate: null };
-  });
-
-  useEffect(() => {
-    localStorage.setItem('streak', JSON.stringify(streak));
-  }, [streak]);
-
+  // Persist everything to localStorage on change
   useEffect(() => {
     localStorage.setItem('activities', JSON.stringify(activities));
-  }, [activities]);
-
-  useEffect(() => {
     localStorage.setItem('stats', JSON.stringify(stats));
-  }, [stats]);
-
-  useEffect(() => {
     localStorage.setItem('history', JSON.stringify(history));
-  }, [history]);
-
-  useEffect(() => {
     localStorage.setItem('selectedConfidant', selectedConfidant);
-  }, [selectedConfidant]);
-
-  useEffect(() => {
     localStorage.setItem('userName', userName);
-  }, [userName]);
+    localStorage.setItem('streak', JSON.stringify(streak));
+  }, [activities, stats, history, selectedConfidant, userName, streak]);
 
+  // Keep --app-height in sync with the viewport (mobile browser chrome)
   useEffect(() => {
     const setAppHeight = () => {
       document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
@@ -103,6 +79,7 @@ function Root() {
     return () => window.removeEventListener('resize', setAppHeight);
   }, []);
 
+  // Load user data from Firestore on login
   useEffect(() => {
     if (!user) {
       setDataLoaded(false);
@@ -134,35 +111,12 @@ function Root() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  // Sync all user data to Firestore whenever it changes
   useEffect(() => {
     if (!user || !dataLoaded) return;
     const userDocRef = doc(db, 'users', user.uid);
-    setDoc(userDocRef, { stats }, { merge: true });
-  }, [stats, user, dataLoaded]);
-
-  useEffect(() => {
-    if (!user || !dataLoaded) return;
-    const userDocRef = doc(db, 'users', user.uid);
-    setDoc(userDocRef, { activities }, { merge: true });
-  }, [activities, user, dataLoaded]);
-
-  useEffect(() => {
-    if (!user || !dataLoaded) return;
-    const userDocRef = doc(db, 'users', user.uid);
-    setDoc(userDocRef, { history }, { merge: true });
-  }, [history, user, dataLoaded]);
-
-  useEffect(() => {
-    if (!user || !dataLoaded) return;
-    const userDocRef = doc(db, 'users', user.uid);
-    setDoc(userDocRef, { userName }, { merge: true });
-  }, [userName, user, dataLoaded]);
-
-  useEffect(() => {
-    if (!user || !dataLoaded) return;
-    const userDocRef = doc(db, 'users', user.uid);
-    setDoc(userDocRef, { streak }, { merge: true });
-  }, [streak, user, dataLoaded]);
+    setDoc(userDocRef, { stats, activities, history, userName, streak }, { merge: true });
+  }, [stats, activities, history, userName, streak, user, dataLoaded]);
 
   const resetStats = () => {
     if (window.confirm('Reset all stats? This cannot be undone.')) {
