@@ -151,6 +151,10 @@ function Root() {
     }
   };
 
+  const addYen = () => {
+    setYen(yen + 10);
+  };
+
   const resetHistory = () => {
     if (window.confirm('Clear all history? This cannot be undone.')) {
       setHistory([]);
@@ -266,6 +270,7 @@ function Root() {
                 yen={yen}
                 pendingReward={pendingReward}
                 onClaimReward={handleClaimReward}
+                onAddYen={addYen}
               />
             }
           />

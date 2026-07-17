@@ -8,7 +8,7 @@ import YenDisplay from './components/YenDisplay'
 
 function HomePage({ stats, activities, onActivity, expUp, isMax, selectedConfidant,
   suppressLevelUp, onLevelUpHandled, onResetStats, userName, currentStreak,
-  yen, pendingReward, onClaimReward, }) {
+  yen, pendingReward, onClaimReward, onAddYen }) {
 
   return (
     <>
@@ -17,6 +17,7 @@ function HomePage({ stats, activities, onActivity, expUp, isMax, selectedConfida
           <button className='dialogue-button reset-stats-button' onClick={() => { onResetStats(); }}>Reset Stats</button>
           <StreakBadge currentStreak={currentStreak} />
           <YenDisplay yen={yen} />
+          <button className='dialogue-button reset-stats-button' onClick={() => { onAddYen(); }}>+ Yen</button>
         </div>
 
         <Star
