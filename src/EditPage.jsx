@@ -94,10 +94,10 @@ export default function EditPage({ activities, setActivities, initialActivities,
           />
         </div>
 
-        <div className='edit-section-label'>
+        {/* <div className='edit-section-label'>
           <span className='edit-label-text'>CONFIDANT</span>
-        </div>
-        <ConfidantPanel selectedConfidant={selectedConfidant} onSelectConfidant={setSelectedConfidant} />
+        </div> */}
+        {/* <ConfidantPanel selectedConfidant={selectedConfidant} onSelectConfidant={setSelectedConfidant} /> */}
 
         <div className='edit-section-label'>
           <span className='edit-label-text'>ACTIVITIES</span>

@@ -74,6 +74,11 @@ function Header({ user, onLogin, onLogout }) {
         navigate('/history');
     };
 
+    const handleConfidant = () => {
+        playClick();
+        navigate('/confidants');
+    };
+
     return (
         <>
             <div className="header-bar">
@@ -85,6 +90,7 @@ function Header({ user, onLogin, onLogout }) {
                     {/* <button className='dialogue-button reset-button' onClick={() => { onReset(); playClick(); }}>{resetLabel}</button> */}
                     <button className='dialogue-button header-button' onClick={handleEdit}>Edit</button>
                     <button className='dialogue-button header-button' onClick={() => { handleHistory(); handleMenuItemClick(); }}>History</button>
+                    <button className='dialogue-button header-button' onClick={() => { handleConfidant(); handleMenuItemClick(); }}>Confidant</button>
                     <button className='sound-button' onClick={toggleMute}>
                         <img src={muted ? muteLogo : volumeLogo} alt="sound" />
                     </button>
@@ -105,6 +111,7 @@ function Header({ user, onLogin, onLogout }) {
                         <div className='mobile-menu'>
                             <button className='menu-item' onClick={() => { handleEdit(); handleMenuItemClick(); }}>Edit</button>
                             <button className='menu-item' onClick={() => { handleHistory(); handleMenuItemClick(); }}>History</button>
+                            <button className='menu-item' onClick={() => { handleConfidant(); handleMenuItemClick(); }}>Confidant</button>
                             <button className='menu-item' onClick={() => { handleAuthClick(); handleMenuItemClick(); }}>
                                 {user ? 'Logout' : 'Login'}
                             </button>

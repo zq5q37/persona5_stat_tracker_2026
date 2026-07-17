@@ -6,12 +6,14 @@ import './index.css'
 import HomePage from './HomePage.jsx'
 import EditPage from './EditPage.jsx'
 import HistoryPage from './HistoryPage.jsx'
+import ConfidantPage from './ConfidantPage.jsx'
 import Layout from './Layout.jsx'
 import useAuth from './hooks/useAuth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
 import { computeStreakUpdate } from './utils/streak';
 import { computeYenReward } from './utils/yen';
+import { rollGacha, GACHA_COST, DUPLICATE_REFUND } from './utils/gacha';
 
 const CONFIDANT_OPTIONS = ['morgana', 'futaba', 'makoto'];
 
@@ -63,6 +65,12 @@ function Root() {
   const [yen, setYen] = useState(() => loadLocal('yen', 0));
   const [pendingReward, setPendingReward] = useState(null); // { streak, amount } | null
 
+  const [unlockedConfidants, setUnlockedConfidants] = useState(() =>
+    loadLocal('unlockedConfidants', ['morgana'])
+  );
+  const [gachaResult, setGachaResult] = useState(null); // { key, isDuplicate } | null
+
+
   // Persist everything to localStorage on change
   useEffect(() => {
     localStorage.setItem('activities', JSON.stringify(activities));
@@ -72,7 +80,8 @@ function Root() {
     localStorage.setItem('userName', userName);
     localStorage.setItem('streak', JSON.stringify(streak));
     localStorage.setItem('yen', JSON.stringify(yen));
-  }, [activities, stats, history, selectedConfidant, userName, streak, yen]);
+    localStorage.setItem('unlockedConfidants', JSON.stringify(unlockedConfidants));
+  }, [activities, stats, history, selectedConfidant, userName, streak, yen, unlockedConfidants]);
 
   // Keep --app-height in sync with the viewport (mobile browser chrome)
   useEffect(() => {
@@ -106,8 +115,9 @@ function Root() {
         if (data.userName) setUserName(data.userName);
         if (data.streak) setStreak(data.streak);
         if (data.yen) setYen(data.yen);
+        if (data.unlockedConfidants) setUnlockedConfidants(data.unlockedConfidants);
       } else {
-        await setDoc(userDocRef, { stats, activities, history, userName, yen });
+        await setDoc(userDocRef, { stats, activities, history, userName, yen, unlockedConfidants });
       }
 
       setDataLoaded(true);
@@ -121,8 +131,8 @@ function Root() {
   useEffect(() => {
     if (!user || !dataLoaded) return;
     const userDocRef = doc(db, 'users', user.uid);
-    setDoc(userDocRef, { stats, activities, history, userName, streak, yen }, { merge: true });
-  }, [stats, activities, history, userName, streak, yen, user, dataLoaded]);
+    setDoc(userDocRef, { stats, activities, history, userName, streak, yen, unlockedConfidants }, { merge: true });
+  }, [stats, activities, history, userName, streak, yen, unlockedConfidants, user, dataLoaded]);
 
   const resetStats = () => {
     if (window.confirm('Reset all stats? This cannot be undone.')) {
@@ -208,6 +218,18 @@ function Root() {
     setYen(prev => prev + pendingReward.amount);
     setPendingReward(null);
   };
+  const handleGachaRoll = () => {
+    if (yen < GACHA_COST) return;
+
+    const key = rollGacha();
+    const isDuplicate = unlockedConfidants.includes(key);
+
+    setYen(prev => prev - GACHA_COST + (isDuplicate ? DUPLICATE_REFUND : 0));
+    if (!isDuplicate) {
+      setUnlockedConfidants(prev => [...prev, key]);
+    }
+    setGachaResult({ key, isDuplicate });
+  };
 
   if (authLoading) {
     return <div className='everything-container'>Loading...</div>;
@@ -265,6 +287,20 @@ function Root() {
           <Route
             path="/history"
             element={<HistoryPage history={history} onClearHistory={resetHistory} />}
+          />
+          <Route
+            path="/confidants"
+            element={
+              <ConfidantPage
+                selectedConfidant={selectedConfidant}
+                onSelectConfidant={setSelectedConfidant}
+                unlockedConfidants={unlockedConfidants}
+                yen={yen}
+                onGachaRoll={handleGachaRoll}
+                gachaResult={gachaResult}
+                onDismissGachaResult={() => setGachaResult(null)}
+              />
+            }
           />
         </Route>
       </Routes>
