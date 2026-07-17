@@ -36,8 +36,9 @@ const expToNextLevel = (level) => level * 20;
 // Load a value from localStorage, parsing JSON if requested
 const loadLocal = (key, fallback, isJson = true) => {
   const saved = localStorage.getItem(key);
-  if (!saved) return fallback;
-  return isJson ? JSON.parse(saved) : saved;
+  if (saved === null || saved === undefined) return fallback;
+  const parsed = isJson ? JSON.parse(saved) : saved;
+  return parsed ?? fallback;
 };
 
 function Root() {
@@ -239,7 +240,7 @@ function Root() {
                 onLevelUpHandled={() => setSuppressLevelUp(false)}
                 onResetStats={resetStats}
                 userName={userName}
-                currentStreak={streak.currentStreak}
+                currentStreak={streak.currentStreak ?? 0}
                 yen={yen}
                 pendingReward={pendingReward}
                 onClaimReward={handleClaimReward}

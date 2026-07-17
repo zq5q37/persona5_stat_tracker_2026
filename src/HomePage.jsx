@@ -14,7 +14,7 @@ function HomePage({ stats, activities, onActivity, expUp, isMax, selectedConfida
     <>
       <div>
         <div className='top-utils'>
-          <button className='dialogue-button reset-stats-button' onClick={() => { onResetStats(); playClick(); }}>Reset Stats</button>
+          <button className='dialogue-button reset-stats-button' onClick={() => { onResetStats(); }}>Reset Stats</button>
           <StreakBadge currentStreak={currentStreak} />
           <YenDisplay yen={yen} />
         </div>

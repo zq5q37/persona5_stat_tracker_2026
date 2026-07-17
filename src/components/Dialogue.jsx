@@ -50,12 +50,6 @@ const Dialogue = ({ stats, activities, onActivity, expUp,
 
     useEffect(() => { resetDialogue(); }, []);
 
-    useEffect(() => {
-        if (streakReward) {
-            setDialogueState(DIALOGUE_STATE.STREAK_REWARD);
-        }
-    }, [streakReward]);
-
     const handleClaimReward = () => {
         playClick();
         onClaimReward();
@@ -115,6 +109,13 @@ const Dialogue = ({ stats, activities, onActivity, expUp,
         playClick();
         resetDialogue();
     };
+
+    useEffect(() => {
+        if (streakReward) {
+            setDialogueState(DIALOGUE_STATE.STREAK_REWARD);
+            console.log("Streak reward triggered")
+        }
+    }, [streakReward]);
 
     // ── Derived state ────────────────────────────────────────────────────────
 
