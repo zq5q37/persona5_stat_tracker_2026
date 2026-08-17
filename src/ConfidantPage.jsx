@@ -2,9 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import Header from './components/Header';
 import redBgPic from './assets/red_bg.webp';
 import { CONFIDANT_LIST, DEFAULT_CONFIDANT } from './confidants.js';
-import { GACHA_COST, DUPLICATE_REFUND } from './utils/gacha';
+import { GACHA_COST } from './utils/gacha';
 import './ConfidantPage.css';
 import YenDisplay from './components/YenDisplay.jsx';
+import GachaReveal from './components/GachaReveal.jsx';
 
 const CHARACTER_OPTIONS = CONFIDANT_LIST;
 
@@ -59,16 +60,11 @@ export default function ConfidantPage({
                     })}
                 </div>
 
-                {gachaResult && (
-                    <div className='gacha-result-overlay' onClick={onDismissGachaResult}>
-                        <p>
-                            {gachaResult.isDuplicate
-                                ? `Already had this one — refunded ¥${DUPLICATE_REFUND}.`
-                                : `Unlocked a new confidant!`}
-                        </p>
-                    </div>
-                )}
             </section>
+
+            {gachaResult && (
+                <GachaReveal result={gachaResult} onDismiss={onDismissGachaResult} />
+            )}
 
             <div className='character-page__footer'>
                 <button
