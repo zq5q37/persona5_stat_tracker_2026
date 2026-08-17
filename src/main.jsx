@@ -153,7 +153,7 @@ function Root() {
   };
 
   const addYen = () => {
-    setYen(yen + 10);
+    setYen(yen + 300);
   };
 
   const resetConfidants = () => {
@@ -232,10 +232,19 @@ function Root() {
     const isDuplicate = unlockedConfidants.includes(key);
 
     setYen(prev => prev - GACHA_COST + (isDuplicate ? DUPLICATE_REFUND : 0));
-    if (!isDuplicate) {
-      setUnlockedConfidants(prev => [...prev, key]);
-    }
     setGachaResult({ key, isDuplicate });
+  };
+
+  // The unlock lands only once the reveal is closed, so the panel behind it
+  // doesn't spoil the card. Closing without flipping still grants it — the
+  // roll was already paid for.
+  const handleDismissGachaResult = () => {
+    if (gachaResult && !gachaResult.isDuplicate) {
+      setUnlockedConfidants(prev =>
+        prev.includes(gachaResult.key) ? prev : [...prev, gachaResult.key]
+      );
+    }
+    setGachaResult(null);
   };
 
   if (authLoading) {
@@ -307,7 +316,7 @@ function Root() {
                 onGachaRoll={handleGachaRoll}
                 onResetConfidants={resetConfidants}
                 gachaResult={gachaResult}
-                onDismissGachaResult={() => setGachaResult(null)}
+                onDismissGachaResult={handleDismissGachaResult}
               />
             }
           />
