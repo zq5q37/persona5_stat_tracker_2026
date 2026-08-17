@@ -14,6 +14,7 @@ import { db } from './firebase';
 import { computeStreakUpdate } from './utils/streak';
 import { computeActivityReward } from './utils/yen';
 import { rollGacha, GACHA_COST, DUPLICATE_REFUND } from './utils/gacha';
+import { DEFAULT_CONFIDANT } from './confidants.js';
 
 const CONFIDANT_OPTIONS = ['morgana', 'futaba', 'makoto'];
 
@@ -153,6 +154,13 @@ function Root() {
 
   const addYen = () => {
     setYen(yen + 10);
+  };
+
+  const resetConfidants = () => {
+    if (window.confirm('Remove all confidants except Morgana? This cannot be undone.')) {
+      setUnlockedConfidants([DEFAULT_CONFIDANT]);
+      setSelectedConfidant(DEFAULT_CONFIDANT);
+    }
   };
 
   const resetHistory = () => {
@@ -297,6 +305,7 @@ function Root() {
                 unlockedConfidants={unlockedConfidants}
                 yen={yen}
                 onGachaRoll={handleGachaRoll}
+                onResetConfidants={resetConfidants}
                 gachaResult={gachaResult}
                 onDismissGachaResult={() => setGachaResult(null)}
               />

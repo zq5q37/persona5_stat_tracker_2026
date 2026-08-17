@@ -22,6 +22,16 @@
   box-sizing: border-box;
 }
 
+/* Matches the panel's width so the button lines up with its left edge,
+   the way "Reset Activities" sits under the card on the edit page */
+.character-page__footer {
+  display: flex;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 0 0 40px;
+  box-sizing: border-box;
+}
+
 .character-page__header {
   text-align: center;
   padding-bottom: 20px;

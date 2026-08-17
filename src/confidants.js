@@ -157,4 +157,7 @@ const CONFIDANTS = {
 
 const CONFIDANT_LIST = Object.values(CONFIDANTS);
 
-export { CONFIDANTS, CONFIDANT_LIST };
+// The confidant everyone starts with, and the one we fall back to on a reset
+const DEFAULT_CONFIDANT = "morgana";
+
+export { CONFIDANTS, CONFIDANT_LIST, DEFAULT_CONFIDANT };

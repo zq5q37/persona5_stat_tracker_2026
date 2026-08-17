@@ -1,10 +1,11 @@
-import { CONFIDANT_LIST } from '../confidants.js';
+import { CONFIDANT_LIST } from "../confidants.js";
 
-export const GACHA_COST = 5;
-export const DUPLICATE_REFUND = 1; // yen back if you roll one you already have
+export const GACHA_COST = 300;
+export const DUPLICATE_REFUND = 50; // yen back if you roll one you already have
 
 // Returns a random confidant key, uniform chance across all confidants
 export const rollGacha = () => {
-    const pick = CONFIDANT_LIST[Math.floor(Math.random() * CONFIDANT_LIST.length)];
-    return pick.key;
+  const pick =
+    CONFIDANT_LIST[Math.floor(Math.random() * CONFIDANT_LIST.length)];
+  return pick.key;
 };
