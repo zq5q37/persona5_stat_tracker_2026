@@ -14,9 +14,7 @@ import { db } from './firebase';
 import { computeStreakUpdate } from './utils/streak';
 import { computeActivityReward } from './utils/yen';
 import { rollGacha, GACHA_COST, DUPLICATE_REFUND } from './utils/gacha';
-import { DEFAULT_CONFIDANT } from './confidants.js';
-
-const CONFIDANT_OPTIONS = ['morgana', 'futaba', 'makoto'];
+import { CONFIDANT_KEYS, DEFAULT_CONFIDANT } from './confidants.js';
 
 const initialActivities = [
   { name: "Code", traits: ["Knowledge", "Proficiency"] },
@@ -56,8 +54,8 @@ function Root() {
   const [stats, setStats] = useState(() => loadLocal('stats', initialStats));
   const [history, setHistory] = useState(() => loadLocal('history', []));
   const [selectedConfidant, setSelectedConfidant] = useState(() => {
-    const saved = loadLocal('selectedConfidant', 'morgana', false);
-    return CONFIDANT_OPTIONS.includes(saved) ? saved : 'morgana';
+    const saved = loadLocal('selectedConfidant', DEFAULT_CONFIDANT, false);
+    return CONFIDANT_KEYS.includes(saved) ? saved : DEFAULT_CONFIDANT;
   });
   const [userName, setUserName] = useState(() => loadLocal('userName', 'Joker', false));
   const [streak, setStreak] = useState(() =>
@@ -67,7 +65,7 @@ function Root() {
   const [pendingReward, setPendingReward] = useState(null); // { streak, amount } | null
 
   const [unlockedConfidants, setUnlockedConfidants] = useState(() =>
-    loadLocal('unlockedConfidants', ['morgana'])
+    loadLocal('unlockedConfidants', [DEFAULT_CONFIDANT])
   );
   const [gachaResult, setGachaResult] = useState(null); // { key, isDuplicate } | null
 

@@ -155,9 +155,186 @@ const CONFIDANTS = {
   },
 };
 
+// ─── Characters awaiting art ────────────────────────────────────────────────
+//
+// To activate one of the drafts below, run
+//   npm run confidants -- add <key> <idle> <smile> <grin> <star>
+// which converts the four source images to .webp and writes them into
+// src/assets/characters/<key>/ under the names looked up here.
+//
+// The confidant then shows up in the picker and the gacha pool on its own.
+// Until all four exist the draft is skipped, so a half-finished set never
+// breaks the build or puts a broken image on the page.
+
+const CHARACTER_FILES = import.meta.glob("./assets/characters/*/*.webp", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+
+const FACES = ["idle", "smile", "grin", "star"];
+
+const resolveImages = (key) => {
+  const images = {};
+  for (const face of FACES) {
+    const url = CHARACTER_FILES[`./assets/characters/${key}/${key}_${face}.webp`];
+    if (!url) return null;
+    images[face] = url;
+  }
+  return images;
+};
+
+const DRAFT_CONFIDANTS = {
+  ryuji: {
+    key: "ryuji",
+    label: "Ryuji",
+    welcome:
+      "Yo, {name}! Ready to shake things up? Let's get after it already.",
+    idleQuotes: [
+      "C'mon {name}, don't just stand there!",
+      "Slow progress is still progress, man.",
+      "You got this. Just don't half-ass it.",
+    ],
+    assist: {
+      hasSuggestion: 'Your {lowestStat}\'s draggin\', man. Go hit "{suggestion}"!',
+      noSuggestion:
+        "Your {lowestStat} is weak sauce. Make somethin' for it, would ya?",
+    },
+    logPrompt: "Whatcha gonna do, {name}?",
+    intensityPrompt: (activityName) => `How hard'd you go on "${activityName}"?`,
+    expUpText: "Hell yeah! You're gettin' stronger, {name}!",
+  },
+  ann: {
+    key: "ann",
+    label: "Ann",
+    welcome:
+      "Hey, {name}! Let's make this fun — I'll cheer you on the whole way.",
+    idleQuotes: [
+      "You're doing better than you think, {name}.",
+      "Take a break if you need one. Then get right back up!",
+      "Ugh, I'd kill for some crepes right now...",
+    ],
+    assist: {
+      hasSuggestion: 'Your {lowestStat} could use some love. How about "{suggestion}"?',
+      noSuggestion:
+        "Your {lowestStat} is lagging behind. Maybe add an activity for it?",
+    },
+    logPrompt: "So what's the plan, {name}?",
+    intensityPrompt: (activityName) => `How rough was "${activityName}"?`,
+    expUpText: "See? You're growing, {name}! I knew you had it in you.",
+  },
+  yusuke: {
+    key: "yusuke",
+    label: "Yusuke",
+    welcome: "Ah, {name}. Let us sculpt something worthwhile from your days.",
+    idleQuotes: [
+      "Discipline is the frame upon which beauty is stretched.",
+      "Even a blank canvas begins with a single stroke.",
+      "I find myself short on funds again... but do continue.",
+    ],
+    assist: {
+      hasSuggestion:
+        'Your {lowestStat} lacks composition. Perhaps "{suggestion}" would balance it.',
+      noSuggestion:
+        "Your {lowestStat} is wanting, yet I have no subject to suggest.",
+    },
+    logPrompt: "What shall you create today, {name}?",
+    intensityPrompt: (activityName) =>
+      `With what intensity did you approach "${activityName}"?`,
+    expUpText: "Remarkable. Your form grows more refined, {name}.",
+  },
+  haru: {
+    key: "haru",
+    label: "Haru",
+    welcome: "Hello, {name}. Shall we tend to your growth together? Fufu.",
+    idleQuotes: [
+      "Every garden needs patience, {name}.",
+      "Small, steady care yields the best harvest.",
+      "Would you like some coffee before we begin?",
+    ],
+    assist: {
+      hasSuggestion:
+        'Your {lowestStat} looks a little wilted. Perhaps "{suggestion}" would help?',
+      noSuggestion:
+        "Your {lowestStat} needs tending, though I've nothing to suggest just yet.",
+    },
+    logPrompt: "What would you like to do today, {name}?",
+    intensityPrompt: (activityName) => `How demanding was "${activityName}"?`,
+    expUpText: "My, you're blossoming beautifully, {name}.",
+  },
+  akechi: {
+    key: "akechi",
+    label: "Akechi",
+    welcome:
+      "A pleasure, {name}. Let's see whether your habits withstand scrutiny.",
+    idleQuotes: [
+      "Consistency is the most damning evidence of character.",
+      "Idle hands, {name}. Shall we?",
+      "I've reviewed your record. It's... promising.",
+    ],
+    assist: {
+      hasSuggestion:
+        'Your {lowestStat} is the weakest link. I\'d recommend "{suggestion}".',
+      noSuggestion:
+        "Your {lowestStat} is deficient, though the data gives me nothing to suggest.",
+    },
+    logPrompt: "What will you commit to, {name}?",
+    intensityPrompt: (activityName) =>
+      `How taxing was "${activityName}", truthfully?`,
+    expUpText: "Impressive, {name}. Though I'd expect nothing less.",
+  },
+  sojiro: {
+    key: "sojiro",
+    label: "Sojiro",
+    welcome: "So you're the one, huh? Fine. Pull up a stool, {name}.",
+    idleQuotes: [
+      "Take your time. Good coffee can't be rushed.",
+      "You look like you could use a curry.",
+      "Don't make a mess of things, kid.",
+    ],
+    assist: {
+      hasSuggestion:
+        'Your {lowestStat} is running thin. Try "{suggestion}", why don\'t you.',
+      noSuggestion:
+        "Your {lowestStat}'s lacking. Figure out something for it yourself.",
+    },
+    logPrompt: "What'll it be, {name}?",
+    intensityPrompt: (activityName) =>
+      `How much did "${activityName}" take out of you?`,
+    expUpText: "Heh. Not bad, {name}. Not bad at all.",
+  },
+  sae: {
+    key: "sae",
+    label: "Sae",
+    welcome: "Let's be efficient about this, {name}. Show me results.",
+    idleQuotes: [
+      "Excuses don't hold up under cross-examination.",
+      "Hesitation costs you time you can't recover.",
+      "...Don't push yourself to the point of collapse.",
+    ],
+    assist: {
+      hasSuggestion:
+        'The evidence points to your {lowestStat}. Address it with "{suggestion}".',
+      noSuggestion:
+        "Your {lowestStat} is the weak point, but I lack the evidence to advise further.",
+    },
+    logPrompt: "State your intent, {name}.",
+    intensityPrompt: (activityName) => `How demanding was "${activityName}"?`,
+    expUpText: "Acceptable progress, {name}. Keep it up.",
+  },
+};
+
+for (const [key, draft] of Object.entries(DRAFT_CONFIDANTS)) {
+  const images = resolveImages(key);
+  if (images) CONFIDANTS[key] = { ...draft, images };
+}
+
 const CONFIDANT_LIST = Object.values(CONFIDANTS);
+
+// Every key that is actually playable right now — drafts without art are absent
+const CONFIDANT_KEYS = CONFIDANT_LIST.map((confidant) => confidant.key);
 
 // The confidant everyone starts with, and the one we fall back to on a reset
 const DEFAULT_CONFIDANT = "morgana";
 
-export { CONFIDANTS, CONFIDANT_LIST, DEFAULT_CONFIDANT };
+export { CONFIDANTS, CONFIDANT_LIST, CONFIDANT_KEYS, DEFAULT_CONFIDANT };
