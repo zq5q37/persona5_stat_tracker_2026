@@ -12,7 +12,7 @@ import useAuth from './hooks/useAuth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
 import { computeStreakUpdate } from './utils/streak';
-import { computeYenReward } from './utils/yen';
+import { computeActivityReward } from './utils/yen';
 import { rollGacha, GACHA_COST, DUPLICATE_REFUND } from './utils/gacha';
 
 const CONFIDANT_OPTIONS = ['morgana', 'futaba', 'makoto'];
@@ -206,13 +206,8 @@ function Root() {
 
     setStreak(prev => {
       const updated = computeStreakUpdate(prev.lastActivityDate, prev.currentStreak);
-      // Only trigger a reward if the streak actually advanced today
-      if (updated.currentStreak > prev.currentStreak) {
-        setPendingReward({
-          streak: updated.currentStreak,
-          amount: computeYenReward(updated.currentStreak),
-        });
-      }
+      const reward = computeActivityReward(prev, updated);
+      if (reward) setPendingReward(reward);
       return updated;
     });
   };
