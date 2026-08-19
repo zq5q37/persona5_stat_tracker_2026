@@ -1,0 +1,245 @@
+/* Sequential ramp, one hue (P5 red), validated against the #0a0a14 surface with
+   scripts/validate_palette.js --ordinal --mode dark:
+   monotone lightness, all adjacent gaps >= 0.06 L, darkest step 2.09:1 vs
+   surface, hue spread 3 degrees. Do not hand-tweak these without re-running it.
+
+   The app has no light mode -- the red background image is the only ground --
+   so this commits to the dark surface rather than shipping an unused flip. */
+.heatmap {
+  --heat-surface: #0a0a14;
+  --heat-text: #ffffff;
+  --heat-secondary: #c3c2b7;
+  --heat-muted: #898781;
+  --heat-hairline: rgba(255, 255, 255, 0.12);
+
+  --heat-0: rgba(255, 255, 255, 0.05);
+  --heat-1: #8a1722;
+  --heat-2: #b52633;
+  --heat-3: #e0404e;
+  --heat-4: #ff6f77;
+
+  --heat-gap: 2px;
+  /* includes the 16px card inset, since the label carries it */
+  --heat-label: 120px;
+
+  position: relative;
+  background: var(--heat-surface);
+  border: 2px solid var(--heat-hairline);
+  padding: 16px 0 14px;
+  margin-bottom: 16px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* --- header ------------------------------------------------------------- */
+
+.heatmap__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 0 16px;
+}
+
+.heatmap__title {
+  margin: 0;
+  color: var(--heat-text);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heatmap__range {
+  padding: 4px 10px;
+  border: 2px solid var(--heat-hairline);
+  color: var(--heat-secondary);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.heatmap__caption {
+  margin: 6px 0 12px;
+  padding: 0 16px;
+  color: var(--heat-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* --- grid --------------------------------------------------------------- */
+
+.heatmap__grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--heat-gap);
+  /* the label carries the left inset; the right inset leaves room for the last
+     axis tick, which is centred on the final column */
+  padding-right: 20px;
+}
+
+.heatmap__row {
+  display: grid;
+  /* fluid columns -- the 30-day window always fits the card, so nothing scrolls
+     sideways. Overridden inline with the real column count; see rowTemplate. */
+  grid-template-columns: var(--heat-label) repeat(30, minmax(0, 1fr));
+  gap: var(--heat-gap);
+  align-items: center;
+}
+
+.heatmap__row--axis {
+  margin-bottom: 2px;
+}
+
+.heatmap__rowLabel,
+.heatmap__corner {
+  padding-left: 16px;
+  padding-right: 8px;
+  color: var(--heat-secondary);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.heatmap__corner {
+  height: 16px;
+}
+
+/* The combined strip: same cells as the rows below, ruled off so the two
+   scales are never read as one */
+.heatmap__row--total {
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--heat-hairline);
+}
+
+.heatmap__rowLabel--total {
+  color: var(--heat-text);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heatmap__axis {
+  grid-column: 2 / -1;
+  position: relative;
+  height: 16px;
+}
+
+.heatmap__tick {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  color: var(--heat-muted);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* The 2px grid gap is the separator -- never a border on the cell */
+.heatmap__cell {
+  aspect-ratio: 1;
+  background: var(--heat-0);
+  transition: outline-color 0.12s ease;
+  outline: 2px solid transparent;
+  outline-offset: 0;
+}
+
+.heatmap__cell[data-level='1'] { background: var(--heat-1); }
+.heatmap__cell[data-level='2'] { background: var(--heat-2); }
+.heatmap__cell[data-level='3'] { background: var(--heat-3); }
+.heatmap__cell[data-level='4'] { background: var(--heat-4); }
+
+.heatmap__cell:hover,
+.heatmap__cell:focus-visible {
+  outline-color: var(--heat-text);
+}
+
+/* --- legend ------------------------------------------------------------- */
+
+.heatmap__legend {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 16px 0;
+}
+
+.heatmap__legendLabel {
+  color: var(--heat-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.heatmap__legendMax {
+  margin-left: 6px;
+  color: var(--heat-muted);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.heatmap__swatch {
+  width: 14px;
+  height: 14px;
+  background: var(--heat-0);
+}
+
+.heatmap__swatch[data-level='1'] { background: var(--heat-1); }
+.heatmap__swatch[data-level='2'] { background: var(--heat-2); }
+.heatmap__swatch[data-level='3'] { background: var(--heat-3); }
+.heatmap__swatch[data-level='4'] { background: var(--heat-4); }
+
+/* --- tooltip ------------------------------------------------------------ */
+
+.heatmap__tip {
+  position: fixed;
+  z-index: 400;
+  transform: translate(-50%, calc(-100% - 8px));
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 8px 10px;
+  background: #16161f;
+  border: 2px solid var(--heat-hairline);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* value leads, labels follow */
+.heatmap__tipValue {
+  color: var(--heat-text);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.heatmap__tipMeta {
+  color: var(--heat-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+@media (max-width: 650px) {
+  .heatmap {
+    --heat-label: 100px;
+  }
+
+  .heatmap__title {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heatmap {
+    --heat-label: 82px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heatmap__cell,
+  .heatmap__range {
+    transition: none;
+  }
+}

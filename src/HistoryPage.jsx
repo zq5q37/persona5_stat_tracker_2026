@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import ActivityHeatmap from './components/ActivityHeatmap';
 import './HistoryPage.css';
 
 const formatDate = (timestamp) => {
@@ -8,7 +9,7 @@ const formatDate = (timestamp) => {
   return `${datePart} ${timePart}`;
 };
 
-export default function HistoryPage({ history, onClearHistory }) {
+export default function HistoryPage({ history, activities, onClearHistory }) {
   const navigate = useNavigate();
 
   return (
@@ -16,6 +17,10 @@ export default function HistoryPage({ history, onClearHistory }) {
       <div className='edit-section-label'>
         <span className='edit-label-text'>LOG HISTORY</span>
       </div>
+
+      {history.length > 0 && (
+        <ActivityHeatmap history={history} activities={activities} />
+      )}
 
       {history.length === 0 ? (
         <p className="history-empty">No activities logged yet.</p>

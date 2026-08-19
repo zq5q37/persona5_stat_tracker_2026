@@ -301,7 +301,13 @@ function Root() {
           />
           <Route
             path="/history"
-            element={<HistoryPage history={history} onClearHistory={resetHistory} />}
+            element={
+              <HistoryPage
+                history={history}
+                activities={activities}
+                onClearHistory={resetHistory}
+              />
+            }
           />
           <Route
             path="/confidants"
