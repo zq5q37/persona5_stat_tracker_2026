@@ -1,12 +1,11 @@
 import { toLocalDateStr } from './streak';
+import { weightOf } from './intensity';
 
-// Effort per log, so a High session outweighs a Low one. Mirrors the exp
-// values in Dialogue.jsx, scaled down to 1/2/3.
-export const INTENSITY_WEIGHT = { Low: 1, Medium: 2, High: 3 };
-
+// Fixed at 4 by the --heat-1..4 ramp in ActivityHeatmap.css -- raising it here
+// alone would leave the top levels uncoloured.
 export const LEVEL_COUNT = 4;
 
-export const weightOf = (intensity) => INTENSITY_WEIGHT[intensity] ?? 1;
+export const COMBINED_NAME = 'All activities';
 
 // value -> one of LEVEL_COUNT ramp steps, scaled against the busiest cell on screen
 export const levelOf = (value, max) => {
@@ -28,7 +27,22 @@ export const recentDayKeys = (days, now = new Date()) => {
   return keys;
 };
 
-export const COMBINED_NAME = 'All activities';
+const emptyCell = () => ({ effort: 0, logs: 0, byIntensity: {} });
+
+// fold one log into `byDay`'s cell for that date
+const addLog = (byDay, dayKey, entry) => {
+  const cell = byDay.get(dayKey) ?? emptyCell();
+  cell.effort += weightOf(entry.intensity);
+  cell.logs += 1;
+  cell.byIntensity[entry.intensity] = (cell.byIntensity[entry.intensity] ?? 0) + 1;
+  byDay.set(dayKey, cell);
+};
+
+// a cell per day in the window, so gaps are drawn rather than skipped
+const cellsFor = (byDay, dayKeys) =>
+  dayKeys.map(key => ({ key, ...(byDay?.get(key) ?? emptyCell()) }));
+
+const maxEffort = (cells) => cells.reduce((max, cell) => Math.max(max, cell.effort), 0);
 
 // Rows of per-day effort, one row per activity, over the trailing `days` window.
 // Activities with nothing logged still get a row — an empty row is the point in
@@ -39,64 +53,34 @@ export const buildHeatmap = ({ history, activities, days, now = new Date() }) =>
   const dayKeys = recentDayKeys(days, now);
   const rangeSet = new Set(dayKeys);
 
-  const inRange = history.filter(entry =>
-    rangeSet.has(toLocalDateStr(new Date(entry.timestamp)))
-  );
-
   const names = activities.map(a => a.name);
-  for (const entry of inRange) {
-    if (!names.includes(entry.activityName)) names.push(entry.activityName);
-  }
+  const buckets = new Map(); // name -> dayKey -> cell
+  const totals = new Map(); // dayKey -> cell, with every activity folded in
+  let total = 0;
 
-  const addTo = (cell, entry) => {
-    cell.effort += weightOf(entry.intensity);
-    cell.logs += 1;
-    cell.byIntensity[entry.intensity] = (cell.byIntensity[entry.intensity] ?? 0) + 1;
-    return cell;
-  };
-
-  const emptyCell = () => ({ effort: 0, logs: 0, byIntensity: {} });
-
-  // name -> dayKey -> { effort, logs, byIntensity }
-  const buckets = new Map();
-  // dayKey -> the same shape, with every activity folded in
-  const totals = new Map();
-
-  for (const entry of inRange) {
+  for (const entry of history) {
     const dayKey = toLocalDateStr(new Date(entry.timestamp));
+    if (!rangeSet.has(dayKey)) continue;
+
+    total += 1;
+    if (!names.includes(entry.activityName)) names.push(entry.activityName);
     if (!buckets.has(entry.activityName)) buckets.set(entry.activityName, new Map());
 
-    const byDay = buckets.get(entry.activityName);
-    byDay.set(dayKey, addTo(byDay.get(dayKey) ?? emptyCell(), entry));
-    totals.set(dayKey, addTo(totals.get(dayKey) ?? emptyCell(), entry));
+    addLog(buckets.get(entry.activityName), dayKey, entry);
+    addLog(totals, dayKey, entry);
   }
 
-  let max = 0;
-  const rows = names.map((name) => {
-    const byDay = buckets.get(name);
-    const cells = dayKeys.map((key) => {
-      const cell = byDay?.get(key);
-      if (cell && cell.effort > max) max = cell.effort;
-      return { key, ...(cell ?? emptyCell()) };
-    });
-    return { name, cells };
-  });
-
-  // Scaled on its own max: a day total sits well above any one activity's cell,
-  // so sharing `max` would flatten the combined row to solid colour.
-  let combinedMax = 0;
-  const combinedCells = dayKeys.map((key) => {
-    const cell = totals.get(key);
-    if (cell && cell.effort > combinedMax) combinedMax = cell.effort;
-    return { key, ...(cell ?? emptyCell()) };
-  });
+  const rows = names.map(name => ({ name, cells: cellsFor(buckets.get(name), dayKeys) }));
+  const combined = { name: COMBINED_NAME, cells: cellsFor(totals, dayKeys) };
 
   return {
     dayKeys,
     rows,
-    max,
-    combined: { name: COMBINED_NAME, cells: combinedCells },
-    combinedMax,
-    total: inRange.length,
+    max: maxEffort(rows.flatMap(row => row.cells)),
+    combined,
+    // its own scale: a day total sits well above any single activity's cell, so
+    // sharing `max` would flatten the combined row to solid colour
+    combinedMax: maxEffort(combined.cells),
+    total,
   };
 };

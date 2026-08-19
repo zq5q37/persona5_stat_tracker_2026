@@ -11,6 +11,7 @@ const formatDate = (timestamp) => {
 
 export default function HistoryPage({ history, activities, onClearHistory }) {
   const navigate = useNavigate();
+  const isEmpty = history.length === 0;
 
   return (
     <div className="history-container">
@@ -18,11 +19,11 @@ export default function HistoryPage({ history, activities, onClearHistory }) {
         <span className='edit-label-text'>LOG HISTORY</span>
       </div>
 
-      {history.length > 0 && (
+      {!isEmpty && (
         <ActivityHeatmap history={history} activities={activities} />
       )}
 
-      {history.length === 0 ? (
+      {isEmpty ? (
         <p className="history-empty">No activities logged yet.</p>
       ) : (
         <table className="history-table">
@@ -45,7 +46,7 @@ export default function HistoryPage({ history, activities, onClearHistory }) {
         </table>
       )}
 
-      {history.length > 0 && (
+      {!isEmpty && (
         <button
           className="dialogue-button back-button"
           onClick={onClearHistory}

@@ -15,6 +15,10 @@ import { computeStreakUpdate } from './utils/streak';
 import { computeActivityReward } from './utils/yen';
 import { rollGacha, GACHA_COST, DUPLICATE_REFUND } from './utils/gacha';
 import { CONFIDANT_KEYS, DEFAULT_CONFIDANT } from './confidants.js';
+import { primeAudioSession } from './utils/audioSession.js';
+
+// one audio session for the page, so a clip cannot interrupt the BGM on iOS
+primeAudioSession();
 
 const initialActivities = [
   { name: "Code", traits: ["Knowledge", "Proficiency"] },

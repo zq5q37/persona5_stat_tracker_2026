@@ -1,7 +1,6 @@
-/* Sequential ramp, one hue (P5 red), validated against the #0a0a14 surface with
-   scripts/validate_palette.js --ordinal --mode dark:
-   monotone lightness, all adjacent gaps >= 0.06 L, darkest step 2.09:1 vs
-   surface, hue spread 3 degrees. Do not hand-tweak these without re-running it.
+/* Sequential ramp, one hue (P5 red), tuned against the #0a0a14 surface: rising
+   lightness in even steps, with the darkest step still clearing 2:1 against the
+   surface. Keep those two properties if you retune it.
 
    The app has no light mode -- the red background image is the only ground --
    so this commits to the dark surface rather than shipping an unused flip. */
@@ -19,30 +18,23 @@
   --heat-4: #ff6f77;
 
   --heat-gap: 2px;
-  /* includes the 16px card inset, since the label carries it */
-  --heat-label: 120px;
+  --heat-inset: 16px;
+  /* the label carries the card inset, so it is part of the column width */
+  --heat-label: calc(var(--heat-inset) + 104px);
 
   position: relative;
   background: var(--heat-surface);
   border: 2px solid var(--heat-hairline);
-  padding: 16px 0 14px;
+  padding: var(--heat-inset) 0 14px;
   margin-bottom: 16px;
   font-family: 'Segoe UI', sans-serif;
 }
 
 /* --- header ------------------------------------------------------------- */
 
-.heatmap__head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 0 16px;
-}
-
 .heatmap__title {
   margin: 0;
+  padding: 0 var(--heat-inset);
   color: var(--heat-text);
   font-size: 18px;
   font-weight: 800;
@@ -50,19 +42,9 @@
   text-transform: uppercase;
 }
 
-.heatmap__range {
-  padding: 4px 10px;
-  border: 2px solid var(--heat-hairline);
-  color: var(--heat-secondary);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-
 .heatmap__caption {
   margin: 6px 0 12px;
-  padding: 0 16px;
+  padding: 0 var(--heat-inset);
   color: var(--heat-muted);
   font-size: 13px;
   font-weight: 600;
@@ -81,9 +63,7 @@
 
 .heatmap__row {
   display: grid;
-  /* fluid columns -- the 30-day window always fits the card, so nothing scrolls
-     sideways. Overridden inline with the real column count; see rowTemplate. */
-  grid-template-columns: var(--heat-label) repeat(30, minmax(0, 1fr));
+  /* columns come from ROW_TEMPLATE, which owns the day count */
   gap: var(--heat-gap);
   align-items: center;
 }
@@ -92,9 +72,8 @@
   margin-bottom: 2px;
 }
 
-.heatmap__rowLabel,
-.heatmap__corner {
-  padding-left: 16px;
+.heatmap__rowLabel {
+  padding-left: var(--heat-inset);
   padding-right: 8px;
   color: var(--heat-secondary);
   font-size: 13px;
@@ -102,10 +81,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.heatmap__corner {
-  height: 16px;
 }
 
 /* The combined strip: same cells as the rows below, ruled off so the two
@@ -116,7 +91,7 @@
   border-bottom: 2px solid var(--heat-hairline);
 }
 
-.heatmap__rowLabel--total {
+.heatmap__row--total .heatmap__rowLabel {
   color: var(--heat-text);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -145,7 +120,6 @@
   background: var(--heat-0);
   transition: outline-color 0.12s ease;
   outline: 2px solid transparent;
-  outline-offset: 0;
 }
 
 .heatmap__cell[data-level='1'] { background: var(--heat-1); }
@@ -164,7 +138,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 10px 16px 0;
+  padding: 10px var(--heat-inset) 0;
 }
 
 .heatmap__legendLabel {
@@ -223,7 +197,7 @@
 
 @media (max-width: 650px) {
   .heatmap {
-    --heat-label: 100px;
+    --heat-label: calc(var(--heat-inset) + 84px);
   }
 
   .heatmap__title {
@@ -233,13 +207,12 @@
 
 @media (max-width: 480px) {
   .heatmap {
-    --heat-label: 82px;
+    --heat-label: calc(var(--heat-inset) + 66px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .heatmap__cell,
-  .heatmap__range {
+  .heatmap__cell {
     transition: none;
   }
 }

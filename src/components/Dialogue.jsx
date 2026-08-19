@@ -3,13 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { CONFIDANTS } from '../confidants.js';
 import playClick from '../utils/playClick.js';
+import { INTENSITIES } from '../utils/intensity.js';
 import './Dialogue.css';
-
-const INTENSITIES = [
-    { label: 'Low', exp: 10 },
-    { label: 'Medium', exp: 20 },
-    { label: 'High', exp: 30 },
-];
 
 const DIALOGUE_STATE = {
     IDLE: 'idle',

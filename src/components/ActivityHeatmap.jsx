@@ -3,7 +3,12 @@ import { buildHeatmap, levelOf, LEVEL_COUNT } from '../utils/heatmap';
 import './ActivityHeatmap.css';
 
 const DAYS = 30;
-const LEVELS = Array.from({ length: LEVEL_COUNT }, (_, i) => i + 1);
+
+// Fluid columns, so the window always fits the card and nothing scrolls
+// sideways. Written out because var() is not allowed inside repeat().
+const ROW_TEMPLATE = {
+  gridTemplateColumns: `var(--heat-label) repeat(${DAYS}, minmax(0, 1fr))`,
+};
 
 const shortDate = (key) => {
   const [, month, day] = key.split('-');
@@ -27,6 +32,19 @@ export default function ActivityHeatmap({ history, activities }) {
     [history, activities]
   );
 
+  // One label per day rather than one per cell: Intl formatting is not cheap,
+  // and hovering a cell re-renders the whole grid.
+  const dayLabels = useMemo(
+    () => Object.fromEntries(dayKeys.map(key => [key, longDate(key)])),
+    [dayKeys]
+  );
+
+  // The combined strip is just another row -- same markup, its own scale.
+  const allRows = [
+    { ...combined, label: 'All', max: combinedMax, modifier: 'heatmap__row--total' },
+    ...rows.map(row => ({ ...row, label: row.name, max, modifier: '' })),
+  ];
+
   const showTip = (event, row, cell) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const breakdown = Object.entries(cell.byIntensity)
@@ -35,10 +53,9 @@ export default function ActivityHeatmap({ history, activities }) {
 
     setTip({
       effort: cell.effort,
-      logs: cell.logs,
       breakdown,
       name: row.name,
-      date: longDate(cell.key),
+      date: dayLabels[cell.key],
       x: Math.min(Math.max(rect.left + rect.width / 2, 100), window.innerWidth - 100),
       y: rect.top,
     });
@@ -46,34 +63,21 @@ export default function ActivityHeatmap({ history, activities }) {
 
   const hideTip = () => setTip(null);
 
-  // Written out rather than driving the count from a CSS var, so it is never
-  // subject to var() substitution inside repeat()
-  const rowTemplate = {
-    gridTemplateColumns: `var(--heat-label) repeat(${dayKeys.length}, minmax(0, 1fr))`,
-  };
-
-  // Every 7th day gets a tick, plus the last day — unless it would crowd the
-  // one before it, since the columns are only a few percent of the axis wide
-  const last = dayKeys.length - 1;
+  // one tick a week, each centred on its column
   const ticks = dayKeys
     .map((key, i) => ({ key, i }))
-    .filter(({ i }) => i % 7 === 0 || (i === last && last % 7 >= 4));
+    .filter(({ i }) => i % 7 === 0);
 
   return (
     <section className='heatmap' aria-labelledby='heatmap-title'>
-      <div className='heatmap__head'>
-        <h2 className='heatmap__title' id='heatmap-title'>Effort by activity</h2>
-        {/* <span className='heatmap__range'>{DAYS} days</span> */}
-      </div>
+      <h2 className='heatmap__title' id='heatmap-title'>Effort by activity</h2>
 
       <p className='heatmap__caption'>
         {total} log{total === 1 ? '' : 's'} in the last {DAYS} days.
-        {/* {max > 0 && ' The top strip sums every activity; the rows below split it out.'} */}
       </p>
 
       <div className='heatmap__grid' onMouseLeave={hideTip}>
-        <div className='heatmap__row heatmap__row--axis' style={rowTemplate}>
-          <div className='heatmap__rowLabel heatmap__corner' />
+        <div className='heatmap__row heatmap__row--axis' style={ROW_TEMPLATE}>
           <div className='heatmap__axis'>
             {ticks.map(({ key, i }) => (
               <span
@@ -87,33 +91,16 @@ export default function ActivityHeatmap({ history, activities }) {
           </div>
         </div>
 
-        <div className='heatmap__row heatmap__row--total' style={rowTemplate}>
-          <div className='heatmap__rowLabel heatmap__rowLabel--total'>All</div>
-          {combined.cells.map(cell => (
-            <div
-              key={cell.key}
-              className='heatmap__cell'
-              data-level={levelOf(cell.effort, combinedMax)}
-              role='img'
-              aria-label={`All activities, ${longDate(cell.key)}: ${cell.effort} effort`}
-              tabIndex={cell.effort > 0 ? 0 : undefined}
-              onMouseEnter={e => showTip(e, combined, cell)}
-              onFocus={e => showTip(e, combined, cell)}
-              onBlur={hideTip}
-            />
-          ))}
-        </div>
-
-        {rows.map(row => (
-          <div className='heatmap__row' key={row.name} style={rowTemplate}>
-            <div className='heatmap__rowLabel' title={row.name}>{row.name}</div>
+        {allRows.map(row => (
+          <div className={`heatmap__row ${row.modifier}`} key={row.name} style={ROW_TEMPLATE}>
+            <div className='heatmap__rowLabel' title={row.name}>{row.label}</div>
             {row.cells.map(cell => (
               <div
                 key={cell.key}
                 className='heatmap__cell'
-                data-level={levelOf(cell.effort, max)}
+                data-level={levelOf(cell.effort, row.max)}
                 role='img'
-                aria-label={`${row.name}, ${longDate(cell.key)}: ${cell.effort} effort`}
+                aria-label={`${row.name}, ${dayLabels[cell.key]}: ${cell.effort} effort`}
                 tabIndex={cell.effort > 0 ? 0 : undefined}
                 onMouseEnter={e => showTip(e, row, cell)}
                 onFocus={e => showTip(e, row, cell)}
@@ -126,8 +113,7 @@ export default function ActivityHeatmap({ history, activities }) {
 
       <div className='heatmap__legend'>
         <span className='heatmap__legendLabel'>Less</span>
-        <span className='heatmap__swatch' data-level='0' />
-        {LEVELS.map(level => (
+        {Array.from({ length: LEVEL_COUNT + 1 }, (_, level) => (
           <span key={level} className='heatmap__swatch' data-level={level} />
         ))}
         <span className='heatmap__legendLabel'>More</span>

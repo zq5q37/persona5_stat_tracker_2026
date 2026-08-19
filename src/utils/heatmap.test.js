@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { buildHeatmap, COMBINED_NAME, levelOf, recentDayKeys, weightOf } from './heatmap';
+import { buildHeatmap, COMBINED_NAME, levelOf, recentDayKeys } from './heatmap';
+import { weightOf } from './intensity';
 
 // Midday on a fixed date, clear of DST edges
 const NOW = new Date(2026, 5, 10, 12, 0, 0);
