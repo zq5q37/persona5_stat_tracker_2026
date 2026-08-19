@@ -11,6 +11,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import playClick from '../utils/playClick.js';
+import { primeAudioSession, registerBgm, setBgmWanted } from '../utils/audioSession.js';
 
 function Header({ user, onLogin, onLogout }) {
     const audioRef = useRef(null);
@@ -18,12 +19,18 @@ function Header({ user, onLogin, onLogout }) {
     const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
+        // one session for the page, so a sound effect cannot interrupt the BGM
+        primeAudioSession();
+
         audioRef.current = new Audio(backgroundMusic);
         audioRef.current.loop = true;
         audioRef.current.volume = 0.15;
         audioRef.current.muted = muted;
+        // so anything that gets pre-empted can put the BGM back
+        registerBgm(audioRef.current);
 
         return () => {
+            registerBgm(null);
             if (audioRef.current) {
                 audioRef.current.pause();
             }
@@ -33,6 +40,7 @@ function Header({ user, onLogin, onLogout }) {
     useEffect(() => {
         if (!audioRef.current) return;
 
+        setBgmWanted(!muted);
         audioRef.current.muted = muted;
         if (!muted) {
             audioRef.current.play().catch(() => { });

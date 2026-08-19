@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import expUpVideoWebm from '../assets/NotesSocialStats.webm'
 import expUpVideoMp4 from '../assets/NotesSocialStats.mp4'
+import { primeAudioSession, resumeBgm } from '../utils/audioSession.js'
 
 const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
@@ -20,6 +21,9 @@ const NotesVideo = ({ expUp }) => {
 
     useEffect(() => {
         if (expUp && videoRef.current) {
+            // claim the session as 'playback' before the clip starts, so iOS
+            // mixes it with the BGM instead of interrupting it
+            primeAudioSession();
             videoRef.current.currentTime = 0;
             videoRef.current.play().catch(() => {});
             setIsPlaying(true);
@@ -63,6 +67,8 @@ const NotesVideo = ({ expUp }) => {
     const handleEnded = () => {
         setIsPlaying(false);
         cancelAnimationFrame(rafRef.current);
+        // on older iOS the clip takes the session outright; put the BGM back
+        resumeBgm();
     };
 
     return (
